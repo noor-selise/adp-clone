@@ -13,20 +13,22 @@
           "nextjs",
           "sdk"
         ],
-        "note": "Mentee/mentor browser talks only to the Next.js app; the SDK is the sole gateway to the platform."
+        "note": "Mentee/mentor/admin browser talks only to the Next.js app; the SDK is the sole gateway to the platform."
       },
       {
         "id": "backend-capabilities",
         "label": "SELISE Blocks capabilities",
         "focus": [
           "sdk",
+          "scheduled_jobs",
           "blocks_iam",
           "blocks_data",
           "blocks_storage",
           "blocks_mail",
-          "blocks_notification"
+          "blocks_notification",
+          "blocks_localization"
         ],
-        "note": "Auth, data, storage, mail, and notification are all managed BaaS capabilities, not hand-rolled services."
+        "note": "Auth, data, storage, mail, notification, and localization are managed BaaS capabilities called by the SDK and Scheduled Jobs."
       },
       {
         "id": "ops-plane",
@@ -58,7 +60,7 @@
     {
       "id": "clients",
       "type": "external",
-      "label": "Mentee & Mentor",
+      "label": "Mentee, Mentor & Admin",
       "sublabel": "web browser",
       "pos": [
         40,
@@ -98,6 +100,36 @@
         64
       ],
       "tag": "app team"
+    },
+    {
+      "id": "scheduled_jobs",
+      "type": "backend",
+      "label": "Scheduled Jobs",
+      "sublabel": "reminders, completion, verify-expiry",
+      "pos": [
+        560,
+        270
+      ],
+      "size": [
+        190,
+        60
+      ],
+      "tag": "app team"
+    },
+    {
+      "id": "blocks_cli",
+      "type": "backend",
+      "label": "blocks-cli",
+      "sublabel": "CI-triggered dev/ops control plane",
+      "pos": [
+        560,
+        365
+      ],
+      "size": [
+        190,
+        60
+      ],
+      "tag": "ops"
     },
     {
       "id": "blocks_iam",
@@ -148,7 +180,7 @@
       "id": "blocks_mail",
       "type": "external",
       "label": "Mail",
-      "sublabel": "transactional email",
+      "sublabel": "transactional + verification email",
       "pos": [
         850,
         260
@@ -175,19 +207,19 @@
       "tag": "platform"
     },
     {
-      "id": "blocks_cli",
-      "type": "backend",
-      "label": "blocks-cli",
-      "sublabel": "dev/ops control plane",
+      "id": "blocks_localization",
+      "type": "external",
+      "label": "Localization",
+      "sublabel": "translation key sync",
       "pos": [
-        560,
-        395
+        850,
+        410
       ],
       "size": [
-        190,
+        170,
         60
       ],
-      "tag": "ops"
+      "tag": "platform"
     }
   ],
   "boundaries": [
@@ -199,7 +231,8 @@
         "blocks_data",
         "blocks_storage",
         "blocks_mail",
-        "blocks_notification"
+        "blocks_notification",
+        "blocks_localization"
       ],
       "pad": 10
     }
@@ -227,6 +260,19 @@
       "labelAt": [
         510,
         149
+      ]
+    },
+    {
+      "from": "scheduled_jobs",
+      "to": "sdk",
+      "label": "trigger reminders / mark completed",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "route": "straight",
+      "labelAt": [
+        500,
+        256
       ]
     },
     {
@@ -277,6 +323,16 @@
       ]
     },
     {
+      "from": "sdk",
+      "to": "blocks_localization",
+      "label": "translation keys",
+      "variant": "dashed",
+      "labelAt": [
+        1090,
+        440
+      ]
+    },
+    {
       "from": "blocks_cli",
       "to": "nextjs",
       "label": "Release deploy",
@@ -286,7 +342,7 @@
       "via": [
         [
           370,
-          425
+          395
         ],
         [
           370,
@@ -295,7 +351,7 @@
       ],
       "labelAt": [
         420,
-        425
+        395
       ]
     },
     {
@@ -303,12 +359,16 @@
       "to": "blocks_data",
       "label": "schema / rules deploy + IAM config",
       "variant": "dashed",
-      "fromSide": "right",
+      "fromSide": "bottom",
       "toSide": "right",
       "via": [
         [
+          655,
+          485
+        ],
+        [
           1180,
-          425
+          485
         ],
         [
           1180,
@@ -317,7 +377,7 @@
       ],
       "labelAt": [
         900,
-        425
+        485
       ]
     }
   ],
@@ -326,27 +386,27 @@
       "dot": "cyan",
       "title": "Runtime Ownership",
       "items": [
-        "App team owns the Next.js app and its server-side use of the SDK",
-        "Platform (SELISE Blocks) owns IAM, Data, Storage, Mail, Notification",
-        "The video vendor is a swappable third party behind one internal interface"
+        "App team owns the Next.js app, SDK, and scheduled jobs",
+        "Platform owns IAM, Data, Storage, Mail, Notification, Localization",
+        "The video vendor is a swappable third party behind one interface"
       ]
     },
     {
       "dot": "rose",
       "title": "Named Crossings",
       "items": [
-        "Browser only ever talks to the Next.js app, never to Blocks or the video vendor directly",
+        "Browser only talks to Next.js, never Blocks or the video vendor",
         "Video room tokens are minted server-side; secrets never reach the client",
-        "blocks-cli configures and deploys but never sits on the live request path"
+        "blocks-cli configures and deploys; never on the live request path"
       ]
     },
     {
-      "dot": "emerald",
-      "title": "Why No blocks new web",
+      "dot": "amber",
+      "title": "Off the Request Path",
       "items": [
-        "blocks-cli's scaffolder generates Vite+React, not Next.js",
-        "The SDK (@seliseblocks/client) is framework-agnostic, so it's wired into Next.js manually",
-        "blocks-cli still owns Data/IAM/Release for this project regardless of frontend framework"
+        "blocks-cli scaffolds Vite+React, not Next.js; SDK wired in manually",
+        "Scheduled Jobs send reminders, mark sessions completed, expire tokens",
+        "CI/CD triggers blocks-cli for schema sync and release deploy"
       ]
     }
   ]

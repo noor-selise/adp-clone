@@ -45,9 +45,9 @@ Date: 2026-09-13 · Status: Ready for stakeholder review
 
 ![MentorMatch architecture diagram](./diagrams/mentormatch-architecture-preview.png)
 
-*(Open [`diagrams/mentormatch-architecture.html`](./diagrams/mentormatch-architecture.html) directly in a browser for the interactive version — pan/zoom, three guided views: "User request path", "SELISE Blocks capabilities", "Dev/ops control plane".)*
+*(Open [`diagrams/mentormatch-architecture.html`](./diagrams/mentormatch-architecture.html) directly in a browser for the interactive version — pan/zoom, three guided views: "User request path", "SELISE Blocks capabilities", "Dev/ops control plane". This is the full 12-node picture: it also shows the async **Scheduled Jobs** worker (reminders, session completion, company-verification token expiry) and **Localization** as a sixth managed Blocks capability, alongside the five already covered.)*
 
-In one sentence: **the browser only ever talks to the Next.js app; the Next.js app is the only thing that talks to SELISE Blocks (via the SDK) and to the video vendor; `blocks-cli` configures and deploys but never sits on the live request path.**
+In one sentence: **the browser only ever talks to the Next.js app; the Next.js app and its Scheduled Jobs worker are the only things that talk to SELISE Blocks (via the SDK) and to the video vendor; `blocks-cli` configures and deploys but never sits on the live request path.**
 
 ## 6. How to grow this into the full ADPList feature set
 
