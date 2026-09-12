@@ -19,7 +19,7 @@ A web search for "blocks-cli" surfaces an unrelated npm package, `@blocks-networ
 | `blocks data schema list/pull/push`, `blocks data rules pull/deploy`, `blocks data sync` | Author and deploy Data Gateway schemas (`MentorProfile`, `AvailabilityRule`, `Session`, `Review`, `Report`, `AuditTrail`) and their access rules | Backs FR-6–24, FR-30–32 (§02-REQUIREMENTS.md) |
 | `blocks data files upload` / `dms-upload` | Presigned upload + DMS registration for files | Backs FR-6 (mentor profile photo) |
 | `blocks auth users *`, `blocks auth roles/permissions *`, `blocks auth mfa *`, `blocks auth oidc-clients *` | IAM admin: users, roles (mentee/mentor/admin), MFA, OIDC client registration | Backs FR-1–5, FR-30 |
-| `blocks mail *` | Mail template/settings configuration | Backs FR-25, FR-27 |
+| `blocks mail *` | Mail template/settings configuration | Backs FR-25, FR-27, FR-33 (company-verification link email) |
 | `blocks notification *` / `blocks notifier *` | Notification channel config (admin) + runtime send/read (app) | Backs FR-26, FR-28, FR-29 |
 | `blocks localization *` | Translation key sync | Backs NFR-20 (future-proofing, not required content at MVP) |
 | `blocks secrets *` | Secret storage for the project | Stores `VIDEO_VENDOR_API_KEY` server-side config rather than a `.env` committed to source |

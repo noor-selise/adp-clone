@@ -110,6 +110,7 @@ These are re-scoped as the **post-MVP roadmap** in §8 and detailed further in `
 | Two-sided marketplace cold-start (no mentors → no mentees, and vice versa) | High | Seed with a manually-recruited mentor cohort before public mentee signup opens (same playbook ADPList used). |
 | No-shows / cancellations erode trust | Medium | Reminder notifications (§6.9) + no-show tracking feeding into a future mentor/mentee reliability score. |
 | Review abuse / fake reviews | Medium | Reviews only unlockable after a completed session; admin moderation queue (§6.10). |
+| Fake company affiliation (mentor claims an employer they don't have) erodes the trust signal G2 depends on | Medium | Company field ships with an unverified-by-default state; verified only via corporate-email confirmation or admin review (FR-33/34, `03-ARCHITECTURE.md` §6a). Kept deliberately separate from the v2.2 Enterprise/B2B `Organization` tenant model — this is about mentor honesty, not company accounts. |
 | Third-party video vendor lock-in | Low-Medium | Abstract video-session creation behind a single internal service interface (see Architecture doc) so the vendor can be swapped. |
 | SELISE Blocks platform learning curve for the team | Low | `blocks-cli` ships an AI-agent skill library (`blocks skill list`) specifically to shorten this ramp-up; leverage it during implementation. |
 

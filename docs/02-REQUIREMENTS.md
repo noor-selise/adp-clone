@@ -24,6 +24,8 @@ Derived from `01-BRD.md` §6 (In Scope). Each functional requirement (FR) is wri
 | FR-9 | A mentee can sort mentors by rating, session count, or "soonest availability". | Data (query sort) |
 | FR-10 | A mentor's public profile displays aggregate rating, review count, and completed-session count, computed server-side (not client-trusted). | Data (computed/aggregation rule) |
 | FR-11 | A mentee can search mentors by free-text (name, title, company, skill). | Data (search) |
+| FR-33 | A mentor's `company` field starts in an **unverified** state; it moves to **verified** only when the mentor confirms a one-time link sent to a `name@company.com` address, or an admin manually verifies it. Public/generic email domains (gmail.com, outlook.com, etc.) can never reach `verified`. | Mail (verification link) + Data (`companyVerificationStatus`) |
+| FR-34 | The mentor directory and profile UI visually distinguish verified vs. unverified company affiliation (e.g., a checkmark badge next to the company name) — company claims are never presented as equally trustworthy by default. | Frontend (design system §4.2 `MentorCard`) |
 
 ### A.3 Availability & Booking
 
@@ -114,6 +116,13 @@ Derived from `01-BRD.md` §6 (In Scope). Each functional requirement (FR) is wri
 | NFR-13 | Time-to-first-booking for a new mentee is under 5 minutes end-to-end (mirrors BRD G3), validated via a scripted usability test. |
 | NFR-14 | All interactive flows (signup, search, booking, review) meet WCAG 2.1 AA: keyboard operability, visible focus states, ARIA labeling on custom components, color-contrast ≥ 4.5:1 for text. |
 | NFR-15 | The application is fully responsive from 375px (mobile web) to desktop widths; no native app required for MVP (per BRD scope). |
+
+### B.5a Trust Integrity
+
+| ID | Requirement |
+|---|---|
+| NFR-21 | Company-affiliation verification (FR-33) is asynchronous and best-effort: it never blocks profile creation or the "under 5 minutes to first booking" goal (NFR-13). An unverified profile is fully usable — only its trust badge differs. |
+| NFR-22 | A mentor cannot self-report as "verified" through any client-writable field; `companyVerificationStatus` is server-set only (via the Mail-confirmed link or an admin action), never accepted from a client mutation — same "never trust the client" posture as NFR-8. |
 
 ### B.6 Maintainability & Operability
 

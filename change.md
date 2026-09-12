@@ -12,3 +12,4 @@ All changes to this project will be documented in this file.
 - Added `blocks-cli` capability analysis mapping every requirement to a CLI/SDK feature (`docs/05-BLOCKS-CLI-ANALYSIS.md`) (by AI assistant, 2026-09-13)
 - Added interactive Archify architecture diagram (`docs/diagrams/mentormatch-architecture.html` + source JSON) (by AI assistant, 2026-09-13)
 - Added master planning report tying all documents together (`docs/00-REPORT.md`) (by AI assistant, 2026-09-13)
+- Added company-affiliation verification requirement (FR-33/34, NFR-21/22) to close the "any mentor can type any employer name" trust gap, distinguished from the separate deferred v2.2 Enterprise/B2B `Organization`-as-tenant model; updated `01-BRD.md` risks, `02-REQUIREMENTS.md`, `03-ARCHITECTURE.md` data model + new §6a verification flow, and `05-BLOCKS-CLI-ANALYSIS.md` (by AI assistant, 2026-09-13)

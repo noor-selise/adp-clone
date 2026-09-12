@@ -82,7 +82,7 @@ VIDEO_VENDOR_API_KEY=<server-only secret, never NEXT_PUBLIC_>
 
 | Schema | Key fields | Notes |
 |---|---|---|
-| `MentorProfile` | userId, displayName, photoFileId, title, company, bio, skills[], languages[], timezone, ratingAvg, ratingCount, sessionCount | `ratingAvg`/`ratingCount` recomputed server-side on review write (FR-22) |
+| `MentorProfile` | userId, displayName, photoFileId, title, company, companyVerificationStatus (`unverified\|pending\|verified`), bio, skills[], languages[], timezone, ratingAvg, ratingCount, sessionCount | `ratingAvg`/`ratingCount` recomputed server-side on review write (FR-22). `companyVerificationStatus` is server-set only (NFR-22) |
 | `AvailabilityRule` | mentorId, dayOfWeek/recurrence, startTime, endTime, timezone, blackoutDates[] | Derived open-slots computed at query time, not stored as rows-per-slot |
 | `Session` | mentorId, menteeId, startAt, endAt, state (`requested\|confirmed\|completed\|cancelled\|no_show`), videoRoomRef | State machine per FR-17; write-rule enforces no double-booking (NFR-7) |
 | `Review` | sessionId, mentorId, menteeId, rating, text, status (`published\|hidden`) | Rule: one per session, only if `Session.state = completed` (FR-21) |
@@ -102,6 +102,18 @@ Access rules (Blocks Data rules, deployed via `blocks data rules deploy`):
 3. `api/bookings` triggers: Mail (confirmation to both parties, FR-25) + Notification schedule for T-24h/T-1h reminders (FR-26, run via a scheduled job, NFR-5) + async call to `api/video-rooms` to provision the room (NFR-6: booking succeeds even if this is briefly delayed; retried async).
 4. At session time, both parties navigate to `sessions/[id]/room`, which calls `lib/video/provider.getJoinToken()` server-side and embeds the vendor's client SDK.
 5. After `endAt` + grace period, `Session.state → completed` (scheduled job) → review becomes eligible (FR-21) → mentor rating recompute rule fires (FR-22).
+
+## 6a. Company Affiliation Verification (FR-33/34)
+
+A mentor's `company` field is a trust signal (BRD G2), so it can't be taken on faith the way a display name can. Flow:
+
+1. On profile save, if `company` is non-empty and `companyVerificationStatus` isn't already `verified`, the app sets `pending` and offers "Verify your work email" (optional, never blocking — NFR-21).
+2. Mentor enters a `name@company.com` address. A public/generic domain (gmail.com, outlook.com, etc., checked against a small denylist) is rejected client-side before it ever reaches the server.
+3. `api/verify-company` (server-side) generates a one-time token, stores it against the `MentorProfile`, and sends the confirmation link via the Mail module (same capability as booking confirmations, FR-25).
+4. Clicking the link hits a Route Handler that validates the token server-side and flips `companyVerificationStatus → verified` via a Data write — the client never sends this status directly (NFR-22).
+5. An admin can also set `verified`/`unverified` manually from the back office (extends FR-30's admin surface) for cases like acquisitions or role changes that a domain check can't capture.
+
+This is intentionally the smallest verification mechanism that removes "type any company name" — it does **not** require an `Organization` tenant entity; that's the separate, deferred v2.2 Enterprise/B2B data model (`01-BRD.md` §8), which is about companies as customers, not mentors proving where they work.
 
 ## 7. Deployment Topology
 
