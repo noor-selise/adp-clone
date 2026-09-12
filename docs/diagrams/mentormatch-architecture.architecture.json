@@ -47,7 +47,7 @@
       "id": "video_vendor",
       "type": "external",
       "label": "Video Vendor API",
-      "sublabel": "Daily.co-class SDK",
+      "sublabel": "Daily.co API",
       "pos": [
         280,
         8

@@ -96,6 +96,8 @@ Flat design bias: shadows are used only on hover/focus states and modals, not as
 | `FilterBar` | default, active-filter-count badge | Category pills + rating dropdown + language dropdown, sticky on scroll within directory page |
 | `Toast/Notification` | info, success, warning, danger | Uses the four semantic color pairs above |
 | `EmptyState` | no-results, no-sessions-yet | Illustration-light: an icon + one sentence + one primary action, never a wall of text |
+| `RoleSwitcher` | mentee-only, mentor-only, both (active-tab) | Small segmented control in the dashboard header, shown only once an account holds both `MentorProfile` and `MenteeProfile` (FR-3/FR-35) — a single account is never forced to pick one identity |
+| `AdminReportQueue` | pending, resolved | The one custom-built admin surface (FR-31/FR-38); plain table layout, not styled to match the marketplace-facing pages — utilitarian is correct here, it's an internal tool |
 
 ## 4. Layout Principles
 

@@ -52,7 +52,7 @@ The MVP scope (confirmed with stakeholder) is the **core marketplace only**: men
 2. Mentor directory: search, filter (category, rating, availability, language, seniority), sort.
 3. Mentor public profile: bio, title/company, skills, rating, review count, session count, availability calendar.
 4. Session booking: mentee selects an open slot, session is created, both parties notified.
-5. 1:1 video session via a third-party video SDK (Daily.co-class provider), launched from the booked session.
+5. 1:1 video session via Daily.co (confirmed vendor, `03-ARCHITECTURE.md` §7), launched from the booked session.
 6. Post-session review & rating (mentee → mentor is the primary flow; mentor → mentee optional/internal).
 7. Session history for both roles (upcoming, past, cancelled).
 8. Mentor availability management (recurring weekly availability + blackout dates).
@@ -76,7 +76,7 @@ These are re-scoped as the **post-MVP roadmap** in §8 and detailed further in `
 
 | Phase | Feature | Why it's next, not now |
 |---|---|---|
-| v1.1 | Reminders via SMS/push, calendar (.ics) sync | High retention value, low build cost once notifications exist. |
+| v1.1 | Reminders via SMS/push, calendar (.ics) sync; LinkedIn SSO (pending a JWKS/OIDC compatibility spike against Blocks IAM's External IdP feature — Google SSO ships at MVP, LinkedIn does not, `02-REQUIREMENTS.md` FR-1) | High retention value, low build cost once notifications exist. |
 | v1.2 | Session recording + AI transcription/summary | ADPList's most-cited differentiator in reviews; needs a recording-capable video vendor and storage pipeline — straightforward once core booking exists. |
 | v1.3 | AI-assisted mentor matching (recommend mentors from a mentee's stated goal) | Needs sufficient mentor/session data first; premature before there's a marketplace to recommend from. |
 | v2.0 | Communities & events (group sessions, meetups) | New data model (many-to-many group membership) and moderation surface; deliberately separated from 1:1 core. |
@@ -90,15 +90,16 @@ These are re-scoped as the **post-MVP roadmap** in §8 and detailed further in `
 - **Activation:** % of signed-up mentees who complete a booking within 7 days.
 - **Liquidity:** median number of open mentor slots per active category.
 - **Time-to-book:** median minutes from first directory view to confirmed booking.
-- **Session completion rate:** % of booked sessions that are actually attended (not cancelled/no-show).
+- **Session completion rate:** % of booked sessions that are actually attended (not cancelled/no-show) — measured via the video-vendor attendance check in `02-REQUIREMENTS.md` FR-37, not inferred from a timer alone.
 - **Trust signal coverage:** % of mentors with ≥1 published review after 30 days.
 
 ## 10. Assumptions & Constraints
 
 - **Constraint:** Backend platform is SELISE Blocks, operated through `blocks-cli` (`@seliseblocks/cli-os`) and `@seliseblocks/client` SDK — confirmed decision.
 - **Constraint:** Application framework is Next.js (App Router). `blocks-cli`'s native `blocks new web` scaffolder currently generates Vite+React, not Next.js, so the SDK will be wired into Next.js manually rather than via the scaffolder — confirmed decision, detailed in `03-ARCHITECTURE.md`.
-- **Constraint:** Auth/Identity uses SELISE Blocks IAM/OIDC (roles: mentee, mentor, admin; MFA available) rather than a third-party auth provider — confirmed decision.
-- **Constraint:** Video sessions use a third-party video SDK rather than in-house WebRTC — confirmed decision.
+- **Constraint:** Auth/Identity uses SELISE Blocks IAM/OIDC (roles: mentee, mentor, admin; MFA available) rather than a third-party auth provider — confirmed decision. A single account can hold both `mentor` and `mentee` roles simultaneously (`02-REQUIREMENTS.md` FR-3/FR-35); they are not mutually exclusive.
+- **Constraint:** Video sessions use **Daily.co** specifically (not a generic placeholder) — confirmed decision, chosen for its recording/transcription API support that v1.2 (`§8` below) will need. Still isolated behind one internal interface (NFR-18) so a future swap remains low-cost.
+- **Constraint:** Google is the only SSO provider committed for MVP — verified compatible via Blocks IAM's External IdP (JWKS) feature. LinkedIn SSO is deferred (see v1.1 roadmap row above) pending a compatibility spike.
 - **Assumption:** No payment processing is needed for MVP; all sessions are free.
 - **Assumption:** Deployment target is SELISE Blocks Cloud via the CLI's Release module — confirmed decision.
 - **Assumption:** Single language (English) content at MVP; SELISE Blocks Localization module is available but not required until v1.x.

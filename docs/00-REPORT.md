@@ -11,7 +11,7 @@ Date: 2026-09-13 · Status: Ready for stakeholder review
 | File | Contents |
 |---|---|
 | [`01-BRD.md`](./01-BRD.md) | Business Requirements Document — vision, goals, stakeholders, in/out of scope, success metrics, risks, post-MVP roadmap |
-| [`02-REQUIREMENTS.md`](./02-REQUIREMENTS.md) | Functional Requirements (32 FRs across 7 domains) and Non-Functional Requirements (20 NFRs across 7 quality attributes) |
+| [`02-REQUIREMENTS.md`](./02-REQUIREMENTS.md) | Functional Requirements (38 FRs across 7 domains) and Non-Functional Requirements (22 NFRs across 8 quality attributes) |
 | [`03-ARCHITECTURE.md`](./03-ARCHITECTURE.md) | Next.js + SELISE Blocks architecture: layers, SDK wiring, data model, booking sequence, deployment topology |
 | [`04-DESIGN-SYSTEM.md`](./04-DESIGN-SYSTEM.md) | Original design system ("Corner") — tokens, components, layout principles, voice, accessibility baseline |
 | [`05-BLOCKS-CLI-ANALYSIS.md`](./05-BLOCKS-CLI-ANALYSIS.md) | Capability-by-capability analysis of `blocks-cli` (`@seliseblocks/cli-os`) against every requirement, including the one verified gap |
@@ -30,7 +30,7 @@ Date: 2026-09-13 · Status: Ready for stakeholder review
 | Decision | Choice | Downstream effect |
 |---|---|---|
 | MVP scope | Core marketplace only | BRD §6/§7 draws a hard line: no communities, no enterprise, no payments, no mobile app in v1 |
-| Video | 3rd-party SDK | NFR-18 isolates it behind one interface; no WebRTC infra to build/operate |
+| Video | Daily.co (named, not generic) | NFR-18 isolates it behind one interface; no WebRTC infra to build/operate; its attendance API backs FR-37's no-show detection |
 | Auth | SELISE Blocks IAM/OIDC | Role model (mentee/mentor/admin) and MFA come "for free" from the platform |
 | Framework | Next.js, SDK wired manually | Directly caused the most important architectural finding — see §4 below |
 | Payments | None at MVP | Removes an entire compliance/KYC workstream from v1 |
@@ -101,3 +101,19 @@ MVP (this report)
 ## 8. Suggested next step
 
 Review `01-BRD.md` and `02-REQUIREMENTS.md` first (they drive everything downstream). If the MVP scope and the seven confirmed decisions still look right after reading the full detail, the next artifact to request is an implementation plan (via `writing-plans`) for Phase 1 of the roadmap in §6 — the core marketplace itself.
+
+## 9. Validity pass (`grill-me`) — 7 gaps found and closed
+
+A second pass re-read all five documents end-to-end and cross-checked claims against `blocks-cli` source and installed skills, rather than just re-reading the docs for internal consistency. Seven real gaps surfaced (not stylistic nitpicks — each one would have caused a wrong build decision or an unmeasurable metric downstream). All seven were confirmed and applied:
+
+| Gap found | Resolution | Where |
+|---|---|---|
+| FR-3 said dual-role support was "deferred unless trivial" — an unresolved hedge, not a decision | A single account can hold `mentor` + `mentee` simultaneously from MVP; a `RoleSwitcher` UI affordance appears once both exist | FR-3/FR-35, `04-DESIGN-SYSTEM.md` |
+| FR-2 required capturing mentee "goals + interests" but no schema existed to store it — v1.3 AI-matching would have had no data | Added `MenteeProfile` schema (goals[], interests[], timezone) | FR-36, `03-ARCHITECTURE.md` §5 |
+| BRD §9's "session completion rate" metric separates completed from no-show, but the only completion logic was a blanket timer with no attendance check — the metric was unmeasurable as designed | Scheduled Jobs now query the video vendor's attendance API before deciding `completed` vs. `no_show` | FR-37, `03-ARCHITECTURE.md` §6 step 5 |
+| FR-1 committed to "SSO (Google/LinkedIn)" without verifying either was actually compatible with Blocks IAM | Verified Google via Blocks' External IdP + JWKS (confirmed compatible per the `blocks-external-idp` skill); LinkedIn demoted to an unverified post-MVP spike | FR-1, `01-BRD.md` §8 (v1.1) |
+| "Daily.co-class SDK" was used everywhere as an unnamed placeholder, but v1.2 (recording) and FR-37 (attendance) both need a real vendor's real API shape | Named Daily.co as the confirmed MVP vendor | `01-BRD.md`, `03-ARCHITECTURE.md` §2/§7, diagram |
+| FR-30–32 assumed "an admin" without saying whether that's a custom app or Blocks' own console — architecture's file tree had no admin route at all | Split deliberately: generic user ops stay on Blocks' native console (zero build cost); only the `Report` queue (something Blocks' console can't represent) gets a thin custom `/admin/reports` page | FR-38, `03-ARCHITECTURE.md` §4, `04-DESIGN-SYSTEM.md` |
+| The architecture diagram's Scheduled Jobs node already implied a "verify-expiry" job, but `03-ARCHITECTURE.md` §6a never defined an actual expiry — diagram and prose had drifted apart | Defined a 48-hour expiry: an unconfirmed `pending` link reverts to `unverified` automatically | FR-33, `03-ARCHITECTURE.md` §6a |
+
+All resolutions were applied directly to the docs (not left as open TODOs), and the architecture diagram was re-validated, re-delivered, and re-visually-checked (0 errors/0 warnings, containment pass at all 4 required viewport sizes, light+dark) after each content change that touched it.

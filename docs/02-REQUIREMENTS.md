@@ -8,11 +8,13 @@ Derived from `01-BRD.md` §6 (In Scope). Each functional requirement (FR) is wri
 
 | ID | Requirement | Blocks capability |
 |---|---|---|
-| FR-1 | A visitor can sign up as a mentee or mentor with email + password, or via SSO (Google/LinkedIn) if configured. | IAM / OIDC |
-| FR-2 | On first login, the user is routed through a role-specific onboarding flow (mentee: goals + interests; mentor: title, company, skills, bio, availability). | IAM (roles) + Data |
-| FR-3 | A user can hold exactly one primary role (mentee or mentor) at signup, with the ability to later request the other role (dual-role support deferred to post-MVP unless trivial). | IAM (roles) |
+| FR-1 | A visitor can sign up as a mentee or mentor with email + password, or via Google SSO (confirmed compatible: Blocks IAM's External IdP feature accepts Google's JWKS for federated login). LinkedIn SSO is **not** an MVP commitment — its JWKS/OIDC compatibility with Blocks IAM is unverified and is a post-MVP spike (`01-BRD.md` §8). | IAM / OIDC (+ External IdP for Google) |
+| FR-2 | On first login, the user is routed through a role-specific onboarding flow (mentee: goals + interests, persisted to `MenteeProfile`, FR-36; mentor: title, company, skills, bio, availability, persisted to `MentorProfile`). | IAM (roles) + Data |
+| FR-3 | A user's account can hold **both** the mentor and mentee roles simultaneously — they are independent capabilities, not mutually exclusive (see FR-35). A brand-new signup still picks one role to start onboarding with; adding the other role later is a lightweight "become a mentor" / "book as a mentee" action, not a support request. | IAM (roles) |
 | FR-4 | An admin role exists with elevated permissions (user list, suspend, moderate reviews). | IAM (roles + access control) |
 | FR-5 | MFA can be enabled per-account (optional at MVP, available via IAM module). | IAM (MFA) |
+| FR-35 | A single IAM user can hold both the `mentor` and `mentee` roles at once. Holding `mentor` requires a `MentorProfile`; holding `mentee` requires a `MenteeProfile` (FR-36). The two profiles are independent records keyed by the same `userId` — completing one does not require or imply the other. | IAM (multi-role) + Data |
+| FR-36 | A `MenteeProfile` schema persists mentee onboarding data (goals[], interests[], timezone) so it exists as structured data from day one, not free text bolted onto the IAM user record — this is what v1.3's AI-assisted matching (`01-BRD.md` §8) will read from. | Data (schema: `MenteeProfile`) |
 
 ### A.2 Mentor Profile & Directory
 
@@ -24,7 +26,7 @@ Derived from `01-BRD.md` §6 (In Scope). Each functional requirement (FR) is wri
 | FR-9 | A mentee can sort mentors by rating, session count, or "soonest availability". | Data (query sort) |
 | FR-10 | A mentor's public profile displays aggregate rating, review count, and completed-session count, computed server-side (not client-trusted). | Data (computed/aggregation rule) |
 | FR-11 | A mentee can search mentors by free-text (name, title, company, skill). | Data (search) |
-| FR-33 | A mentor's `company` field starts in an **unverified** state; it moves to **verified** only when the mentor confirms a one-time link sent to a `name@company.com` address, or an admin manually verifies it. Public/generic email domains (gmail.com, outlook.com, etc.) can never reach `verified`. | Mail (verification link) + Data (`companyVerificationStatus`) |
+| FR-33 | A mentor's `company` field starts in an **unverified** state; it moves to **verified** only when the mentor confirms a one-time link sent to a `name@company.com` address, or an admin manually verifies it. Public/generic email domains (gmail.com, outlook.com, etc.) can never reach `verified`. The confirmation link expires **48 hours** after issue; an expired, unconfirmed link reverts `companyVerificationStatus` from `pending` back to `unverified` and the mentor can re-request it. | Mail (verification link) + Data (`companyVerificationStatus`) |
 | FR-34 | The mentor directory and profile UI visually distinguish verified vs. unverified company affiliation (e.g., a checkmark badge next to the company name) — company claims are never presented as equally trustworthy by default. | Frontend (design system §4.2 `MentorCard`) |
 
 ### A.3 Availability & Booking
@@ -36,7 +38,8 @@ Derived from `01-BRD.md` §6 (In Scope). Each functional requirement (FR) is wri
 | FR-14 | A mentee can book an open slot in one action; the slot is immediately locked from other bookers (no double-booking). | Data (transactional write / access rule) |
 | FR-15 | A mentor can accept-by-default (auto-confirm) bookings, matching ADPList's low-friction model; manual-approval mode is a config toggle for later. | Data + Notification |
 | FR-16 | A mentee or mentor can cancel a confirmed session up to a configurable cutoff (e.g., 2 hours before start). | Data + Notification |
-| FR-17 | Session state machine: `requested → confirmed → completed`, with `cancelled` and `no_show` as terminal branches. | Data (schema + rules) |
+| FR-17 | Session state machine: `requested → confirmed → completed`, with `cancelled` and `no_show` as terminal branches. The `completed` vs. `no_show` split is decided by FR-37 (video-vendor attendance check), not by the grace-period timer alone. | Data (schema + rules) |
+| FR-37 | When a session's grace period (FR-20) elapses, a scheduled job queries the video vendor's participant/attendance data for that room: both parties present at any point → `completed`; neither party ever joined → `no_show`; exactly one party joined → `completed` with an `attendedBy` flag (so an aggrieved no-show party still has a record to dispute via FR-23). This is what makes the BRD §9 "session completion rate" metric measurable at all. | Data (rule) + external video vendor API (attendance/participant query) |
 
 ### A.4 Video Sessions
 
@@ -69,9 +72,10 @@ Derived from `01-BRD.md` §6 (In Scope). Each functional requirement (FR) is wri
 
 | ID | Requirement | Blocks capability |
 |---|---|---|
-| FR-30 | Admin can list, search, and suspend/reinstate any user account. | IAM (users) |
-| FR-31 | Admin can view a queue of reported reviews/profiles and resolve each. | Data + IAM |
+| FR-30 | Admin can list, search, and suspend/reinstate any user account **using SELISE Blocks' own admin console** — no custom MentorMatch UI is built for generic user management (FR-38). | IAM (users, native console) |
+| FR-31 | Admin can view a queue of reported reviews/profiles and resolve each, **via a minimal custom Next.js `/admin/reports` surface** — Blocks' generic console has no concept of the MentorMatch-specific `Report` schema, so this one piece is hand-built. | Data + IAM |
 | FR-32 | Admin actions are recorded in an audit trail (who did what, when). | Data (schema: `AuditTrail`) |
+| FR-38 | The admin surface is deliberately split, not uniform: generic account operations (FR-30) stay on Blocks' native console (zero build cost, per G4 "operationally lean"); only the one workflow Blocks' console cannot represent — the `Report` moderation queue (FR-31) — gets custom-built. This split is a scope decision, not an oversight. | N/A (documentation of the split itself) |
 
 ---
 
