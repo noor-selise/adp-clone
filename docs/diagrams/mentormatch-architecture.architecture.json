@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MentorMatch \u2014 Next.js + SELISE Blocks Architecture",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "user-request",
+        "label": "User request path",
+        "focus": [
+          "clients",
+          "nextjs",
+          "sdk"
+        ],
+        "note": "Mentee/mentor browser talks only to the Next.js app; the SDK is the sole gateway to the platform."
+      },
+      {
+        "id": "backend-capabilities",
+        "label": "SELISE Blocks capabilities",
+        "focus": [
+          "sdk",
+          "blocks_iam",
+          "blocks_data",
+          "blocks_storage",
+          "blocks_mail",
+          "blocks_notification"
+        ],
+        "note": "Auth, data, storage, mail, and notification are all managed BaaS capabilities, not hand-rolled services."
+      },
+      {
+        "id": "ops-plane",
+        "label": "Dev/ops control plane",
+        "focus": [
+          "blocks_cli",
+          "blocks_data",
+          "nextjs"
+        ],
+        "note": "blocks-cli configures the backend and deploys the app; it never sits on the runtime request path."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "video_vendor",
+      "type": "external",
+      "label": "Video Vendor API",
+      "sublabel": "Daily.co-class SDK",
+      "pos": [
+        280,
+        8
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "clients",
+      "type": "external",
+      "label": "Mentee & Mentor",
+      "sublabel": "web browser",
+      "pos": [
+        40,
+        179
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "nextjs",
+      "type": "frontend",
+      "label": "Next.js App",
+      "sublabel": "App Router + RSC + Route Handlers",
+      "pos": [
+        280,
+        179
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "tag": "app team"
+    },
+    {
+      "id": "sdk",
+      "type": "backend",
+      "label": "@seliseblocks/client",
+      "sublabel": "SDK integration layer",
+      "pos": [
+        560,
+        179
+      ],
+      "size": [
+        190,
+        64
+      ],
+      "tag": "app team"
+    },
+    {
+      "id": "blocks_iam",
+      "type": "security",
+      "label": "IAM / OIDC",
+      "sublabel": "auth, roles, MFA",
+      "pos": [
+        850,
+        35
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "tag": "platform"
+    },
+    {
+      "id": "blocks_data",
+      "type": "database",
+      "label": "Data Gateway",
+      "sublabel": "GraphQL: schemas + rules",
+      "pos": [
+        850,
+        110
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "tag": "platform"
+    },
+    {
+      "id": "blocks_storage",
+      "type": "database",
+      "label": "Storage / DMS",
+      "sublabel": "profile photos",
+      "pos": [
+        850,
+        185
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "tag": "platform"
+    },
+    {
+      "id": "blocks_mail",
+      "type": "external",
+      "label": "Mail",
+      "sublabel": "transactional email",
+      "pos": [
+        850,
+        260
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "tag": "platform"
+    },
+    {
+      "id": "blocks_notification",
+      "type": "external",
+      "label": "Notification",
+      "sublabel": "in-app + scheduled reminders",
+      "pos": [
+        850,
+        335
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "tag": "platform"
+    },
+    {
+      "id": "blocks_cli",
+      "type": "backend",
+      "label": "blocks-cli",
+      "sublabel": "dev/ops control plane",
+      "pos": [
+        560,
+        395
+      ],
+      "size": [
+        190,
+        60
+      ],
+      "tag": "ops"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "SELISE Blocks Cloud (managed BaaS)",
+      "wraps": [
+        "blocks_iam",
+        "blocks_data",
+        "blocks_storage",
+        "blocks_mail",
+        "blocks_notification"
+      ],
+      "pad": 10
+    }
+  ],
+  "connections": [
+    {
+      "from": "clients",
+      "to": "nextjs",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "from": "nextjs",
+      "to": "video_vendor",
+      "label": "provision room + mint join token",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "route": "straight"
+    },
+    {
+      "from": "nextjs",
+      "to": "sdk",
+      "label": "server-side SDK calls",
+      "labelAt": [
+        510,
+        149
+      ]
+    },
+    {
+      "from": "sdk",
+      "to": "blocks_iam",
+      "label": "auth / OIDC",
+      "labelAt": [
+        1090,
+        65
+      ]
+    },
+    {
+      "from": "sdk",
+      "to": "blocks_data",
+      "label": "GraphQL queries",
+      "labelAt": [
+        1090,
+        120
+      ]
+    },
+    {
+      "from": "sdk",
+      "to": "blocks_storage",
+      "label": "upload photo",
+      "labelAt": [
+        1090,
+        215
+      ]
+    },
+    {
+      "from": "sdk",
+      "to": "blocks_mail",
+      "label": "mail",
+      "variant": "dashed",
+      "labelAt": [
+        1090,
+        290
+      ]
+    },
+    {
+      "from": "sdk",
+      "to": "blocks_notification",
+      "label": "reminders",
+      "variant": "dashed",
+      "labelAt": [
+        1090,
+        365
+      ]
+    },
+    {
+      "from": "blocks_cli",
+      "to": "nextjs",
+      "label": "Release deploy",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "via": [
+        [
+          370,
+          425
+        ],
+        [
+          370,
+          243
+        ]
+      ],
+      "labelAt": [
+        420,
+        425
+      ]
+    },
+    {
+      "from": "blocks_cli",
+      "to": "blocks_data",
+      "label": "schema / rules deploy + IAM config",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          1180,
+          425
+        ],
+        [
+          1180,
+          140
+        ]
+      ],
+      "labelAt": [
+        900,
+        425
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Runtime Ownership",
+      "items": [
+        "App team owns the Next.js app and its server-side use of the SDK",
+        "Platform (SELISE Blocks) owns IAM, Data, Storage, Mail, Notification",
+        "The video vendor is a swappable third party behind one internal interface"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Named Crossings",
+      "items": [
+        "Browser only ever talks to the Next.js app, never to Blocks or the video vendor directly",
+        "Video room tokens are minted server-side; secrets never reach the client",
+        "blocks-cli configures and deploys but never sits on the live request path"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Why No blocks new web",
+      "items": [
+        "blocks-cli's scaffolder generates Vite+React, not Next.js",
+        "The SDK (@seliseblocks/client) is framework-agnostic, so it's wired into Next.js manually",
+        "blocks-cli still owns Data/IAM/Release for this project regardless of frontend framework"
+      ]
+    }
+  ]
+}
