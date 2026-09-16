@@ -4,6 +4,17 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Added mentor and mentee registration-flow design spec (`docs/superpowers/specs/2026-09-16-mentormatch-registration-flow-design.md`) (by noor, 2026-09-16)
+- Run Next.js dev directly on https://dpkhbr.slsblx.com:443 with project dev cert instead of localhost:3000 + proxy (by noor, 2026-09-16)
+- Added local HTTPS dev setup for https://dpkhbr.slsblx.com (cert, hosts helper, 443→3000 proxy) and removed localhost OIDC redirect URI (by noor, 2026-09-16)
+- Wired dashboard to gate sections by IAM permissions from iam.me() (by noor, 2026-09-16)
+- Enabled Blocks OIDC, registered MentorMatch Web public client, created admin/mentor/mentee IAM roles (by noor, 2026-09-16)
+- Deployed MentorProfile and MenteeProfile Data Gateway schemas (by noor, 2026-09-16)
+- Created admin user noor@yopmail.com and seed mentors mentor1-3@yopmail.com (Pass@123) (by noor, 2026-09-16)
+- Scaffolded Next.js 16 app in web/ with Blocks OIDC login, dashboard, and profile settings (by noor, 2026-09-16)
+- Added domain graph at .understand-anything/domain-graph.json and Phase 1 design/plan docs (by noor, 2026-09-16)
+
+- Added 3-phase implementation plan for MVP delivery by October 6, 2026 (`docs/superpowers/specs/2026-09-15-mentormatch-3-phase-plan.md`) — Foundation → Marketplace → Sessions phasing with per-phase tasks, exit criteria, and deferred scope (by AI assistant, 2026-09-15)
 - Created project folder and researched adplist.org + blocks-cli (`@seliseblocks/cli-os`) as inputs for planning (by AI assistant, 2026-09-13)
 - Added Business Requirements Document (`docs/01-BRD.md`) covering vision, scope, stakeholders, success metrics, risks, and post-MVP roadmap (by AI assistant, 2026-09-13)
 - Added Functional & Non-Functional Requirements (`docs/02-REQUIREMENTS.md`) — 32 FRs, 20 NFRs (by AI assistant, 2026-09-13)
