@@ -1,0 +1,8 @@
+graphify-out/.graphify_*
+graphify-out/cost.json
+web/graphify-out/
+.understand-anything/
+.codex/
+.claude/
+docs/
+graphify-out/

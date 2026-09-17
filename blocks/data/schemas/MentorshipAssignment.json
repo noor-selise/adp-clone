@@ -1,0 +1,25 @@
+{
+  "schemaName": "MentorshipAssignment",
+  "collectionName": "MentorshipAssignments",
+  "schemaType": 1,
+  "fields": [
+    {
+      "name": "mentorUserId",
+      "type": "String",
+      "isRequired": true,
+      "description": "IAM user id of the mentor"
+    },
+    {
+      "name": "menteeUserId",
+      "type": "String",
+      "isRequired": true,
+      "description": "IAM user id of the mentee"
+    },
+    {
+      "name": "status",
+      "type": "String",
+      "isRequired": false,
+      "description": "active | paused | ended"
+    }
+  ]
+}

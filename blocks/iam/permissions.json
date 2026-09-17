@@ -1,0 +1,154 @@
+{
+  "resourceGroup": "mentormatch",
+  "permissions": [
+    {
+      "resource": "mentormatch::profiles::read-own-mentor",
+      "name": "Read Own Mentor Profile",
+      "type": 1,
+      "severity": 4,
+      "description": "Read the signed-in user's MentorProfile via Data Gateway",
+      "tags": ["mentormatch", "profiles", "mentor"]
+    },
+    {
+      "resource": "mentormatch::profiles::write-own-mentor",
+      "name": "Write Own Mentor Profile",
+      "type": 1,
+      "severity": 3,
+      "description": "Create or update the signed-in user's MentorProfile",
+      "tags": ["mentormatch", "profiles", "mentor"]
+    },
+    {
+      "resource": "mentormatch::profiles::read-own-mentee",
+      "name": "Read Own Mentee Profile",
+      "type": 1,
+      "severity": 4,
+      "description": "Read the signed-in user's MenteeProfile via Data Gateway",
+      "tags": ["mentormatch", "profiles", "mentee"]
+    },
+    {
+      "resource": "mentormatch::profiles::write-own-mentee",
+      "name": "Write Own Mentee Profile",
+      "type": 1,
+      "severity": 3,
+      "description": "Create or update the signed-in user's MenteeProfile",
+      "tags": ["mentormatch", "profiles", "mentee"]
+    },
+    {
+      "resource": "mentormatch::profiles::read-public-mentors",
+      "name": "Read Public Mentor Profiles",
+      "type": 1,
+      "severity": 4,
+      "description": "Read public fields on MentorProfile records for directory browsing",
+      "tags": ["mentormatch", "profiles", "directory"]
+    },
+    {
+      "resource": "mentormatch::admin::view-all-profiles",
+      "name": "View All Profiles",
+      "type": 1,
+      "severity": 2,
+      "description": "Admin read access to all MentorProfile and MenteeProfile records",
+      "tags": ["mentormatch", "admin", "profiles"]
+    },
+    {
+      "resource": "mentormatch::admin::manage-users",
+      "name": "Manage MentorMatch Users",
+      "type": 1,
+      "severity": 0,
+      "description": "Admin user management for MentorMatch (invite, roles, suspend)",
+      "tags": ["mentormatch", "admin", "users"]
+    },
+    {
+      "resource": "mentormatch::ui::dashboard",
+      "name": "Access Dashboard",
+      "type": 2,
+      "severity": 4,
+      "description": "Show the authenticated dashboard shell",
+      "tags": ["mentormatch", "ui"]
+    },
+    {
+      "resource": "mentormatch::ui::profile-settings",
+      "name": "Access Profile Settings",
+      "type": 2,
+      "severity": 4,
+      "description": "Show profile settings page",
+      "tags": ["mentormatch", "ui", "profiles"]
+    },
+    {
+      "resource": "mentormatch::ui::mentor-section",
+      "name": "Mentor Dashboard Section",
+      "type": 2,
+      "severity": 4,
+      "description": "Show mentor-specific dashboard cards and navigation",
+      "tags": ["mentormatch", "ui", "mentor"]
+    },
+    {
+      "resource": "mentormatch::ui::mentee-section",
+      "name": "Mentee Dashboard Section",
+      "type": 2,
+      "severity": 4,
+      "description": "Show mentee-specific dashboard cards and navigation",
+      "tags": ["mentormatch", "ui", "mentee"]
+    },
+    {
+      "resource": "mentormatch::ui::admin-panel",
+      "name": "Admin Panel Access",
+      "type": 2,
+      "severity": 1,
+      "description": "Show admin panel links and moderation surfaces",
+      "tags": ["mentormatch", "ui", "admin"]
+    },
+    {
+      "resource": "mentormatch::storage::upload-profile-photo",
+      "name": "Upload Profile Photo",
+      "type": 1,
+      "severity": 3,
+      "description": "Upload mentor profile photos via Blocks Storage",
+      "tags": ["mentormatch", "storage", "mentor"]
+    }
+  ],
+  "roleAssignments": {
+    "mentor": [
+      "mentormatch::profiles::read-own-mentor",
+      "mentormatch::profiles::write-own-mentor",
+      "mentormatch::profiles::read-public-mentors",
+      "mentormatch::ui::dashboard",
+      "mentormatch::ui::profile-settings",
+      "mentormatch::ui::mentor-section",
+      "mentormatch::storage::upload-profile-photo",
+      "blocks-iam::auth::change-password",
+      "blocks-data::file::get-pre-signed-url-for-upload",
+      "blocks-data::file::get-file"
+    ],
+    "mentee": [
+      "mentormatch::profiles::read-own-mentee",
+      "mentormatch::profiles::write-own-mentee",
+      "mentormatch::profiles::read-public-mentors",
+      "mentormatch::ui::dashboard",
+      "mentormatch::ui::profile-settings",
+      "mentormatch::ui::mentee-section",
+      "blocks-iam::auth::change-password"
+    ],
+    "admin": [
+      "mentormatch::profiles::read-own-mentor",
+      "mentormatch::profiles::write-own-mentor",
+      "mentormatch::profiles::read-own-mentee",
+      "mentormatch::profiles::write-own-mentee",
+      "mentormatch::profiles::read-public-mentors",
+      "mentormatch::admin::view-all-profiles",
+      "mentormatch::admin::manage-users",
+      "mentormatch::ui::dashboard",
+      "mentormatch::ui::profile-settings",
+      "mentormatch::ui::mentor-section",
+      "mentormatch::ui::mentee-section",
+      "mentormatch::ui::admin-panel",
+      "mentormatch::storage::upload-profile-photo",
+      "blocks-iam::auth::change-password",
+      "blocks-iam::iam::mutate-users",
+      "blocks-iam::iam::mutate-roles",
+      "blocks-iam::iam::mutate-permissions",
+      "blocks-iam::iam::mutate-security-audit",
+      "blocks-data::file::get-pre-signed-url-for-upload",
+      "blocks-data::file::get-file"
+    ]
+  }
+}

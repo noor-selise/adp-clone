@@ -1,6 +1,6 @@
 # MentorMatch — Mentor and Mentee Registration Flow
 
-**Status:** Draft pending user review  
+**Status:** Approved  
 **Date:** 2026-09-16  
 **Project:** AdpList (`D67e7edaf9e1d432288361305fcc74c47`)  
 **App domain:** `https://dpkhbr.slsblx.com`
@@ -229,11 +229,11 @@ On success: clear become-* intent from the URL and go `/dashboard`. On failure: 
 
 ### Dashboard
 
-- Mentor card if `MentorProfile` exists (not merely because they have the `mentor` role).
-- Mentee card if `MenteeProfile` exists.
-- Admin card unchanged (permission `mentormatch::ui::admin-panel`).
-- Mentee with no directory yet: empty copy “Your profile is ready. Finding mentors is next.”
-- Footer/nav **Become a mentor** if authenticated, no `MentorProfile`. **Also book as a mentee** if authenticated, no `MenteeProfile`.
+- **Own profiles (editable via Profile nav):** mentor card if caller has `mentor` role **and** owns a `MentorProfile`; mentee card if caller has `mentee` role **and** owns a `MenteeProfile`. IAM role gates visibility — stray records for a role the user does not hold are ignored.
+- **Assigned mentees (read-only):** if caller has `mentor` role, list mentees linked via `MentorshipAssignment`. Click a mentee card to open `/mentees/[userId]` (view-only). Access is denied unless that mentee is assigned to the signed-in mentor.
+- **Admin card** unchanged (permission `mentormatch::ui::admin-panel`).
+- Seed example: `mentor1@yopmail.com` (Adnan, design) sees matched mentees such as Yasmine Khan and Nadia Islam — not all 10. Assignments are skill/domain matched per `scripts/seed-matching.mjs`.
+- Footer/nav **Become a mentor** only if `mentor` role and no `MentorProfile`. **Book as a mentee** only if `mentee` role and no `MenteeProfile` (seed mentors are mentor-only — no mentee nav).
 
 ### Aliases
 
@@ -244,7 +244,9 @@ On success: clear become-* intent from the URL and go `/dashboard`. On failure: 
 
 ## Data and access rules
 
-Schemas already exist. Do not add fields.
+Schemas: `MentorProfile`, `MenteeProfile`, `MentorshipAssignment` (links `mentorUserId` ↔ `menteeUserId`, status). `MenteeProfile` includes optional `displayName` for dashboard display.
+
+Seed: 5 mentors, 10 mentees. Assignments are **skill/domain matched** (not a full 5×10 matrix): each mentee gets up to 5 mentors whose domains and tags align with their goals/interests; mentors only see matched mentees on the dashboard. Run `node scripts/seed-platform-data.mjs`. Manifest: `scripts/seed-manifest.json`. Matcher: `scripts/seed-matching.mjs`.
 
 `blocks/data/rules.json` is locally empty (`"policies": []`). Onboarding create will 403 until owner-write policies are deployed.
 

@@ -1,0 +1,174 @@
+{
+  "password": "Pass@123",
+  "matchingNote": "ADPList-style alignment: mentees match mentors by domain (design/engineering/leadership/platform) plus skill-tag overlap. Each mentee gets up to 5 mentors; mentors only see matched mentees.",
+  "mentors": [
+    {
+      "email": "mentor1@yopmail.com",
+      "firstName": "Adnan",
+      "lastName": "Bhai",
+      "displayName": "Adnan Bhai",
+      "title": "Senior Product Designer",
+      "company": "MentorMatch",
+      "bio": "I help designers break in, sharpen portfolios, and grow UX craft. Previously led design systems for product teams in Dhaka and remote-first startups.",
+      "skills": ["Product design", "UX research", "Design systems", "Figma", "Portfolio review"],
+      "languages": ["English", "Bengali"],
+      "domains": ["design"],
+      "matchTags": ["product design", "ux research", "design systems", "figma", "portfolio", "ui", "wireframes", "prototyping", "user interviews"]
+    },
+    {
+      "email": "mentor2@yopmail.com",
+      "firstName": "Sajib",
+      "lastName": "Bhai",
+      "displayName": "Sajib Bhai",
+      "title": "Engineering Manager",
+      "company": "MentorMatch",
+      "bio": "Engineering leader focused on hiring, team growth, and backend systems. I mentor ICs moving into management and juniors breaking into software.",
+      "skills": ["Engineering leadership", "Backend", "Hiring", "Team management", "Interview prep"],
+      "languages": ["English", "Bengali"],
+      "domains": ["engineering", "leadership"],
+      "matchTags": ["engineering", "backend", "leadership", "management", "hiring", "interview", "javascript", "react", "algorithms", "node.js", "people management", "agile"]
+    },
+    {
+      "email": "mentor3@yopmail.com",
+      "firstName": "Uday",
+      "lastName": "Bhai",
+      "displayName": "Uday Bhai",
+      "title": "Staff Engineer",
+      "company": "MentorMatch",
+      "bio": "Staff engineer mentoring on system design, architecture trade-offs, and senior IC growth. Strong in APIs, performance, and distributed systems.",
+      "skills": ["System design", "Architecture", "Distributed systems", "API design", "Performance"],
+      "languages": ["English", "Bengali"],
+      "domains": ["engineering"],
+      "matchTags": ["system design", "architecture", "distributed systems", "api design", "performance", "go", "platform", "docs", "databases", "javascript", "react", "node.js"]
+    },
+    {
+      "email": "mentor4@yopmail.com",
+      "firstName": "Fatima",
+      "lastName": "Begum",
+      "displayName": "Fatima Begum",
+      "title": "Head of Design",
+      "company": "MentorMatch",
+      "bio": "Design executive coaching career switches into design, design leadership, and accessibility-first product work. Calm, structured mentorship sessions.",
+      "skills": ["Design leadership", "Career coaching", "Accessibility", "Brand", "Design systems"],
+      "languages": ["English", "Bengali"],
+      "domains": ["design", "leadership"],
+      "matchTags": ["design leadership", "career coaching", "accessibility", "a11y", "brand", "design systems", "tokens", "component libraries", "ux", "wireframes", "prototyping"]
+    },
+    {
+      "email": "mentor5@yopmail.com",
+      "firstName": "Karim",
+      "lastName": "Ahmed",
+      "displayName": "Karim Ahmed",
+      "title": "Principal Platform Engineer",
+      "company": "MentorMatch",
+      "bio": "Platform and DevOps mentor for cloud transitions, CI/CD, and career growth. Helps mentees turn infrastructure goals into actionable learning plans.",
+      "skills": ["Platform engineering", "DevOps", "Cloud", "Career growth", "CI/CD"],
+      "languages": ["English", "Bengali"],
+      "domains": ["engineering", "platform", "leadership"],
+      "matchTags": ["platform", "devops", "cloud", "aws", "kubernetes", "ci/cd", "career growth", "go", "architecture", "startup", "0→1", "pitching"]
+    }
+  ],
+  "mentees": [
+    {
+      "email": "mentee1@yopmail.com",
+      "firstName": "Yasmine",
+      "lastName": "Khan",
+      "displayName": "Yasmine Khan",
+      "goals": ["Break into product design", "Portfolio review"],
+      "interests": ["UI", "Figma", "Research"],
+      "domains": ["design"],
+      "matchTags": ["ui", "figma", "research", "product design", "portfolio review", "portfolio"]
+    },
+    {
+      "email": "mentee2@yopmail.com",
+      "firstName": "Zain",
+      "lastName": "Ali",
+      "displayName": "Zain Ali",
+      "goals": ["Staff engineer path", "System design"],
+      "interests": ["Architecture", "Go", "Platform"],
+      "domains": ["engineering", "platform"],
+      "matchTags": ["staff engineer path", "system design", "architecture", "go", "platform"]
+    },
+    {
+      "email": "mentee3@yopmail.com",
+      "firstName": "Aisha",
+      "lastName": "Rahman",
+      "displayName": "Aisha Rahman",
+      "goals": ["First engineering job", "Interview prep"],
+      "interests": ["JavaScript", "React", "Algorithms"],
+      "domains": ["engineering"],
+      "matchTags": ["first engineering job", "interview prep", "javascript", "react", "algorithms"]
+    },
+    {
+      "email": "mentee4@yopmail.com",
+      "firstName": "Omar",
+      "lastName": "Hossain",
+      "displayName": "Omar Hossain",
+      "goals": ["Move into management", "Team leadership"],
+      "interests": ["People management", "Agile", "Communication"],
+      "domains": ["leadership"],
+      "matchTags": ["move into management", "team leadership", "people management", "agile", "communication"]
+    },
+    {
+      "email": "mentee5@yopmail.com",
+      "firstName": "Nadia",
+      "lastName": "Islam",
+      "displayName": "Nadia Islam",
+      "goals": ["Design systems career", "Accessibility"],
+      "interests": ["A11y", "Tokens", "Component libraries"],
+      "domains": ["design"],
+      "matchTags": ["design systems career", "accessibility", "a11y", "tokens", "component libraries"]
+    },
+    {
+      "email": "mentee6@yopmail.com",
+      "firstName": "Rafi",
+      "lastName": "Chowdhury",
+      "displayName": "Rafi Chowdhury",
+      "goals": ["Startup founder skills", "Product strategy"],
+      "interests": ["0→1", "Pitching", "Growth"],
+      "domains": ["leadership", "design"],
+      "matchTags": ["startup founder skills", "product strategy", "0→1", "pitching", "growth"]
+    },
+    {
+      "email": "mentee7@yopmail.com",
+      "firstName": "Sara",
+      "lastName": "Malik",
+      "displayName": "Sara Malik",
+      "goals": ["Senior IC promotion", "Technical writing"],
+      "interests": ["Docs", "API design", "DX"],
+      "domains": ["engineering"],
+      "matchTags": ["senior ic promotion", "technical writing", "docs", "api design", "dx"]
+    },
+    {
+      "email": "mentee8@yopmail.com",
+      "firstName": "Imran",
+      "lastName": "Sheikh",
+      "displayName": "Imran Sheikh",
+      "goals": ["Cloud certification", "DevOps transition"],
+      "interests": ["AWS", "Kubernetes", "CI/CD"],
+      "domains": ["engineering", "platform"],
+      "matchTags": ["cloud certification", "devops transition", "aws", "kubernetes", "ci/cd"]
+    },
+    {
+      "email": "mentee9@yopmail.com",
+      "firstName": "Laila",
+      "lastName": "Akter",
+      "displayName": "Laila Akter",
+      "goals": ["Research to design handoff", "UX career switch"],
+      "interests": ["User interviews", "Wireframes", "Prototyping"],
+      "domains": ["design"],
+      "matchTags": ["research to design handoff", "ux career switch", "user interviews", "wireframes", "prototyping"]
+    },
+    {
+      "email": "mentee10@yopmail.com",
+      "firstName": "Tanvir",
+      "lastName": "Hasan",
+      "displayName": "Tanvir Hasan",
+      "goals": ["Open source contribution", "Backend depth"],
+      "interests": ["Node.js", "Databases", "Performance"],
+      "domains": ["engineering"],
+      "matchTags": ["open source contribution", "backend depth", "node.js", "databases", "performance"]
+    }
+  ],
+  "assignmentsPerMentee": 5
+}

@@ -4,6 +4,23 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Publish local MentorMatch repo to GitHub as noor-selise/adp-clone (by noor, 2026-09-17)
+- Fix editor Node types for `*.test.ts` by including tests in `web/tsconfig.json` with `types: ["node"]` (by noor, 2026-09-17)
+- Fixed mentor profile load/save by parsing Blocks list responses at top level and added profile photo upload on settings plus mentor summary on dashboard (by noor, 2026-09-16)
+- Skip onboarding for existing mentors by resolving IAM user id from iam.me(), seed mentor profiles, and route post-login to dashboard or profile settings (by noor, 2026-09-17)
+- Fix profile ownership checks so mentors only see their own mentor dashboard/settings; mentee card no longer appears from another user's record (by noor, 2026-09-17)
+- Gate dashboard/settings by IAM role so mentor-only accounts ignore stray mentee records; block mentee onboarding for mentor role; enrich mentor profile card with completeness (by noor, 2026-09-17)
+- Add MentorshipAssignment schema, seed 5 mentors + 10 mentees with skill/domain-matched assignments, mentor dashboard read-only mentee list (by noor, 2026-09-17)
+- Reseed mentor profiles (bio, skills, languages) and replace full-matrix assignments with ADPList-style domain/skill matching (by noor, 2026-09-17)
+- Upsert mentor1–3 seed profiles (bio, company, skills, languages) via scripts/update-mentor-profiles.mjs; fix Blocks update filter to JSON ItemId shape (by noor, 2026-09-17)
+- Fix MentorshipAssignment delete filter so skill-matched reseed actually removes the full 5×10 matrix; Adnan now has 4 design-matched mentees (by noor, 2026-09-17)
+- Require isHardDelete on MentorshipAssignment deletes; reseed now leaves Adnan with 4 design-matched mentees only (by noor, 2026-09-17)
+- Add mentor read-only mentee profile page at /mentees/[userId]; dashboard mentee cards link there when assigned (by noor, 2026-09-17)
+- Add page-shaped loading skeletons (shadcn Skeleton) for auth gate, dashboard, profile settings, mentee view, and onboarding (by noor, 2026-09-17)
+- Replace auth-gate gray card skeleton with branded MentorMatch spinner loader on dashboard refresh (by noor, 2026-09-17)
+- Implemented mentor/mentee registration flow: `/register`, `/activate`, `/onboarding`, become-a-* redirects, profile-based dashboard, Blocks signup enabled (by noor, 2026-09-16)
+- Installed graphify for the project (CLAUDE.md hooks, initial web/ knowledge graph in graphify-out/) (by noor, 2026-09-16)
+- Refactored profile CRUD with Blocks collection API, validation, typed errors, and shared form fields (by noor, 2026-09-16)
 - Added mentor and mentee registration-flow design spec (`docs/superpowers/specs/2026-09-16-mentormatch-registration-flow-design.md`) (by noor, 2026-09-16)
 - Run Next.js dev directly on https://dpkhbr.slsblx.com:443 with project dev cert instead of localhost:3000 + proxy (by noor, 2026-09-16)
 - Added local HTTPS dev setup for https://dpkhbr.slsblx.com (cert, hosts helper, 443→3000 proxy) and removed localhost OIDC redirect URI (by noor, 2026-09-16)
