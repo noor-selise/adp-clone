@@ -1,0 +1,11 @@
+{
+  "name": "adp-clone",
+  "private": true,
+  "description": "MentorMatch monorepo root (Blocks Release SCA expects package.json at repo root)",
+  "scripts": {
+    "test": "npm --prefix web test",
+    "build:dev": "npm --prefix web run build:dev",
+    "build:stg": "npm --prefix web run build:stg",
+    "build:prod": "npm --prefix web run build:prod"
+  }
+}

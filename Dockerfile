@@ -1,0 +1,33 @@
+# Blocks Release (Kaniko) image for the Next.js app under web/
+# Matches @seliseblocks/next-starter conventions: ARG ci_build + port 8083
+FROM node:20.11.0-alpine
+
+WORKDIR /usr/src/app
+
+COPY web/package.json web/package-lock.json ./
+RUN npm ci --ignore-scripts
+
+COPY web/ .
+
+ARG ci_build=dev
+ENV ci_build=$ci_build
+
+# NEXT_PUBLIC_* are baked in at build time; Blocks secrets sync supplies them
+ARG NEXT_PUBLIC_BLOCKS_PROJECT_KEY
+ARG NEXT_PUBLIC_BLOCKS_API_URL
+ARG NEXT_PUBLIC_BLOCKS_APP_DOMAIN
+ARG NEXT_PUBLIC_BLOCKS_OIDC_CLIENT_ID
+ARG NEXT_PUBLIC_BLOCKS_OIDC_URL
+ARG NEXT_PUBLIC_BLOCKS_OIDC_SCOPE
+ENV NEXT_PUBLIC_BLOCKS_PROJECT_KEY=$NEXT_PUBLIC_BLOCKS_PROJECT_KEY \
+    NEXT_PUBLIC_BLOCKS_API_URL=$NEXT_PUBLIC_BLOCKS_API_URL \
+    NEXT_PUBLIC_BLOCKS_APP_DOMAIN=$NEXT_PUBLIC_BLOCKS_APP_DOMAIN \
+    NEXT_PUBLIC_BLOCKS_OIDC_CLIENT_ID=$NEXT_PUBLIC_BLOCKS_OIDC_CLIENT_ID \
+    NEXT_PUBLIC_BLOCKS_OIDC_URL=$NEXT_PUBLIC_BLOCKS_OIDC_URL \
+    NEXT_PUBLIC_BLOCKS_OIDC_SCOPE=$NEXT_PUBLIC_BLOCKS_OIDC_SCOPE
+
+RUN mkdir -p /app/log
+RUN npm run build:${ci_build}
+
+EXPOSE 8083
+CMD ["npm", "start"]

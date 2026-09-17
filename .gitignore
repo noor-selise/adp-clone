@@ -5,4 +5,4 @@ web/graphify-out/
 .codex/
 .claude/
 docs/
-graphify-out/
+graphify-out/.env.release

@@ -4,6 +4,7 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Add root Dockerfile/.dockerignore for Blocks Release (Next.js under web/, port 8083) and build:dev scripts (by noor, 2026-09-17)
 - Add Husky, lint-staged, and Prettier with ESLint-config-prettier on pre-commit (by noor, 2026-09-17)
 - Publish local MentorMatch repo to GitHub as noor-selise/adp-clone (by noor, 2026-09-17)
 - Fix editor Node types for `*.test.ts` by including tests in `web/tsconfig.json` with `types: ["node"]` (by noor, 2026-09-17)

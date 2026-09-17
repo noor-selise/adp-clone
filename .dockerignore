@@ -1,0 +1,17 @@
+**/node_modules
+**/.next
+**/graphify-out
+**/.cert
+**/.env.local
+**/*.md
+.git
+.husky
+docs
+.codex
+.claude
+.understand-anything
+graphify-out
+web/.next
+web/node_modules
+web/.cert
+web/.env.local
