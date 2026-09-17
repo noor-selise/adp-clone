@@ -4,6 +4,7 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Exclude `*.test.ts` from Next.js tsconfig so Blocks Release `next build` typecheck does not pull seed scripts outside web/ (by noor, 2026-09-17)
 - Add root Dockerfile/.dockerignore for Blocks Release (Next.js under web/, port 8083) and build:dev scripts (by noor, 2026-09-17)
 - Add Husky, lint-staged, and Prettier with ESLint-config-prettier on pre-commit (by noor, 2026-09-17)
 - Publish local MentorMatch repo to GitHub as noor-selise/adp-clone (by noor, 2026-09-17)
