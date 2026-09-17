@@ -4,6 +4,7 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Add Husky, lint-staged, and Prettier with ESLint-config-prettier on pre-commit (by noor, 2026-09-17)
 - Publish local MentorMatch repo to GitHub as noor-selise/adp-clone (by noor, 2026-09-17)
 - Fix editor Node types for `*.test.ts` by including tests in `web/tsconfig.json` with `types: ["node"]` (by noor, 2026-09-17)
 - Fixed mentor profile load/save by parsing Blocks list responses at top level and added profile photo upload on settings plus mentor summary on dashboard (by noor, 2026-09-16)
