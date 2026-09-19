@@ -1,3 +1,424 @@
 {
-  "policies": []
+  "security": [
+    { "schemaId": "c740f6c2-e4e0-4156-bc55-0b0f35d12bc1", "operation": 0, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "c740f6c2-e4e0-4156-bc55-0b0f35d12bc1", "operation": 1, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "c740f6c2-e4e0-4156-bc55-0b0f35d12bc1", "operation": 2, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "c740f6c2-e4e0-4156-bc55-0b0f35d12bc1", "operation": 3, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "42d5e3a9-02ef-4c45-a4c9-e13c5c8e076f", "operation": 0, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "42d5e3a9-02ef-4c45-a4c9-e13c5c8e076f", "operation": 1, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "42d5e3a9-02ef-4c45-a4c9-e13c5c8e076f", "operation": 2, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "42d5e3a9-02ef-4c45-a4c9-e13c5c8e076f", "operation": 3, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 0, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 1, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 2, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 3, "policyType": 0, "fieldNames": [], "accessLevel": 3 }
+  ],
+  "policies": [
+    {
+      "schemaName": "MenteeProfile",
+      "policyName": "mentee-profile-read-own",
+      "policyDescription": "A mentee can read their own mentee profile, or any mentor or admin can read mentee profiles. Combined into one policy on purpose: the platform only grants a role based full read when it lives in the same policy as the own row check, not when split across separate policies.",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 1,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "mentor",
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MenteeProfile",
+      "policyName": "mentee-profile-read-by-mentor",
+      "policyDescription": "Kept identical to mentee-profile-read-own on purpose (a leftover from combining three separate policies into one; harmless duplicate, not a second independent rule).",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 1,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "mentor",
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MenteeProfile",
+      "policyName": "mentee-profile-read-by-admin",
+      "policyDescription": "Kept identical to mentee-profile-read-own on purpose (a leftover from combining three separate policies into one; harmless duplicate, not a second independent rule).",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 1,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "mentor",
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MenteeProfile",
+      "policyName": "mentee-profile-create-authenticated",
+      "policyDescription": "Any signed in user can create a mentee profile",
+      "policyType": 0,
+      "operation": 1,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 13,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MenteeProfile",
+      "policyName": "mentee-profile-edit-own",
+      "policyDescription": "A mentee can edit only their own mentee profile",
+      "policyType": 0,
+      "operation": 2,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MentorProfile",
+      "policyName": "mentor-profile-read-authenticated",
+      "policyDescription": "Any signed in user can read mentor profiles (nothing sensitive lives on this schema; a public directory read comes with Phase 2)",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 13,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MentorProfile",
+      "policyName": "mentor-profile-create-authenticated",
+      "policyDescription": "Any signed in user can create a mentor profile",
+      "policyType": 0,
+      "operation": 1,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 13,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MentorProfile",
+      "policyName": "mentor-profile-edit-own",
+      "policyDescription": "A mentor can edit only their own mentor profile",
+      "policyType": 0,
+      "operation": 2,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MentorshipAssignment",
+      "policyName": "assignment-read-as-mentor",
+      "policyDescription": "A signed in user can read an assignment record where they are the mentor or the mentee, or any of them if they are an admin. Combined into one policy on purpose: the platform only grants a role based full read when it lives in the same policy as the row scoped checks, not when split across separate policies.",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 1,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "mentorUserId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "menteeUserId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MentorshipAssignment",
+      "policyName": "assignment-read-as-mentee",
+      "policyDescription": "Kept identical to assignment-read-as-mentor on purpose (a leftover from combining three separate policies into one; harmless duplicate, not a second independent rule).",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 1,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "mentorUserId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "menteeUserId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "MentorshipAssignment",
+      "policyName": "assignment-read-by-admin",
+      "policyDescription": "Kept identical to assignment-read-as-mentor on purpose (a leftover from combining three separate policies into one; harmless duplicate, not a second independent rule).",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 1,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "mentorUserId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "menteeUserId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          },
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    }
+  ]
 }
