@@ -4,6 +4,7 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Exclude `*.test.ts` from Next typecheck so Blocks Release `next build` does not resolve repo-root seed scripts (by noor, 2026-09-20)
 - Add the Corner brand mark to headers, public auth chrome, and the mobile drawer beside Close (by noor, 2026-09-20)
 
 - Extend locale runtime, route module, numeral, and guest Playwright coverage for the multi language regression suite (by noor, 2026-09-20)
