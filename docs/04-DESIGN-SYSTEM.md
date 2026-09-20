@@ -106,6 +106,37 @@ Flat design bias: shadows are used only on hover/focus states and modals, not as
 3. **Booking flow = single-column, no distractions**: once a mentee is inside a booking flow, strip the global nav down to a minimal header (logo + exit) so nothing competes with the decision.
 4. **Trust signals always visible, never buried**: rating, review count, and session count appear on the card, the profile header, and the booking confirmation — never require a click to see them.
 
+### 4.1 Responsive layout (spec [0003](specs/0003-full-responsive-design/index.md))
+
+**Breakpoints**: Tailwind CSS v4's built-in set, no custom overrides.
+
+| Name | Width | Typical device |
+|---|---|---|
+| `sm` | 640px | large phone, phone landscape |
+| `md` | 768px | tablet portrait |
+| `lg` | 1024px | tablet landscape, small laptop |
+| `xl` | 1280px | desktop |
+| `2xl` | 1536px | wide desktop |
+
+Every layout is written mobile-first: the plain (unprefixed) class is the small-screen style, and a breakpoint prefix only overrides it at that width and up. Check every page at roughly 320px, 375px, 768px, and 1280px wide, not only the middle two.
+
+**Container** (`web/components/layout/container.tsx`): the one shared page-width component, four named variants, replacing every one-off `max-w-*` value.
+
+| Variant | Width | Used for |
+|---|---|---|
+| `page` | `max-w-5xl` | the app shell frame, and every header (app shell, landing, onboarding) |
+| `content` | `max-w-2xl` | a single reading/edit surface: dashboard content, mentee profile, settings/profile |
+| `form` | `max-w-md` | a form standing alone: auth, activation, onboarding's main column |
+| `wide` | `max-w-6xl` | Phase 2's mentor directory grid, and the landing hero section |
+
+**Mobile nav**: `web/components/layout/mobile-nav-drawer.tsx` is the one shared drawer (dialog, focus trap, Escape/backdrop close, body scroll lock, closes on route change and when the viewport grows past `md`, RTL-aware trailing-edge slide, `h-dvh`, respects `prefers-reduced-motion`). Reused by the app shell, the public landing header, and onboarding's header: full nav from `md` up, a hamburger trigger below `md`. `ThemeMenu`/`LanguageMenu` stay visible in the top bar at every width.
+
+**Card grid** (mentee list, dashboard, Phase 2's mentor directory): `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`.
+
+**Touch targets**: every interactive element keeps a minimum 44px target (`min-h-11`, `min-w-11` where square), plus the visible focus ring the accessibility baseline already requires.
+
+**Forms**: stack single-column by default; only pair two short, logically related fields side by side above `sm` (e.g. first/last name).
+
 ## 5. Voice & Microcopy
 
 - Second person, warm, low-jargon: "Get matched with a mentor" not "Initiate mentor matching."

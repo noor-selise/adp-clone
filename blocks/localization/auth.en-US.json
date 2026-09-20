@@ -1,0 +1,80 @@
+{
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in with your MentorMatch account via Blocks OIDC.",
+    "newHere": "New here?",
+    "createAccount": "Create an account",
+    "continueWithBlocks": "Continue with Blocks",
+    "redirecting": "Redirecting…",
+    "backToHome": "Back to home",
+    "notConfigured": {
+      "before": "Login is not configured. Register",
+      "after": "as an OIDC redirect URI."
+    }
+  },
+  "callback": {
+    "error": "Sign-in could not finish.",
+    "tryAgain": "Try again",
+    "completing": "Completing sign-in…"
+  },
+  "register": {
+    "mentor": {
+      "title": "Become a mentor",
+      "subtitle": "Be someone in their corner."
+    },
+    "mentee": {
+      "title": "Get started",
+      "subtitle": "Find your next step with a mentor."
+    },
+    "error": {
+      "passwordMismatch": "Passwords do not match.",
+      "emailExists": "An account with this email already exists."
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "before": "We sent an activation link to",
+      "after": "Open it to activate your account, then sign in."
+    },
+    "enterActivationCode": "Enter activation code",
+    "goToSignIn": "Go to sign in",
+    "logInInstead": "Log in instead",
+    "field": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password"
+    },
+    "creatingAccount": "Creating account…",
+    "createAccount": "Create account",
+    "haveAccount": "Already have an account?",
+    "logIn": "Log in",
+    "track": {
+      "mentee": "Find a mentor",
+      "mentor": "Become a mentor"
+    }
+  },
+  "activate": {
+    "title": "Activate your account",
+    "subtitle": "Paste the code from your email and choose a password.",
+    "field": {
+      "code": "Activation code",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "email": "Email"
+    },
+    "checkingCode": "Checking code…",
+    "invalidLink": "This activation link is invalid or expired.",
+    "activating": "Activating…",
+    "activateAccount": "Activate account",
+    "needNewLink": "Need a new link?",
+    "resend": "Resend activation email",
+    "backToSignIn": "Back to sign in",
+    "success": "Account activated. You can sign in now.",
+    "resendSuccess": "Activation email sent. Check your inbox.",
+    "error": {
+      "passwordMismatch": "Passwords do not match.",
+      "needEmail": "Enter your email to resend the activation link."
+    }
+  }
+}

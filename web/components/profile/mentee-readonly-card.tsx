@@ -4,12 +4,14 @@ import Link from 'next/link'
 import type { MenteeProfileRecord } from '@/lib/profiles'
 import { profileItemId } from '@/lib/profiles'
 import { recordUserId } from '@/lib/profiles/collection'
+import { useLocale } from '@/components/providers/localization-provider'
 
 type MenteeReadonlyCardProps = {
   profile: MenteeProfileRecord
 }
 
 export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
+  const { t } = useLocale()
   const key = profileItemId(profile) ?? profile.userId ?? profile.displayName ?? 'mentee'
   const menteeUserId = recordUserId(profile)
   const goals = profile.goals ?? []
@@ -26,9 +28,11 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
           {(profile.displayName ?? 'M').slice(0, 1).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-semibold">{profile.displayName ?? 'Mentee'}</h3>
+          <h3 className="truncate font-semibold" dir="auto">
+            {profile.displayName ?? t('mentee.fallbackName', 'Mentee', 'dashboard')}
+          </h3>
           <p className="mt-1 text-xs uppercase tracking-wide text-[var(--color-text-faint)]">
-            Assigned mentee · view only
+            {t('mentee.assignedViewOnly', 'Assigned mentee · view only', 'dashboard')}
           </p>
         </div>
       </div>
@@ -36,9 +40,9 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
       {goals.length ? (
         <div className="mt-4">
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-faint)]">
-            Goals
+            {t('mentee.goals', 'Goals', 'dashboard')}
           </p>
-          <p className="mt-1 text-sm text-[var(--color-text-muted)]">{goals.join(' · ')}</p>
+          <p className="mt-1 text-sm text-[var(--color-text-muted)]" dir="auto">{goals.join(' · ')}</p>
         </div>
       ) : null}
 
@@ -47,6 +51,7 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
           {interests.map((interest) => (
             <span
               key={`${key}-${interest}`}
+              dir="auto"
               className="rounded-full bg-[var(--color-bg-inset)] px-2.5 py-1 text-xs text-[var(--color-text-muted)]"
             >
               {interest}
@@ -56,7 +61,10 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
       ) : null}
 
       {href ? (
-        <p className="mt-4 text-sm font-medium text-[var(--color-brand)]">View profile →</p>
+        <p className="mt-4 text-sm font-medium text-[var(--color-brand)]">
+          {t('mentee.viewProfile', 'View profile', 'dashboard')}
+          <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
+        </p>
       ) : null}
     </>
   )
@@ -65,7 +73,7 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
     return (
       <article
         className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5"
-        aria-label={`Mentee profile for ${profile.displayName ?? 'mentee'}`}
+        aria-label={`${t('mentee.cardLabel', 'Mentee profile for', 'dashboard')} ${profile.displayName ?? t('mentee.fallbackName', 'Mentee', 'dashboard')}`}
       >
         {body}
       </article>
@@ -76,7 +84,7 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
     <Link
       href={href}
       className="block rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 transition hover:border-[var(--color-brand)] hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2"
-      aria-label={`View mentee profile for ${profile.displayName ?? 'mentee'}`}
+      aria-label={`${t('mentee.viewCardLabel', 'View mentee profile for', 'dashboard')} ${profile.displayName ?? t('mentee.fallbackName', 'Mentee', 'dashboard')}`}
     >
       {body}
     </Link>

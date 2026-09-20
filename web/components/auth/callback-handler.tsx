@@ -8,10 +8,13 @@ import { resolveSessionUser } from '@/lib/blocks/session-user'
 import { resolvePostAuthPath } from '@/lib/onboarding/gate'
 import { readRegisterTrack } from '@/lib/onboarding/track'
 import { fetchProfilePresence } from '@/lib/profiles'
+import { useLocale } from '@/components/providers/localization-provider'
+import { Container } from '@/components/layout/container'
 
 export const CallbackHandler = () => {
   const { refresh } = useAuth()
   const router = useRouter()
+  const { t } = useLocale()
   const [error, setError] = useState<string | undefined>()
   const ran = useRef(false)
 
@@ -46,24 +49,24 @@ export const CallbackHandler = () => {
         }
       })
       .catch((caught) => {
-        setError(caught instanceof Error ? caught.message : 'Sign-in could not finish.')
+        setError(caught instanceof Error ? caught.message : t('callback.error', 'Sign-in could not finish.', 'auth'))
       })
-  }, [refresh, router])
+  }, [refresh, router, t])
 
   if (error) {
     return (
-      <div className="mx-auto max-w-md space-y-4 pt-24 text-center">
+      <Container variant="form" className="space-y-4 pt-24 text-center">
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error}</div>
         <a href="/login" className="text-sm font-medium text-[var(--color-brand)] hover:underline">
-          Try again
+          {t('callback.tryAgain', 'Try again', 'auth')}
         </a>
-      </div>
+      </Container>
     )
   }
 
   return (
     <div className="flex min-h-[50vh] items-center justify-center text-sm text-[var(--color-text-muted)]">
-      Completing sign-in…
+      {t('callback.completing', 'Completing sign-in…', 'auth')}
     </div>
   )
 }

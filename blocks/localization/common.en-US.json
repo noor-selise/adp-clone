@@ -1,0 +1,27 @@
+{
+  "loading": "Loading…",
+  "sessionLoading": "Getting your session ready…",
+  "signedIn": "Signed in",
+  "brand": "MentorMatch",
+  "language": {
+    "label": "Language"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "becomeMentor": "Become a mentor",
+    "bookAsMentee": "Book as a mentee",
+    "signOut": "Sign out",
+    "logIn": "Log in",
+    "getStarted": "Get started",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "label": "Theme"
+  }
+}

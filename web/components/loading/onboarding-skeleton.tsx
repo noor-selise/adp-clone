@@ -1,15 +1,19 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { useLocale } from '@/components/providers/localization-provider'
+import { Container } from '@/components/layout/container'
 
-export const OnboardingSkeleton = () => (
+export const OnboardingSkeleton = () => {
+  const { t } = useLocale()
+  return (
   <div className="min-h-screen bg-[var(--color-bg-subtle)]" aria-busy="true" aria-live="polite">
-    <span className="sr-only">Loading onboarding</span>
+    <span className="sr-only">{t('loadingOnboarding', 'Loading onboarding', 'onboarding')}</span>
     <header className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
+      <Container variant="page" className="flex items-center justify-between py-4">
         <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-9 w-24" />
-      </div>
+        <Skeleton className="h-9 w-9 rounded-md md:w-24" />
+      </Container>
     </header>
-    <main className="mx-auto max-w-lg space-y-5 px-6 py-12">
+    <Container variant="form" className="space-y-5 py-12">
       <Skeleton className="h-8 w-3/4" />
       <Skeleton className="h-4 w-full" />
       <div className="space-y-2">
@@ -21,6 +25,7 @@ export const OnboardingSkeleton = () => (
         <Skeleton className="h-10 w-full" />
       </div>
       <Skeleton className="h-12 w-full" />
-    </main>
+    </Container>
   </div>
-)
+  )
+}

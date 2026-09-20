@@ -1,0 +1,48 @@
+{
+  "title": "Profile settings",
+  "loadingProfile": "Loading profile",
+  "roles": "Roles",
+  "none": "none",
+  "saved": "Profile saved.",
+  "photoUpdated": "Photo updated.",
+  "photoRemoved": "Photo removed.",
+  "mentor": {
+    "title": "Mentor profile",
+    "empty": "You have not set up a mentor profile yet."
+  },
+  "mentee": {
+    "title": "Mentee profile",
+    "empty": "You have not set up a mentee profile yet."
+  },
+  "field": {
+    "displayName": "Display name",
+    "title": "Title",
+    "company": "Company",
+    "bio": "Bio",
+    "skills": "Skills",
+    "languages": "Languages",
+    "timezone": "Timezone",
+    "goals": "Goals",
+    "interests": "Interests",
+    "photo": "Profile photo",
+    "photoHint": "Square images work best. Max 5 MB.",
+    "commaHint": "Comma-separated",
+    "commaTagsHint": "Comma-separated tags"
+  },
+  "photo": {
+    "uploading": "Uploading…",
+    "change": "Change photo",
+    "upload": "Upload photo",
+    "remove": "Remove photo"
+  },
+  "becomeMentor": "Become a mentor",
+  "setupMentee": "Set up mentee profile",
+  "saving": "Saving…",
+  "save": "Save profile",
+  "error": {
+    "displayNameRequired": "Display name is required.",
+    "titleRequired": "Title is required.",
+    "goalRequired": "Add at least one goal.",
+    "interestRequired": "Add at least one interest."
+  }
+}

@@ -3,12 +3,9 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
 import { setThemeMode, subscribeTheme } from '@/lib/theme/theme-client'
 import type { ThemeMode } from '@/lib/theme/theme'
+import { useLocale } from '@/components/providers/localization-provider'
 
-const MODES: { id: ThemeMode; label: string }[] = [
-  { id: 'light', label: 'Light' },
-  { id: 'dark', label: 'Dark' },
-  { id: 'system', label: 'System' },
-]
+const MODE_IDS: ThemeMode[] = ['light', 'dark', 'system']
 
 const iconClassName = 'h-5 w-5 shrink-0 fill-none stroke-current'
 
@@ -47,6 +44,7 @@ const ModeIcon = ({ mode }: { mode: ThemeMode }) => {
 }
 
 export const ThemeMenu = () => {
+  const { t } = useLocale()
   const menuId = useId()
   const rootRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -58,6 +56,13 @@ export const ThemeMenu = () => {
   useEffect(() => {
     return subscribeTheme((snapshot) => setMode(snapshot.mode))
   }, [])
+
+  const modeLabels: Record<ThemeMode, string> = {
+    light: t('theme.light', 'Light', 'common'),
+    dark: t('theme.dark', 'Dark', 'common'),
+    system: t('theme.system', 'System', 'common'),
+  }
+  const MODES = MODE_IDS.map((id) => ({ id, label: modeLabels[id] }))
 
   const currentIndex = Math.max(
     0,
@@ -118,14 +123,14 @@ export const ThemeMenu = () => {
     itemRefs.current[nextIndex]?.focus()
   }
 
-  const modeLabel = MODES.find((item) => item.id === mode)?.label ?? 'System'
+  const modeLabel = MODES.find((item) => item.id === mode)?.label ?? modeLabels.system
 
   return (
     <div className="relative" ref={rootRef}>
       <button
         ref={buttonRef}
         type="button"
-        aria-label="Theme"
+        aria-label={t('theme.label', 'Theme', 'common')}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={menuId}
@@ -141,8 +146,8 @@ export const ThemeMenu = () => {
         <div
           id={menuId}
           role="menu"
-          aria-label="Theme"
-          className="absolute right-0 z-20 mt-2 min-w-44 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] p-1 shadow-sm"
+          aria-label={t('theme.label', 'Theme', 'common')}
+          className="absolute end-0 z-20 mt-2 min-w-44 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] p-1 shadow-sm"
           onKeyDown={handleMenuKeyDown}
         >
           {MODES.map((item, index) => {
@@ -156,7 +161,7 @@ export const ThemeMenu = () => {
                 type="button"
                 role="menuitemradio"
                 aria-checked={checked}
-                className="flex min-h-11 w-full items-center gap-3 rounded px-3 py-2 text-left text-sm text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
+                className="flex min-h-11 w-full items-center gap-3 rounded px-3 py-2 text-start text-sm text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
                 onFocus={() => setFocusIndex(index)}
                 onClick={() => pick(item.id)}
               >

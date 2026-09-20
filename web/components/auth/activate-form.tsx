@@ -8,6 +8,7 @@ import {
   resendActivation,
   validateActivationCode,
 } from '@/lib/blocks/account'
+import { useLocale } from '@/components/providers/localization-provider'
 
 const inputClassName =
   'w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] focus:ring-offset-2'
@@ -15,6 +16,7 @@ const inputClassName =
 export const ActivateForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useLocale()
   const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -56,14 +58,14 @@ export const ActivateForm = () => {
     setMessage(undefined)
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.')
+      setError(t('activate.error.passwordMismatch', 'Passwords do not match.', 'auth'))
       return
     }
 
     setPending(true)
     try {
       await activateAccount(code.trim(), password)
-      setMessage('Account activated. You can sign in now.')
+      setMessage(t('activate.success', 'Account activated. You can sign in now.', 'auth'))
       router.push('/login?returnTo=%2Fdashboard')
     } catch (caught) {
       setError((caught as Error).message)
@@ -73,14 +75,14 @@ export const ActivateForm = () => {
 
   const handleResend = async () => {
     if (!email.trim()) {
-      setError('Enter your email to resend the activation link.')
+      setError(t('activate.error.needEmail', 'Enter your email to resend the activation link.', 'auth'))
       return
     }
     setError(undefined)
     setPending(true)
     try {
       await resendActivation(email.trim())
-      setMessage('Activation email sent. Check your inbox.')
+      setMessage(t('activate.resendSuccess', 'Activation email sent. Check your inbox.', 'auth'))
     } catch (caught) {
       setError((caught as Error).message)
     } finally {
@@ -91,9 +93,9 @@ export const ActivateForm = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Activate your account</h1>
+        <h1 className="text-2xl font-semibold">{t('activate.title', 'Activate your account', 'auth')}</h1>
         <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-          Paste the code from your email and choose a password.
+          {t('activate.subtitle', 'Paste the code from your email and choose a password.', 'auth')}
         </p>
       </div>
 
@@ -109,7 +111,7 @@ export const ActivateForm = () => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block space-y-1 text-sm">
-          <span>Activation code</span>
+          <span>{t('activate.field.code', 'Activation code', 'auth')}</span>
           <input
             required
             className={inputClassName}
@@ -119,15 +121,15 @@ export const ActivateForm = () => {
         </label>
 
         {validating ? (
-          <p className="text-sm text-[var(--color-text-muted)]">Checking code…</p>
+          <p className="text-sm text-[var(--color-text-muted)]">{t('activate.checkingCode', 'Checking code…', 'auth')}</p>
         ) : valid === false ? (
           <p className="text-sm text-[var(--color-danger)]">
-            This activation link is invalid or expired.
+            {t('activate.invalidLink', 'This activation link is invalid or expired.', 'auth')}
           </p>
         ) : null}
 
         <label className="block space-y-1 text-sm">
-          <span>Password</span>
+          <span>{t('activate.field.password', 'Password', 'auth')}</span>
           <input
             required
             type="password"
@@ -139,7 +141,7 @@ export const ActivateForm = () => {
         </label>
 
         <label className="block space-y-1 text-sm">
-          <span>Confirm password</span>
+          <span>{t('activate.field.confirmPassword', 'Confirm password', 'auth')}</span>
           <input
             required
             type="password"
@@ -155,14 +157,14 @@ export const ActivateForm = () => {
           disabled={pending || valid === false}
           className="w-full rounded-lg bg-[var(--color-brand)] px-4 py-3 text-sm font-semibold text-white hover:bg-[var(--color-brand-hover)] disabled:opacity-60"
         >
-          {pending ? 'Activating…' : 'Activate account'}
+          {pending ? t('activate.activating', 'Activating…', 'auth') : t('activate.activateAccount', 'Activate account', 'auth')}
         </button>
       </form>
 
       <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
-        <p className="text-sm text-[var(--color-text-muted)]">Need a new link?</p>
+        <p className="text-sm text-[var(--color-text-muted)]">{t('activate.needNewLink', 'Need a new link?', 'auth')}</p>
         <label className="block space-y-1 text-sm">
-          <span>Email</span>
+          <span>{t('activate.field.email', 'Email', 'auth')}</span>
           <input
             type="email"
             className={inputClassName}
@@ -176,13 +178,13 @@ export const ActivateForm = () => {
           disabled={pending}
           className="w-full rounded-lg border border-[var(--color-border)] px-4 py-2.5 text-sm font-medium hover:bg-[var(--color-bg-inset)] disabled:opacity-60"
         >
-          Resend activation email
+          {t('activate.resend', 'Resend activation email', 'auth')}
         </button>
       </div>
 
       <p className="text-center text-sm text-[var(--color-text-muted)]">
         <Link href="/login" className="font-medium text-[var(--color-brand)] hover:underline">
-          Back to sign in
+          {t('activate.backToSignIn', 'Back to sign in', 'auth')}
         </Link>
       </p>
     </div>

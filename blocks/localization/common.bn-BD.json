@@ -1,0 +1,27 @@
+{
+  "loading": "লোড হচ্ছে…",
+  "sessionLoading": "আপনার সেশন প্রস্তুত করা হচ্ছে…",
+  "signedIn": "সাইন ইন করা আছে",
+  "brand": "MentorMatch",
+  "language": {
+    "label": "ভাষা"
+  },
+  "nav": {
+    "dashboard": "ড্যাশবোর্ড",
+    "profile": "প্রোফাইল",
+    "becomeMentor": "মেন্টর হোন",
+    "bookAsMentee": "মেন্টি হিসেবে বুক করুন",
+    "signOut": "সাইন আউট",
+    "logIn": "লগ ইন",
+    "getStarted": "শুরু করুন",
+    "openMenu": "মেনু খুলুন",
+    "closeMenu": "মেনু বন্ধ করুন",
+    "menu": "মেনু"
+  },
+  "theme": {
+    "light": "লাইট",
+    "dark": "ডার্ক",
+    "system": "সিস্টেম",
+    "label": "থিম"
+  }
+}

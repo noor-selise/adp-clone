@@ -21,9 +21,12 @@ import { fetchProfilePresence, loadUserProfiles, type MentorProfileRecord, type 
 import { fetchAssignedMenteeProfiles } from '@/lib/mentorship/assignments'
 import { hasMentorRole } from '@/lib/onboarding/gate'
 import { DashboardSkeleton } from '@/components/loading/dashboard-skeleton'
+import { useLocale } from '@/components/providers/localization-provider'
+import { formatNumber } from '@/lib/i18n/numbers'
 
 const DashboardContent = () => {
   const { claims } = useAuth()
+  const { t } = useLocale()
   const [me, setMe] = useState<IamMe | undefined>()
   const [roles, setRoles] = useState<string[]>([])
   const [profiles, setProfiles] = useState<ProfilePresence>({
@@ -76,50 +79,53 @@ const DashboardContent = () => {
       ) : (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <h1 className="text-2xl font-semibold">{t('title', 'Dashboard', 'dashboard')}</h1>
           <p className="mt-2 text-[var(--color-text-muted)]">
-            Roles: {roleLabel} · {me?.permissions?.length ?? 0} permissions
+            {t('roles', 'Roles', 'dashboard')}: {roleLabel} · {formatNumber(me?.permissions?.length ?? 0)}{' '}
+            {t('permissions', 'permissions', 'dashboard')}
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {showMentor && mentorProfile ? (
             <MentorProfileCard profile={mentorProfile} />
           ) : showMentor ? (
             <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
-              <h2 className="font-semibold">Mentor</h2>
+              <h2 className="font-semibold">{t('mentor.title', 'Mentor', 'dashboard')}</h2>
               <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-                Update your mentor profile for the directory.
+                {t('mentor.empty', 'Update your mentor profile for the directory.', 'dashboard')}
               </p>
               <a
                 href="/settings/profile"
                 className="mt-4 inline-block text-sm font-medium text-[var(--color-brand)]"
               >
-                Edit profile →
+                {t('editProfile', 'Edit profile', 'dashboard')}
+                <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
               </a>
             </div>
           ) : null}
 
           {showMentee ? (
             <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
-              <h2 className="font-semibold">Mentee</h2>
+              <h2 className="font-semibold">{t('mentee.title', 'Mentee', 'dashboard')}</h2>
               <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-                Your mentee profile is ready. Finding mentors is next.
+                {t('mentee.ready', 'Your mentee profile is ready. Finding mentors is next.', 'dashboard')}
               </p>
               <a
                 href="/settings/profile"
                 className="mt-4 inline-block text-sm font-medium text-[var(--color-brand)]"
               >
-                Edit profile →
+                {t('editProfile', 'Edit profile', 'dashboard')}
+                <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
               </a>
             </div>
           ) : null}
 
           {showAdmin ? (
             <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
-              <h2 className="font-semibold">Admin</h2>
+              <h2 className="font-semibold">{t('admin.title', 'Admin', 'dashboard')}</h2>
               <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-                Manage users in the Blocks portal. App moderation comes in a later phase.
+                {t('admin.body', 'Manage users in the Blocks portal. App moderation comes in a later phase.', 'dashboard')}
               </p>
               <a
                 href="https://os.seliseblocks.com"
@@ -127,7 +133,8 @@ const DashboardContent = () => {
                 rel="noreferrer"
                 className="mt-4 inline-block text-sm font-medium text-[var(--color-brand)]"
               >
-                Open Blocks OS →
+                {t('admin.openOs', 'Open Blocks OS', 'dashboard')}
+                <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
               </a>
             </div>
           ) : null}
@@ -136,13 +143,16 @@ const DashboardContent = () => {
         {showMentor && assignedMentees.length ? (
           <section className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold">Your mentees</h2>
+              <h2 className="text-lg font-semibold">{t('assigned.title', 'Your mentees', 'dashboard')}</h2>
               <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                Mentees currently assigned to you. Profiles are read-only here — mentees edit their own
-                profile in settings.
+                {t(
+                  'assigned.subtitle',
+                  'Mentees currently assigned to you. Profiles are read-only here. Mentees edit their own profile in settings.',
+                  'dashboard'
+                )}
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {assignedMentees.map((mentee) => (
                 <MenteeReadonlyCard
                   key={mentee.itemId ?? mentee.ItemId ?? mentee.userId ?? mentee.displayName}

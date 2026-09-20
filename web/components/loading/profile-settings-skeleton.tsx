@@ -1,8 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { useLocale } from '@/components/providers/localization-provider'
+import { Container } from '@/components/layout/container'
 
-export const ProfileSettingsSkeleton = () => (
-  <div className="max-w-2xl space-y-8" aria-busy="true" aria-live="polite">
-    <span className="sr-only">Loading profile</span>
+export const ProfileSettingsSkeleton = () => {
+  const { t } = useLocale()
+  return (
+  <Container variant="content" className="space-y-8" aria-busy="true" aria-live="polite">
+    <span className="sr-only">{t('loadingProfile', 'Loading profile', 'profile')}</span>
     <div className="space-y-2">
       <Skeleton className="h-8 w-48" />
       <Skeleton className="h-4 w-32" />
@@ -23,5 +27,6 @@ export const ProfileSettingsSkeleton = () => (
     </section>
 
     <Skeleton className="h-11 w-32" />
-  </div>
-)
+  </Container>
+  )
+}

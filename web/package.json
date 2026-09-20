@@ -8,6 +8,7 @@
     "dev:proxy": "node scripts/https-proxy.mjs",
     "dev:https": "node scripts/run-dev-https.mjs",
     "free-port": "node scripts/free-port.mjs",
+    "i18n:generate": "node ../scripts/generate-i18n-dictionaries.mjs",
     "cert": "node scripts/generate-cert.mjs",
     "trust-cert": "bash scripts/trust-cert.sh",
     "hosts": "bash scripts/add-hosts-entry.sh",
@@ -19,7 +20,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --experimental-strip-types --test lib/onboarding/*.test.ts lib/profiles/*.test.ts lib/mentorship/*.test.ts lib/theme/*.test.ts lib/blocks/*.test.ts scripts/local-bind-host.test.mjs",
+    "test": "node --experimental-strip-types --test lib/onboarding/*.test.ts lib/profiles/*.test.ts lib/mentorship/*.test.ts lib/theme/*.test.ts lib/blocks/*.test.ts lib/i18n/*.test.ts scripts/local-bind-host.test.mjs",
     "test:e2e": "playwright test",
     "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
     "prepare": "cd .. && husky web/.husky"

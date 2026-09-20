@@ -1,4 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { useLocale } from '@/components/providers/localization-provider'
 
 const MenteeCardSkeleton = () => (
   <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
@@ -18,15 +19,17 @@ const MenteeCardSkeleton = () => (
   </div>
 )
 
-export const DashboardSkeleton = () => (
+export const DashboardSkeleton = () => {
+  const { t } = useLocale()
+  return (
   <div className="space-y-8" aria-busy="true" aria-live="polite">
-    <span className="sr-only">Loading dashboard</span>
+    <span className="sr-only">{t('loadingDashboard', 'Loading dashboard', 'dashboard')}</span>
     <div className="space-y-2">
       <Skeleton className="h-8 w-40" />
       <Skeleton className="h-4 w-56" />
     </div>
 
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 md:col-span-1">
         <div className="flex items-start gap-4">
           <Skeleton className="h-14 w-14 shrink-0 rounded-full" />
@@ -47,11 +50,12 @@ export const DashboardSkeleton = () => (
         <Skeleton className="h-6 w-36" />
         <Skeleton className="h-4 w-72 max-w-full" />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <MenteeCardSkeleton />
         <MenteeCardSkeleton />
         <MenteeCardSkeleton />
       </div>
     </section>
   </div>
-)
+  )
+}

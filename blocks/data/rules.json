@@ -11,7 +11,11 @@
     { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 0, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
     { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 1, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
     { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 2, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
-    { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 3, "policyType": 0, "fieldNames": [], "accessLevel": 3 }
+    { "schemaId": "bae7beaa-255b-49f3-8a38-a2b2929a8ad3", "operation": 3, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "dc2686f7-2c11-43bb-bd0e-3c780a6c4071", "operation": 0, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "dc2686f7-2c11-43bb-bd0e-3c780a6c4071", "operation": 1, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "dc2686f7-2c11-43bb-bd0e-3c780a6c4071", "operation": 2, "policyType": 0, "fieldNames": [], "accessLevel": 3 },
+    { "schemaId": "dc2686f7-2c11-43bb-bd0e-3c780a6c4071", "operation": 3, "policyType": 0, "fieldNames": [], "accessLevel": 3 }
   ],
   "policies": [
     {
@@ -412,6 +416,84 @@
             "rightOperand": "",
             "rightOperands": [],
             "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "UserPreference",
+      "policyName": "user-preference-read-own",
+      "policyDescription": "A signed in user can read only their own preference row",
+      "policyType": 0,
+      "operation": 0,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "UserPreference",
+      "policyName": "user-preference-create-authenticated",
+      "policyDescription": "Any signed in user can create their own preference row",
+      "policyType": 0,
+      "operation": 1,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 13,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": null,
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
+      "schemaName": "UserPreference",
+      "policyName": "user-preference-edit-own",
+      "policyDescription": "A signed in user can edit only their own preference row",
+      "policyType": 0,
+      "operation": 2,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "UserId",
+            "operator": 0,
+            "rightSource": 1,
+            "rightOperand": "userId",
+            "rightOperands": [],
+            "staticValue": null,
             "description": null
           }
         ],

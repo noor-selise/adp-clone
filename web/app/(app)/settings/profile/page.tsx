@@ -7,6 +7,7 @@ import {
   RequireAuth,
   RequireOnboardingComplete,
 } from '@/components/layout/app-shell'
+import { Container } from '@/components/layout/container'
 import {
   ProfileField,
   ProfileInput,
@@ -17,6 +18,7 @@ import {
 import { ProfilePhotoField } from '@/components/profile/profile-photo-field'
 import { ProfileSettingsSkeleton } from '@/components/loading/profile-settings-skeleton'
 import { useAuth } from '@/components/providers/auth-provider'
+import { useLocale } from '@/components/providers/localization-provider'
 import { resolveSessionUser } from '@/lib/blocks/session-user'
 import { getUserRoles } from '@/lib/blocks/auth'
 import {
@@ -53,6 +55,7 @@ const emptyMentee = (): MenteeProfileRecord => ({
 
 const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProfiles }) => {
   const { claims } = useAuth()
+  const { t } = useLocale()
   const roles = getUserRoles(claims)
   const [userId, setUserId] = useState('')
 
@@ -96,7 +99,11 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
     if (initialProfiles.hasMentorProfile) {
       const mentorValidation = validateMentorProfile(mentor)
       if (!mentorValidation.ok) {
-        setError(mentorValidation.message)
+        setError(
+          mentorValidation.message === 'Display name is required.'
+            ? t('error.displayNameRequired', mentorValidation.message, 'profile')
+            : t('error.titleRequired', mentorValidation.message, 'profile')
+        )
         return
       }
     }
@@ -104,7 +111,11 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
     if (initialProfiles.hasMenteeProfile) {
       const menteeValidation = validateMenteeProfile(mentee)
       if (!menteeValidation.ok) {
-        setError(menteeValidation.message)
+        setError(
+          menteeValidation.message === 'Add at least one goal.'
+            ? t('error.goalRequired', menteeValidation.message, 'profile')
+            : t('error.interestRequired', menteeValidation.message, 'profile')
+        )
         return
       }
     }
@@ -117,7 +128,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
       if (initialProfiles.hasMenteeProfile) {
         await saveMenteeProfile(userId, mentee, menteeItemId)
       }
-      setMessage('Profile saved.')
+      setMessage(t('saved', 'Profile saved.', 'profile'))
     } catch (caught) {
       setError(readBlocksError(caught))
     } finally {
@@ -135,18 +146,19 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
 
     try {
       await saveMentorProfile(userId, nextMentor, mentorItemId)
-      setMessage(photoFileId ? 'Photo updated.' : 'Photo removed.')
+      setMessage(photoFileId ? t('photoUpdated', 'Photo updated.', 'profile') : t('photoRemoved', 'Photo removed.', 'profile'))
     } catch (caught) {
       setError(readBlocksError(caught))
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl space-y-8">
+    <Container variant="content">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold">Profile settings</h1>
+        <h1 className="text-2xl font-semibold">{t('title', 'Profile settings', 'profile')}</h1>
         <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-          Roles: {roles.join(', ') || 'none'}
+          {t('roles', 'Roles', 'profile')}: {roles.join(', ') || t('none', 'none', 'profile')}
         </p>
       </div>
 
@@ -155,56 +167,62 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
 
       {initialProfiles.hasMentorProfile ? (
         <section className={profileSectionClassName}>
-          <h2 className="font-semibold">Mentor profile</h2>
+          <h2 className="font-semibold">{t('mentor.title', 'Mentor profile', 'profile')}</h2>
           <ProfilePhotoField
             fileId={mentor.photoFileId}
             displayName={mentor.displayName}
             onFileIdChange={(photoFileId) => void handlePhotoChange(photoFileId)}
             onError={setError}
           />
-          <ProfileField label="Display name">
+          <ProfileField label={t('field.displayName', 'Display name', 'profile')}>
             <ProfileInput
               required
+              dir="auto"
               value={mentor.displayName ?? ''}
               onChange={(e) => setMentor((prev) => ({ ...prev, displayName: e.target.value }))}
             />
           </ProfileField>
-          <ProfileField label="Title">
+          <ProfileField label={t('field.title', 'Title', 'profile')}>
             <ProfileInput
               required
+              dir="auto"
               value={mentor.title ?? ''}
               onChange={(e) => setMentor((prev) => ({ ...prev, title: e.target.value }))}
             />
           </ProfileField>
-          <ProfileField label="Company">
+          <ProfileField label={t('field.company', 'Company', 'profile')}>
             <ProfileInput
+              dir="auto"
               value={mentor.company ?? ''}
               onChange={(e) => setMentor((prev) => ({ ...prev, company: e.target.value }))}
             />
           </ProfileField>
-          <ProfileField label="Bio">
+          <ProfileField label={t('field.bio', 'Bio', 'profile')}>
             <ProfileTextarea
+              dir="auto"
               value={mentor.bio ?? ''}
               onChange={(e) => setMentor((prev) => ({ ...prev, bio: e.target.value }))}
             />
           </ProfileField>
-          <ProfileField label="Skills" hint="Comma-separated tags">
+          <ProfileField label={t('field.skills', 'Skills', 'profile')} hint={t('field.commaTagsHint', 'Comma-separated tags', 'profile')}>
             <ProfileInput
+              dir="auto"
               value={(mentor.skills ?? []).join(', ')}
               onChange={(e) =>
                 setMentor((prev) => ({ ...prev, skills: splitList(e.target.value) }))
               }
             />
           </ProfileField>
-          <ProfileField label="Languages" hint="Comma-separated tags">
+          <ProfileField label={t('field.languages', 'Languages', 'profile')} hint={t('field.commaTagsHint', 'Comma-separated tags', 'profile')}>
             <ProfileInput
+              dir="auto"
               value={(mentor.languages ?? []).join(', ')}
               onChange={(e) =>
                 setMentor((prev) => ({ ...prev, languages: splitList(e.target.value) }))
               }
             />
           </ProfileField>
-          <ProfileField label="Timezone">
+          <ProfileField label={t('field.timezone', 'Timezone', 'profile')}>
             <ProfileInput
               value={mentor.timezone ?? ''}
               onChange={(e) => setMentor((prev) => ({ ...prev, timezone: e.target.value }))}
@@ -213,38 +231,41 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
         </section>
       ) : (
         <section className={profileSectionClassName}>
-          <h2 className="font-semibold">Mentor profile</h2>
+          <h2 className="font-semibold">{t('mentor.title', 'Mentor profile', 'profile')}</h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            You have not set up a mentor profile yet.
+            {t('mentor.empty', 'You have not set up a mentor profile yet.', 'profile')}
           </p>
           <Link href="/onboarding?as=mentor" className="text-sm font-medium text-[var(--color-brand)]">
-            Become a mentor →
+            {t('becomeMentor', 'Become a mentor', 'profile')}
+            <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
           </Link>
         </section>
       )}
 
       {initialProfiles.hasMenteeProfile ? (
         <section className={profileSectionClassName}>
-          <h2 className="font-semibold">Mentee profile</h2>
-          <ProfileField label="Goals" hint="Comma-separated">
+          <h2 className="font-semibold">{t('mentee.title', 'Mentee profile', 'profile')}</h2>
+          <ProfileField label={t('field.goals', 'Goals', 'profile')} hint={t('field.commaHint', 'Comma-separated', 'profile')}>
             <ProfileInput
               required
+              dir="auto"
               value={(mentee.goals ?? []).join(', ')}
               onChange={(e) =>
                 setMentee((prev) => ({ ...prev, goals: splitList(e.target.value) }))
               }
             />
           </ProfileField>
-          <ProfileField label="Interests" hint="Comma-separated">
+          <ProfileField label={t('field.interests', 'Interests', 'profile')} hint={t('field.commaHint', 'Comma-separated', 'profile')}>
             <ProfileInput
               required
+              dir="auto"
               value={(mentee.interests ?? []).join(', ')}
               onChange={(e) =>
                 setMentee((prev) => ({ ...prev, interests: splitList(e.target.value) }))
               }
             />
           </ProfileField>
-          <ProfileField label="Timezone">
+          <ProfileField label={t('field.timezone', 'Timezone', 'profile')}>
             <ProfileInput
               value={mentee.timezone ?? ''}
               onChange={(e) => setMentee((prev) => ({ ...prev, timezone: e.target.value }))}
@@ -253,12 +274,13 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
         </section>
       ) : initialProfiles.hasMentorProfile ? null : (
         <section className={profileSectionClassName}>
-          <h2 className="font-semibold">Mentee profile</h2>
+          <h2 className="font-semibold">{t('mentee.title', 'Mentee profile', 'profile')}</h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            You have not set up a mentee profile yet.
+            {t('mentee.empty', 'You have not set up a mentee profile yet.', 'profile')}
           </p>
           <Link href="/onboarding?as=mentee" className="text-sm font-medium text-[var(--color-brand)]">
-            Set up mentee profile →
+            {t('setupMentee', 'Set up mentee profile', 'profile')}
+            <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
           </Link>
         </section>
       )}
@@ -269,10 +291,11 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
           disabled={saving}
           className="rounded-lg bg-[var(--color-brand)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-brand-hover)] disabled:opacity-60"
         >
-          {saving ? 'Saving…' : 'Save profile'}
+          {saving ? t('saving', 'Saving…', 'profile') : t('save', 'Save profile', 'profile')}
         </button>
       ) : null}
     </form>
+    </Container>
   )
 }
 

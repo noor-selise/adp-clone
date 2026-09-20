@@ -1,0 +1,9 @@
+{
+  "schemaName": "UserPreference",
+  "collectionName": "UserPreferences",
+  "schemaType": 1,
+  "fields": [
+    { "name": "userId", "type": "String", "isRequired": true, "description": "IAM user id owning this preference row" },
+    { "name": "preferredLocale", "type": "String", "isRequired": true, "description": "One of en-US, bn-BD, ar-SA" }
+  ]
+}

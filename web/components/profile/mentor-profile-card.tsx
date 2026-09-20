@@ -4,12 +4,24 @@ import { useEffect, useState } from 'react'
 import type { MentorProfileRecord } from '@/lib/profiles'
 import { mentorProfileCompleteness } from '@/lib/profiles/validation'
 import { getProfilePhotoUrl } from '@/lib/profiles/photo'
+import { useLocale } from '@/components/providers/localization-provider'
+import { formatNumber } from '@/lib/i18n/numbers'
 
 type MentorProfileCardProps = {
   profile: MentorProfileRecord
 }
 
+const MISSING_KEYS: Record<string, string> = {
+  Photo: 'mentor.missing.photo',
+  'Display name': 'mentor.missing.displayName',
+  Title: 'mentor.missing.title',
+  Company: 'mentor.missing.company',
+  Bio: 'mentor.missing.bio',
+  Skills: 'mentor.missing.skills',
+}
+
 export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
+  const { t } = useLocale()
   const [photoUrl, setPhotoUrl] = useState<string | undefined>()
   const completeness = mentorProfileCompleteness(profile)
 
@@ -58,18 +70,27 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <h2 className="truncate font-semibold">{profile.displayName || 'Mentor'}</h2>
-          <p className="mt-1 truncate text-sm text-[var(--color-text-muted)]">
-            {[profile.title, profile.company].filter(Boolean).join(' · ') || 'Add your title and company'}
+          <h2 className="truncate font-semibold" dir="auto">
+            {profile.displayName || t('mentor.fallbackName', 'Mentor', 'dashboard')}
+          </h2>
+          <p className="mt-1 truncate text-sm text-[var(--color-text-muted)]" dir="auto">
+            {[profile.title, profile.company].filter(Boolean).join(' · ') ||
+              t('mentor.addTitleCompany', 'Add your title and company', 'dashboard')}
           </p>
         </div>
       </div>
 
       {profile.bio ? (
-        <p className="mt-4 line-clamp-2 text-sm text-[var(--color-text-muted)]">{profile.bio}</p>
+        <p className="mt-4 line-clamp-2 text-sm text-[var(--color-text-muted)]" dir="auto">
+          {profile.bio}
+        </p>
       ) : (
         <p className="mt-4 text-sm text-[var(--color-text-muted)]">
-          Your mentor profile is live. Add a bio so mentees know how you can help.
+          {t(
+            'mentor.emptyBio',
+            'Your mentor profile is live. Add a bio so mentees know how you can help.',
+            'dashboard'
+          )}
         </p>
       )}
 
@@ -78,6 +99,7 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
           {skills.map((skill) => (
             <span
               key={skill}
+              dir="auto"
               className="rounded-full bg-[var(--color-bg-inset)] px-2.5 py-1 text-xs text-[var(--color-text-muted)]"
             >
               {skill}
@@ -88,8 +110,8 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
 
       <div className="mt-4">
         <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)]">
-          <span>Profile completeness</span>
-          <span>{completeness.percent}%</span>
+          <span>{t('mentor.completeness', 'Profile completeness', 'dashboard')}</span>
+          <span>{formatNumber(completeness.percent)}%</span>
         </div>
         <div
           className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--color-bg-inset)]"
@@ -97,7 +119,7 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
           aria-valuenow={completeness.percent}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Mentor profile completeness"
+          aria-label={t('mentor.completeness', 'Profile completeness', 'dashboard')}
         >
           <div
             className="h-full rounded-full bg-[var(--color-brand)] transition-all"
@@ -106,7 +128,10 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
         </div>
         {completeness.missing.length ? (
           <p className="mt-2 text-xs text-[var(--color-text-faint)]">
-            Still to add: {completeness.missing.join(', ')}
+            {t('mentor.stillToAdd', 'Still to add', 'dashboard')}:{' '}
+            {completeness.missing
+              .map((label) => t(MISSING_KEYS[label] ?? label, label, 'dashboard'))
+              .join(', ')}
           </p>
         ) : null}
       </div>
@@ -115,7 +140,8 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
         href="/settings/profile"
         className="mt-4 inline-block text-sm font-medium text-[var(--color-brand)]"
       >
-        Edit profile →
+        {t('editProfile', 'Edit profile', 'dashboard')}
+        <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
       </a>
     </div>
   )

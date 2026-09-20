@@ -10,6 +10,26 @@ import { needsOnboarding, resolvePostAuthPath, applyRoleToProfilePresence } from
 import { readRegisterTrack } from '@/lib/onboarding/track'
 import { AuthGateSkeleton } from '@/components/loading/auth-gate-skeleton'
 import { ThemeMenu } from '@/components/theme/theme-menu'
+import { LanguageMenu } from '@/components/language/language-menu'
+import { useLocale } from '@/components/providers/localization-provider'
+import { Container } from '@/components/layout/container'
+import { MobileNavDrawer } from '@/components/layout/mobile-nav-drawer'
+import { BrandLockup } from '@/components/brand/brand-lockup'
+
+const MenuIcon = () => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className="h-5 w-5 shrink-0 fill-none stroke-current"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 7h16" />
+    <path d="M4 12h16" />
+    <path d="M4 17h16" />
+  </svg>
+)
 
 export const RequireAuth = ({ children }: { children: ReactNode }) => {
   const { status } = useAuth()
@@ -77,58 +97,101 @@ type AppShellProps = {
 
 export const AppShell = ({ children, profiles, roles = [] }: AppShellProps) => {
   const { claims, logout } = useAuth()
-  const email = typeof claims?.email === 'string' ? claims.email : 'Signed in'
+  const { t } = useLocale()
+  const email = typeof claims?.email === 'string' ? claims.email : t('signedIn', 'Signed in', 'common')
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const handleSignOut = () => void logout().then(() => window.location.assign('/'))
+
+  const navLinks = (
+    <>
+      <Link
+        href="/dashboard"
+        className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+      >
+        {t('nav.dashboard', 'Dashboard', 'common')}
+      </Link>
+      <Link
+        href="/settings/profile"
+        className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+      >
+        {t('nav.profile', 'Profile', 'common')}
+      </Link>
+      {profiles && roles.includes('mentor') && !profiles.hasMentorProfile ? (
+        <Link
+          href="/onboarding?as=mentor"
+          className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+        >
+          {t('nav.becomeMentor', 'Become a mentor', 'common')}
+        </Link>
+      ) : null}
+      {profiles && roles.includes('mentee') && !profiles.hasMenteeProfile ? (
+        <Link
+          href="/onboarding?as=mentee"
+          className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+        >
+          {t('nav.bookAsMentee', 'Book as a mentee', 'common')}
+        </Link>
+      ) : null}
+    </>
+  )
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-subtle)]">
       <header className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/dashboard" className="text-lg font-semibold text-[var(--color-text)]">
-            MentorMatch
-          </Link>
-          <div className="flex flex-wrap items-center gap-4 text-sm">
-            <nav className="flex flex-wrap items-center gap-4">
-              <Link href="/dashboard" className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                Dashboard
-              </Link>
-              <Link
-                href="/settings/profile"
-                className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
-              >
-                Profile
-              </Link>
-              {profiles && roles.includes('mentor') && !profiles.hasMentorProfile ? (
-                <Link
-                  href="/onboarding?as=mentor"
-                  className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
-                >
-                  Become a mentor
-                </Link>
-              ) : null}
-              {profiles && roles.includes('mentee') && !profiles.hasMenteeProfile ? (
-                <Link
-                  href="/onboarding?as=mentee"
-                  className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
-                >
-                  Book as a mentee
-                </Link>
-              ) : null}
-            </nav>
-            <div className="flex flex-wrap items-center gap-3 border-l border-[var(--color-border)] pl-4">
+        <Container variant="page" className="flex items-center justify-between py-4">
+          <BrandLockup href="/dashboard" showName={false} />
+          <div className="flex items-center gap-2 text-sm sm:gap-4">
+            <nav className="hidden items-center gap-4 md:flex">{navLinks}</nav>
+            <div className="hidden items-center gap-3 border-s border-[var(--color-border)] ps-4 md:flex">
               <span className="text-[var(--color-text-faint)]">{email}</span>
               <button
                 type="button"
-                onClick={() => void logout().then(() => window.location.assign('/'))}
+                onClick={handleSignOut}
                 className="flex min-h-11 items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
               >
-                Sign out
+                {t('nav.signOut', 'Sign out', 'common')}
               </button>
-              <ThemeMenu />
             </div>
+            <LanguageMenu />
+            <ThemeMenu />
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              aria-label={t('nav.openMenu', 'Open menu', 'common')}
+              aria-expanded={drawerOpen}
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-md border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] md:hidden"
+            >
+              <span className="rtl:-scale-x-100">
+                <MenuIcon />
+              </span>
+            </button>
           </div>
-        </div>
+        </Container>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
+      <MobileNavDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        label={t('nav.menu', 'Menu', 'common')}
+        homeHref="/dashboard"
+      >
+        <nav className="flex flex-col gap-1 text-sm">{navLinks}</nav>
+        <div className="mt-6 flex flex-col gap-3 border-t border-[var(--color-border)] pt-4 text-sm">
+          <span className="text-[var(--color-text-faint)]">{email}</span>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="flex min-h-11 items-center justify-center rounded-md border border-[var(--color-border)] px-3 py-1.5 text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
+          >
+            {t('nav.signOut', 'Sign out', 'common')}
+          </button>
+        </div>
+      </MobileNavDrawer>
+      <main>
+        <Container variant="page" className="py-10">
+          {children}
+        </Container>
+      </main>
     </div>
   )
 }

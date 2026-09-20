@@ -8,6 +8,7 @@ import {
   RequireAuth,
   RequireOnboardingComplete,
 } from '@/components/layout/app-shell'
+import { Container } from '@/components/layout/container'
 import { useAuth } from '@/components/providers/auth-provider'
 import { resolveSessionUser } from '@/lib/blocks/session-user'
 import { hasMentorRole } from '@/lib/onboarding/gate'
@@ -20,6 +21,7 @@ import {
   profileSectionClassName,
 } from '@/components/profile/profile-field'
 import { MenteeProfileSkeleton } from '@/components/loading/mentee-profile-skeleton'
+import { useLocale } from '@/components/providers/localization-provider'
 
 type LoadState =
   | { status: 'loading' }
@@ -29,6 +31,7 @@ type LoadState =
 
 const MenteeProfileViewContent = () => {
   const { claims } = useAuth()
+  const { t } = useLocale()
   const params = useParams<{ userId: string }>()
   const menteeUserId = typeof params.userId === 'string' ? params.userId : ''
   const [state, setState] = useState<LoadState>({ status: 'loading' })
@@ -63,13 +66,14 @@ const MenteeProfileViewContent = () => {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-2xl space-y-6">
+      <Container variant="content" className="space-y-6">
         <div>
           <Link
             href="/dashboard"
             className="text-sm font-medium text-[var(--color-brand)] hover:underline"
           >
-            ← Back to dashboard
+            <span aria-hidden className="inline-block rtl:-scale-x-100">← </span>
+            {t('backToDashboard', 'Back to dashboard', 'dashboard')}
           </Link>
         </div>
 
@@ -77,12 +81,12 @@ const MenteeProfileViewContent = () => {
 
         {state.status === 'forbidden' ? (
           <div className={profileAlertClassName.error}>
-            You can only view profiles of mentees assigned to you.
+            {t('mentee.forbidden', 'You can only view profiles of mentees assigned to you.', 'dashboard')}
           </div>
         ) : null}
 
         {state.status === 'missing' ? (
-          <div className={profileAlertClassName.error}>Mentee profile not found.</div>
+          <div className={profileAlertClassName.error}>{t('mentee.missing', 'Mentee profile not found.', 'dashboard')}</div>
         ) : null}
 
         {state.status === 'ready' ? (
@@ -95,11 +99,11 @@ const MenteeProfileViewContent = () => {
                 {(state.profile.displayName ?? 'M').slice(0, 1).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <h1 className="text-2xl font-semibold">
-                  {state.profile.displayName ?? 'Mentee'}
+                <h1 className="text-2xl font-semibold" dir="auto">
+                  {state.profile.displayName ?? t('mentee.fallbackName', 'Mentee', 'dashboard')}
                 </h1>
                 <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                  Assigned mentee · read-only
+                  {t('mentee.assignedReadOnly', 'Assigned mentee · read-only', 'dashboard')}
                 </p>
               </div>
             </div>
@@ -107,24 +111,25 @@ const MenteeProfileViewContent = () => {
             <div className="space-y-4 border-t border-[var(--color-border)] pt-4">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-faint)]">
-                  Goals
+                  {t('mentee.goals', 'Goals', 'dashboard')}
                 </p>
-                <p className="mt-1 text-sm text-[var(--color-text)]">
+                <p className="mt-1 text-sm text-[var(--color-text)]" dir="auto">
                   {(state.profile.goals ?? []).length
                     ? (state.profile.goals ?? []).join(' · ')
-                    : 'No goals listed yet.'}
+                    : t('mentee.noGoals', 'No goals listed yet.', 'dashboard')}
                 </p>
               </div>
 
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-faint)]">
-                  Interests
+                  {t('mentee.interests', 'Interests', 'dashboard')}
                 </p>
                 {(state.profile.interests ?? []).length ? (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {(state.profile.interests ?? []).map((interest) => (
                       <span
                         key={interest}
+                        dir="auto"
                         className="rounded-full bg-[var(--color-bg-inset)] px-2.5 py-1 text-xs text-[var(--color-text-muted)]"
                       >
                         {interest}
@@ -133,7 +138,7 @@ const MenteeProfileViewContent = () => {
                   </div>
                 ) : (
                   <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                    No interests listed yet.
+                    {t('mentee.noInterests', 'No interests listed yet.', 'dashboard')}
                   </p>
                 )}
               </div>
@@ -141,7 +146,7 @@ const MenteeProfileViewContent = () => {
               {state.profile.timezone ? (
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-faint)]">
-                    Timezone
+                    {t('mentee.timezone', 'Timezone', 'dashboard')}
                   </p>
                   <p className="mt-1 text-sm text-[var(--color-text)]">{state.profile.timezone}</p>
                 </div>
@@ -149,12 +154,15 @@ const MenteeProfileViewContent = () => {
             </div>
 
             <p className="text-sm text-[var(--color-text-muted)]">
-              You can view this profile because the mentee is assigned to you. Only the mentee can
-              edit it from their own settings.
+              {t(
+                'mentee.note',
+                'You can view this profile because the mentee is assigned to you. Only the mentee can edit it from their own settings.',
+                'dashboard'
+              )}
             </p>
           </section>
         ) : null}
-      </div>
+      </Container>
     </AppShell>
   )
 }

@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "eyebrow": "Someone in your corner",
+    "title": {
+      "line1": "Get unstuck.",
+      "line2": "With a mentor who gets it."
+    },
+    "footnote": "Create your profile — booking comes next.",
+    "subtitle": "A fresh perspective from someone who has been there. Create your profile and get ready to connect."
+  },
+  "cta": {
+    "becomeMentor": "Become a mentor"
+  }
+}

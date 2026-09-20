@@ -1,0 +1,27 @@
+{
+  "loading": "جارٍ التحميل…",
+  "sessionLoading": "جارٍ تجهيز جلستك…",
+  "signedIn": "مسجّل الدخول",
+  "brand": "MentorMatch",
+  "language": {
+    "label": "اللغة"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "profile": "الملف الشخصي",
+    "becomeMentor": "كن مرشداً",
+    "bookAsMentee": "احجز كمستفيد",
+    "signOut": "تسجيل الخروج",
+    "logIn": "تسجيل الدخول",
+    "getStarted": "ابدأ",
+    "openMenu": "افتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "menu": "القائمة"
+  },
+  "theme": {
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "label": "المظهر"
+  }
+}

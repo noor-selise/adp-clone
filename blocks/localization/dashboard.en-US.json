@@ -1,0 +1,53 @@
+{
+  "title": "Dashboard",
+  "loadingDashboard": "Loading dashboard",
+  "loadingMenteeProfile": "Loading mentee profile",
+  "roles": "Roles",
+  "permissions": "permissions",
+  "mentor": {
+    "title": "Mentor",
+    "empty": "Update your mentor profile for the directory.",
+    "fallbackName": "Mentor",
+    "addTitleCompany": "Add your title and company",
+    "emptyBio": "Your mentor profile is live. Add a bio so mentees know how you can help.",
+    "completeness": "Profile completeness",
+    "stillToAdd": "Still to add",
+    "missing": {
+      "photo": "Photo",
+      "displayName": "Display name",
+      "title": "Title",
+      "company": "Company",
+      "bio": "Bio",
+      "skills": "Skills"
+    }
+  },
+  "mentee": {
+    "title": "Mentee",
+    "ready": "Your mentee profile is ready. Finding mentors is next.",
+    "fallbackName": "Mentee",
+    "assignedViewOnly": "Assigned mentee · view only",
+    "assignedReadOnly": "Assigned mentee · read-only",
+    "goals": "Goals",
+    "interests": "Interests",
+    "timezone": "Timezone",
+    "noGoals": "No goals listed yet.",
+    "noInterests": "No interests listed yet.",
+    "viewProfile": "View profile",
+    "cardLabel": "Mentee profile for",
+    "viewCardLabel": "View mentee profile for",
+    "forbidden": "You can only view profiles of mentees assigned to you.",
+    "missing": "Mentee profile not found.",
+    "note": "You can view this profile because the mentee is assigned to you. Only the mentee can edit it from their own settings."
+  },
+  "admin": {
+    "title": "Admin",
+    "body": "Manage users in the Blocks portal. App moderation comes in a later phase.",
+    "openOs": "Open Blocks OS"
+  },
+  "assigned": {
+    "title": "Your mentees",
+    "subtitle": "Mentees currently assigned to you. Profiles are read-only here. Mentees edit their own profile in settings."
+  },
+  "editProfile": "Edit profile",
+  "backToDashboard": "Back to dashboard"
+}

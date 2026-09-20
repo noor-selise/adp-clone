@@ -4,6 +4,13 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Add the Corner brand mark to headers, public auth chrome, and the mobile drawer beside Close (by noor, 2026-09-20)
+
+- Extend locale runtime, route module, numeral, and guest Playwright coverage for the multi language regression suite (by noor, 2026-09-20)
+- Fix React script tag warning by using a blocking inline script, cookie locale for SSR, and home hero.subtitle in all three languages (by noor, 2026-09-20)
+
+- Add guest locale Playwright coverage and i18n unit tests for modules, dictionaries, and direction (by noor, 2026-09-20)
+
 - Move the theme control after Sign out and use stroke sun, moon, and display icons per mode (by noor, 2026-09-20)
 - Include `*.test.ts` in the Next TypeScript project so the editor can resolve `node:assert` and `node:test` (by noor, 2026-09-20)
 

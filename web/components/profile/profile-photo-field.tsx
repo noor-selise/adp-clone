@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { ProfileField } from '@/components/profile/profile-field'
 import { getProfilePhotoUrl, uploadProfilePhoto, validateProfilePhotoFile } from '@/lib/profiles/photo'
 import { readBlocksError } from '@/lib/profiles/errors'
+import { useLocale } from '@/components/providers/localization-provider'
 
 type ProfilePhotoFieldProps = {
   fileId?: string
@@ -18,6 +19,7 @@ export const ProfilePhotoField = ({
   onFileIdChange,
   onError,
 }: ProfilePhotoFieldProps) => {
+  const { t } = useLocale()
   const [previewUrl, setPreviewUrl] = useState<string | undefined>()
   const [uploading, setUploading] = useState(false)
 
@@ -75,7 +77,7 @@ export const ProfilePhotoField = ({
       .toUpperCase() || 'M'
 
   return (
-    <ProfileField label="Profile photo" hint="Square images work best. Max 5 MB.">
+    <ProfileField label={t('field.photo', 'Profile photo', 'profile')} hint={t('field.photoHint', 'Square images work best. Max 5 MB.', 'profile')}>
       <div className="flex items-center gap-4">
         <div
           className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--color-bg-inset)] text-lg font-semibold text-[var(--color-text-muted)]"
@@ -90,7 +92,11 @@ export const ProfilePhotoField = ({
         </div>
         <div className="space-y-2">
           <label className="inline-flex cursor-pointer rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm font-medium hover:bg-[var(--color-bg-inset)]">
-            {uploading ? 'Uploading…' : fileId ? 'Change photo' : 'Upload photo'}
+            {uploading
+              ? t('photo.uploading', 'Uploading…', 'profile')
+              : fileId
+                ? t('photo.change', 'Change photo', 'profile')
+                : t('photo.upload', 'Upload photo', 'profile')}
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp,image/gif"
@@ -108,7 +114,7 @@ export const ProfilePhotoField = ({
                 setPreviewUrl(undefined)
               }}
             >
-              Remove photo
+              {t('photo.remove', 'Remove photo', 'profile')}
             </button>
           ) : null}
         </div>

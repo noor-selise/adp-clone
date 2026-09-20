@@ -1,8 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { useLocale } from '@/components/providers/localization-provider'
+import { Container } from '@/components/layout/container'
 
-export const MenteeProfileSkeleton = () => (
-  <div className="mx-auto max-w-2xl space-y-6" aria-busy="true" aria-live="polite">
-    <span className="sr-only">Loading mentee profile</span>
+export const MenteeProfileSkeleton = () => {
+  const { t } = useLocale()
+  return (
+  <Container variant="content" className="space-y-6" aria-busy="true" aria-live="polite">
+    <span className="sr-only">{t('loadingMenteeProfile', 'Loading mentee profile', 'dashboard')}</span>
     <Skeleton className="h-4 w-40" />
 
     <section className="space-y-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-6">
@@ -34,5 +38,6 @@ export const MenteeProfileSkeleton = () => (
         </div>
       </div>
     </section>
-  </div>
-)
+  </Container>
+  )
+}

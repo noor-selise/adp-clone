@@ -1,0 +1,41 @@
+{
+  "brand": "MentorMatch",
+  "loadingOnboarding": "Loading onboarding",
+  "picker": {
+    "title": "How do you want to start?",
+    "subtitle": "Pick one path to finish your profile. You can add the other later.",
+    "menteeEyebrow": "Get guidance",
+    "menteeTitle": "I want a mentor",
+    "menteeBody": "Share your goals so we can get you ready to connect.",
+    "mentorEyebrow": "Give back",
+    "mentorTitle": "Become a mentor",
+    "mentorBody": "Tell us how you show up so mentees know who you are."
+  },
+  "mentor": {
+    "title": "Set up your mentor profile",
+    "subtitle": "A few details so mentees know who you are. You can add more later.",
+    "titlePlaceholder": "Senior Product Designer"
+  },
+  "mentee": {
+    "title": "Tell us what you are working toward",
+    "subtitle": "A starting point for your next chapter. You do not need it all figured out.",
+    "goalsPlaceholder": "Career growth, leadership, portfolio review",
+    "interestsPlaceholder": "Product design, UX research, AI"
+  },
+  "field": {
+    "displayName": "Display name",
+    "title": "Title",
+    "goals": "Goals",
+    "interests": "Interests",
+    "commaHint": "Comma-separated"
+  },
+  "saving": "Saving…",
+  "continue": "Continue to dashboard",
+  "error": {
+    "mentorOnly": "Your account is set up as a mentor only. Mentee profiles are not available.",
+    "displayNameRequired": "Display name is required.",
+    "titleRequired": "Title is required.",
+    "goalRequired": "Add at least one goal.",
+    "interestRequired": "Add at least one interest."
+  }
+}

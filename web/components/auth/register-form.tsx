@@ -13,6 +13,7 @@ import {
   registerPath,
   type RegisterTrack,
 } from '@/lib/onboarding/track'
+import { useLocale } from '@/components/providers/localization-provider'
 
 const inputClassName =
   'w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] focus:ring-offset-2'
@@ -20,6 +21,7 @@ const inputClassName =
 export const RegisterForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useLocale()
   const track = useMemo(
     () => parseRegisterTrack(searchParams.get('as')) ?? 'mentee',
     [searchParams]
@@ -36,12 +38,12 @@ export const RegisterForm = () => {
 
   const copy = track === 'mentor'
     ? {
-        title: 'Become a mentor',
-        subtitle: 'Be someone in their corner.',
+        title: t('register.mentor.title', 'Become a mentor', 'auth'),
+        subtitle: t('register.mentor.subtitle', 'Be someone in their corner.', 'auth'),
       }
     : {
-        title: 'Get started',
-        subtitle: 'Find your next step with a mentor.',
+        title: t('register.mentee.title', 'Get started', 'auth'),
+        subtitle: t('register.mentee.subtitle', 'Find your next step with a mentor.', 'auth'),
       }
 
   const handleSubmit = async (event: FormEvent) => {
@@ -49,7 +51,7 @@ export const RegisterForm = () => {
     setError(undefined)
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.')
+      setError(t('register.error.passwordMismatch', 'Passwords do not match.', 'auth'))
       return
     }
 
@@ -57,7 +59,7 @@ export const RegisterForm = () => {
     try {
       const available = await checkEmailAvailable(email.trim())
       if (!available) {
-        setError('An account with this email already exists.')
+        setError(t('register.error.emailExists', 'An account with this email already exists.', 'auth'))
         setPending(false)
         return
       }
@@ -92,20 +94,21 @@ export const RegisterForm = () => {
   if (pendingEmail) {
     return (
       <div className="space-y-4 text-center">
-        <h2 className="text-xl font-semibold">Check your email</h2>
+        <h2 className="text-xl font-semibold">{t('register.checkEmail.title', 'Check your email', 'auth')}</h2>
         <p className="text-sm text-[var(--color-text-muted)]">
-          We sent an activation link to <strong>{pendingEmail}</strong>. Open it to activate your
-          account, then sign in.
+          {t('register.checkEmail.before', 'We sent an activation link to', 'auth')}{' '}
+          <strong>{pendingEmail}</strong>.{' '}
+          {t('register.checkEmail.after', 'Open it to activate your account, then sign in.', 'auth')}
         </p>
         <Link
           href="/activate"
           className="inline-flex rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-brand-hover)]"
         >
-          Enter activation code
+          {t('register.enterActivationCode', 'Enter activation code', 'auth')}
         </Link>
         <p>
           <Link href="/login" className="text-sm font-medium text-[var(--color-brand)] hover:underline">
-            Go to sign in
+            {t('register.goToSignIn', 'Go to sign in', 'auth')}
           </Link>
         </p>
       </div>
@@ -127,7 +130,7 @@ export const RegisterForm = () => {
           {error.includes('already exists') ? (
             <p className="mt-2">
               <Link href="/login" className="font-medium text-[var(--color-brand)] hover:underline">
-                Log in instead
+                {t('register.logInInstead', 'Log in instead', 'auth')}
               </Link>
             </p>
           ) : null}
@@ -136,7 +139,7 @@ export const RegisterForm = () => {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block space-y-1 text-sm">
-          <span>First name</span>
+          <span>{t('register.field.firstName', 'First name', 'auth')}</span>
           <input
             required
             autoComplete="given-name"
@@ -146,7 +149,7 @@ export const RegisterForm = () => {
           />
         </label>
         <label className="block space-y-1 text-sm">
-          <span>Last name</span>
+          <span>{t('register.field.lastName', 'Last name', 'auth')}</span>
           <input
             required
             autoComplete="family-name"
@@ -158,7 +161,7 @@ export const RegisterForm = () => {
       </div>
 
       <label className="block space-y-1 text-sm">
-        <span>Email</span>
+        <span>{t('register.field.email', 'Email', 'auth')}</span>
         <input
           required
           type="email"
@@ -170,7 +173,7 @@ export const RegisterForm = () => {
       </label>
 
       <label className="block space-y-1 text-sm">
-        <span>Password</span>
+        <span>{t('register.field.password', 'Password', 'auth')}</span>
         <input
           required
           type="password"
@@ -182,7 +185,7 @@ export const RegisterForm = () => {
       </label>
 
       <label className="block space-y-1 text-sm">
-        <span>Confirm password</span>
+        <span>{t('register.field.confirmPassword', 'Confirm password', 'auth')}</span>
         <input
           required
           type="password"
@@ -198,40 +201,43 @@ export const RegisterForm = () => {
         disabled={pending}
         className="w-full rounded-lg bg-[var(--color-brand)] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-hover)] disabled:opacity-60"
       >
-        {pending ? 'Creating account…' : 'Create account'}
+        {pending ? t('register.creatingAccount', 'Creating account…', 'auth') : t('register.createAccount', 'Create account', 'auth')}
       </button>
 
       <p className="text-center text-sm text-[var(--color-text-muted)]">
-        Already have an account?{' '}
+        {t('register.haveAccount', 'Already have an account?', 'auth')}{' '}
         <Link href="/login" className="font-medium text-[var(--color-brand)] hover:underline">
-          Log in
+          {t('register.logIn', 'Log in', 'auth')}
         </Link>
       </p>
     </form>
   )
 }
 
-const TrackToggle = ({ track }: { track: RegisterTrack }) => (
-  <div className="flex rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-1 text-sm">
-    <Link
-      href={registerPath('mentee')}
-      className={`flex-1 rounded-md px-3 py-2 text-center font-medium ${
-        track === 'mentee'
-          ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
-          : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
-      }`}
-    >
-      Find a mentor
-    </Link>
-    <Link
-      href={registerPath('mentor')}
-      className={`flex-1 rounded-md px-3 py-2 text-center font-medium ${
-        track === 'mentor'
-          ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
-          : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
-      }`}
-    >
-      Become a mentor
-    </Link>
-  </div>
-)
+const TrackToggle = ({ track }: { track: RegisterTrack }) => {
+  const { t } = useLocale()
+  return (
+    <div className="flex rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-1 text-sm">
+      <Link
+        href={registerPath('mentee')}
+        className={`flex-1 rounded-md px-3 py-2 text-center font-medium ${
+          track === 'mentee'
+            ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
+            : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+        }`}
+      >
+        {t('register.track.mentee', 'Find a mentor', 'auth')}
+      </Link>
+      <Link
+        href={registerPath('mentor')}
+        className={`flex-1 rounded-md px-3 py-2 text-center font-medium ${
+          track === 'mentor'
+            ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
+            : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+        }`}
+      >
+        {t('register.track.mentor', 'Become a mentor', 'auth')}
+      </Link>
+    </div>
+  )
+}

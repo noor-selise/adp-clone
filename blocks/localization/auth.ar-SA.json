@@ -1,0 +1,80 @@
+{
+  "login": {
+    "title": "مرحباً بعودتك",
+    "subtitle": "سجّل الدخول بحساب MentorMatch عبر Blocks OIDC.",
+    "newHere": "جديد هنا؟",
+    "createAccount": "أنشئ حساباً",
+    "continueWithBlocks": "المتابعة عبر Blocks",
+    "redirecting": "جارٍ التحويل…",
+    "backToHome": "العودة إلى الصفحة الرئيسية",
+    "notConfigured": {
+      "before": "تسجيل الدخول غير مهيأ. سجّل",
+      "after": "كعنوان إعادة توجيه OIDC."
+    }
+  },
+  "callback": {
+    "error": "تعذّر إكمال تسجيل الدخول.",
+    "tryAgain": "حاول مرة أخرى",
+    "completing": "جارٍ إكمال تسجيل الدخول…"
+  },
+  "register": {
+    "mentor": {
+      "title": "كن مرشداً",
+      "subtitle": "كن سنداً في زاويتهم."
+    },
+    "mentee": {
+      "title": "ابدأ",
+      "subtitle": "اعثر على خطوتك التالية مع مرشد."
+    },
+    "error": {
+      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "emailExists": "يوجد حساب بهذا البريد الإلكتروني بالفعل."
+    },
+    "checkEmail": {
+      "title": "تحقق من بريدك",
+      "before": "أرسلنا رابط التفعيل إلى",
+      "after": "افتحه لتفعيل حسابك، ثم سجّل الدخول."
+    },
+    "enterActivationCode": "أدخل رمز التفعيل",
+    "goToSignIn": "الذهاب لتسجيل الدخول",
+    "logInInstead": "سجّل الدخول بدلاً من ذلك",
+    "field": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور"
+    },
+    "creatingAccount": "جارٍ إنشاء الحساب…",
+    "createAccount": "إنشاء حساب",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "logIn": "تسجيل الدخول",
+    "track": {
+      "mentee": "ابحث عن مرشد",
+      "mentor": "كن مرشداً"
+    }
+  },
+  "activate": {
+    "title": "فعّل حسابك",
+    "subtitle": "الصق الرمز من بريدك واختر كلمة مرور.",
+    "field": {
+      "code": "رمز التفعيل",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "email": "البريد الإلكتروني"
+    },
+    "checkingCode": "جارٍ التحقق من الرمز…",
+    "invalidLink": "رابط التفعيل هذا غير صالح أو منتهٍ.",
+    "activating": "جارٍ التفعيل…",
+    "activateAccount": "تفعيل الحساب",
+    "needNewLink": "تحتاج رابطاً جديداً؟",
+    "resend": "إعادة إرسال بريد التفعيل",
+    "backToSignIn": "العودة لتسجيل الدخول",
+    "success": "تم تفعيل الحساب. يمكنك تسجيل الدخول الآن.",
+    "resendSuccess": "تم إرسال بريد التفعيل. تحقق من صندوق الوارد.",
+    "error": {
+      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "needEmail": "أدخل بريدك لإعادة إرسال رابط التفعيل."
+    }
+  }
+}
