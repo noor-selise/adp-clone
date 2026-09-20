@@ -4,6 +4,8 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Bind local Next.js HTTPS to 127.0.0.1 and restore /etc/hosts mapping so `npm run dev` no longer fails with EADDRNOTAVAIL on the public app IP (by noor, 2026-09-20)
+
 - Deployed MentorMatch to Blocks Release **dev** (build Succeeded); app at https://dpkhbr.slsblx.com (by noor, 2026-09-17)
 - Switch Release Dockerfile to multi-stage Next.js standalone (~50MB vs full node_modules) so Kaniko can finish pushing (by noor, 2026-09-17)
 - Exclude `*.test.ts` from Next.js tsconfig so Blocks Release `next build` typecheck does not pull seed scripts outside web/ (by noor, 2026-09-17)

@@ -19,7 +19,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --experimental-strip-types --test lib/onboarding/*.test.ts lib/profiles/*.test.ts lib/mentorship/*.test.ts",
+    "test": "node --experimental-strip-types --test lib/onboarding/*.test.ts lib/profiles/*.test.ts lib/mentorship/*.test.ts scripts/local-bind-host.test.mjs",
     "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
     "prepare": "cd .. && husky web/.husky"
   },

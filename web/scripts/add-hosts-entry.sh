@@ -16,10 +16,17 @@ if [[ -z "${devHost}" ]]; then
   exit 1
 fi
 
-if grep -vE '^[[:space:]]*#' /etc/hosts | grep -qE "(^|[[:space:]])${devHost}([[:space:]]|$)"; then
-  echo "Hosts entry already present:"
-  grep "${devHost}" /etc/hosts
-  exit 0
+active="$(grep -vE '^[[:space:]]*#' /etc/hosts | grep -E "(^|[[:space:]])${devHost}([[:space:]]|$)" || true)"
+
+if [[ -n "${active}" ]]; then
+  if echo "${active}" | grep -qE '^[[:space:]]*(127\.0\.0\.1|::1)[[:space:]]'; then
+    echo "Hosts entry already present:"
+    echo "${active}"
+    exit 0
+  fi
+  echo "Conflicting hosts mapping for ${devHost} (must be 127.0.0.1, not a public IP):" >&2
+  echo "${active}" >&2
+  exit 1
 fi
 
 echo "127.0.0.1 ${devHost}" | sudo tee -a /etc/hosts

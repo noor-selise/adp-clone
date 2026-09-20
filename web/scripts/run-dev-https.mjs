@@ -2,12 +2,14 @@ import { spawn, spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { hostsFixHint, isLoopbackAddress, lookupHost } from './local-bind-host.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(__dirname, '..')
 const certDir = path.join(rootDir, '.cert')
 const freePortScript = path.join(rootDir, 'scripts/free-port.mjs')
 const nextDevScript = path.join(rootDir, 'scripts/run-next-dev.mjs')
+const hostsScript = path.join(rootDir, 'scripts/add-hosts-entry.sh')
 const envPath = path.join(rootDir, '.env.local')
 
 const readDevHost = () => {
@@ -23,6 +25,29 @@ if (!fs.existsSync(path.join(certDir, 'dev-cert.pem'))) {
   process.exit(1)
 }
 
+const ensureHostsMapsToLoopback = async (devHost) => {
+  let address = await lookupHost(devHost)
+  if (isLoopbackAddress(address)) return
+
+  console.log(`${devHost} currently resolves to ${address}. Adding a loopback hosts entry…`)
+  const hostsResult = spawnSync('bash', [hostsScript], {
+    cwd: rootDir,
+    stdio: 'inherit',
+  })
+  if (hostsResult.status !== 0) {
+    console.error(hostsFixHint(devHost))
+    process.exit(hostsResult.status ?? 1)
+  }
+
+  address = await lookupHost(devHost)
+  if (!isLoopbackAddress(address)) {
+    console.error(
+      `After updating hosts, ${devHost} still resolves to ${address}. ${hostsFixHint(devHost)}`
+    )
+    process.exit(1)
+  }
+}
+
 for (const port of ['3000', '443']) {
   const result = spawnSync(process.execPath, [freePortScript, port], {
     cwd: rootDir,
@@ -34,6 +59,8 @@ for (const port of ['3000', '443']) {
 }
 
 const devHost = readDevHost()
+await ensureHostsMapsToLoopback(devHost)
+
 console.log('')
 console.log(`Starting MentorMatch at https://${devHost}`)
 console.log('Use that URL in the browser — not localhost.')
