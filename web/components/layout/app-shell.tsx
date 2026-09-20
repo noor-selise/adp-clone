@@ -140,7 +140,7 @@ export const AppShell = ({ children, profiles, roles = [] }: AppShellProps) => {
     <div className="min-h-screen bg-[var(--color-bg-subtle)]">
       <header className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
         <Container variant="page" className="flex items-center justify-between py-4">
-          <BrandLockup href="/dashboard" showName={false} />
+          <BrandLockup href="/dashboard" showName={true} />
           <div className="flex items-center gap-2 text-sm sm:gap-4">
             <nav className="hidden items-center gap-4 md:flex">{navLinks}</nav>
             <div className="hidden items-center gap-3 border-s border-[var(--color-border)] ps-4 md:flex">
