@@ -59,19 +59,24 @@ const refreshAccessToken = async (
   getClient: ClientGetter,
   refreshToken: string
 ): Promise<string | undefined> => {
+  const endSession = async () => {
+    clearLocalTokens()
+    await getClient().auth.logout({ refreshToken }).catch(() => undefined)
+    notifySessionExpired()
+  }
+
   try {
     const response = await getClient().auth.oidc.refreshToken({ refreshToken })
     const accessToken = response.access_token ?? response.accessToken
     if (!accessToken) {
-      clearLocalTokens()
-      await getClient().auth.logout({ refreshToken }).catch(() => undefined)
-      notifySessionExpired()
+      await endSession()
       return undefined
     }
     const nextRefreshToken = response.refresh_token ?? response.refreshToken ?? refreshToken
     persistTokens(accessToken, nextRefreshToken)
     return accessToken
   } catch {
+    await endSession()
     return undefined
   }
 }

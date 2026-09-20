@@ -4,6 +4,7 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- End the signed in session when a refresh grant is rejected, so RequireAuth can send the person back to login (by noor, 2026-09-21)
 - Type form submit handlers as SyntheticEvent instead of the deprecated FormEvent (by noor, 2026-09-21)
 - Dismiss every flash success and failure banner after 4 seconds through FlashBanner, including login callback, profile load failure, and mentee empty states (by noor, 2026-09-21)
 - Auto-dismiss success and failure banners after 4 seconds on profile, auth, and onboarding (by noor, 2026-09-21)

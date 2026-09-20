@@ -74,3 +74,33 @@ test('getValidAccessTokenFor refreshes when the access JWT is expired', async ()
   assert.equal(refreshed, 'fresh-access')
   assert.equal(tokens.getRefreshToken(), 'fresh-refresh')
 })
+
+test('a rejected refresh grant clears tokens and notifies session expired', async () => {
+  const { storage, tokens } = await loadTokens()
+  tokens.persistTokens(expiredJwt(), 'refresh-token-value')
+
+  let expired = 0
+  const stop = tokens.onSessionExpired(() => {
+    expired += 1
+  })
+
+  const refreshed = await tokens.forceRefreshAccessTokenFor(
+    () =>
+      ({
+        auth: {
+          oidc: {
+            refreshToken: async () => {
+              throw new Error('invalid_grant')
+            },
+          },
+          logout: async () => undefined,
+        },
+      }) as never
+  )
+
+  stop()
+  assert.equal(refreshed, undefined)
+  assert.equal(expired, 1)
+  assert.equal(storage.getItem('blocks-app:refresh-token'), null)
+  assert.equal(tokens.getRefreshToken(), undefined)
+})
