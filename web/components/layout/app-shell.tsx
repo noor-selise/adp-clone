@@ -11,6 +11,7 @@ import { readRegisterTrack } from '@/lib/onboarding/track'
 import { AuthGateSkeleton } from '@/components/loading/auth-gate-skeleton'
 import { ThemeMenu } from '@/components/theme/theme-menu'
 import { LanguageMenu } from '@/components/language/language-menu'
+import { NotificationBell } from '@/components/notifications/notification-bell'
 import { useLocale } from '@/components/providers/localization-provider'
 import { Container } from '@/components/layout/container'
 import { MobileNavDrawer } from '@/components/layout/mobile-nav-drawer'
@@ -140,21 +141,22 @@ export const AppShell = ({ children, profiles, roles = [] }: AppShellProps) => {
     <div className="min-h-screen bg-[var(--color-bg-subtle)]">
       <header className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
         <Container variant="page" className="flex items-center justify-between py-4">
-          <BrandLockup href="/dashboard" showName={true} />
+          <BrandLockup href="/dashboard" hideNameBelowMd />
           <div className="flex items-center gap-2 text-sm sm:gap-4">
             <nav className="hidden items-center gap-4 md:flex">{navLinks}</nav>
             <div className="hidden items-center gap-3 border-s border-[var(--color-border)] ps-4 md:flex">
               <span className="text-[var(--color-text-faint)]">{email}</span>
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="flex min-h-11 items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
-              >
-                {t('nav.signOut', 'Sign out', 'common')}
-              </button>
             </div>
+            <NotificationBell />
             <LanguageMenu />
             <ThemeMenu />
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="hidden min-h-11 items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 text-[var(--color-text)] hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] md:flex"
+            >
+              {t('nav.signOut', 'Sign out', 'common')}
+            </button>
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}

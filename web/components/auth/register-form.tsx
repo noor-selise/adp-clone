@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FormEvent, useMemo, useState } from 'react'
+import { useMemo, useState, type SyntheticEvent } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   checkEmailAvailable,
@@ -14,6 +14,7 @@ import {
   type RegisterTrack,
 } from '@/lib/onboarding/track'
 import { useLocale } from '@/components/providers/localization-provider'
+import { FlashBanner } from '@/components/ui/flash-banner'
 
 const inputClassName =
   'w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] focus:ring-offset-2'
@@ -46,7 +47,7 @@ export const RegisterForm = () => {
         subtitle: t('register.mentee.subtitle', 'Find your next step with a mentor.', 'auth'),
       }
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(undefined)
 
@@ -125,7 +126,7 @@ export const RegisterForm = () => {
       <TrackToggle track={track} />
 
       {error ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <FlashBanner key={error} kind="error">
           {error}
           {error.includes('already exists') ? (
             <p className="mt-2">
@@ -134,7 +135,7 @@ export const RegisterForm = () => {
               </Link>
             </p>
           ) : null}
-        </div>
+        </FlashBanner>
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">

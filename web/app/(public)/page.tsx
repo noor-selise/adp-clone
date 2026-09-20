@@ -31,7 +31,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[var(--color-bg-subtle)]">
       <header>
         <Container variant="page" className="flex items-center justify-between py-6">
-          <BrandLockup href="/" />
+          <BrandLockup href="/" hideNameBelowMd />
           <div className="flex items-center gap-2 text-sm sm:gap-3">
             <nav className="hidden items-center gap-3 md:flex">
               <Link

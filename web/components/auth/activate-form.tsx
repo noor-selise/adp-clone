@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FormEvent, useEffect, useState } from 'react'
+import { useEffect, useState, type SyntheticEvent } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   activateAccount,
@@ -9,6 +9,7 @@ import {
   validateActivationCode,
 } from '@/lib/blocks/account'
 import { useLocale } from '@/components/providers/localization-provider'
+import { FlashBanner } from '@/components/ui/flash-banner'
 
 const inputClassName =
   'w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] focus:ring-offset-2'
@@ -52,7 +53,7 @@ export const ActivateForm = () => {
       })
   }, [code])
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(undefined)
     setMessage(undefined)
@@ -100,13 +101,14 @@ export const ActivateForm = () => {
       </div>
 
       {message ? (
-        <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800">
+        <FlashBanner key={message} kind="success">
           {message}
-        </div>
+        </FlashBanner>
       ) : null}
-
       {error ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</div>
+        <FlashBanner key={error} kind="error">
+          {error}
+        </FlashBanner>
       ) : null}
 
       <form onSubmit={handleSubmit} className="space-y-4">

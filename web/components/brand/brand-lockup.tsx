@@ -7,18 +7,20 @@ import { useLocale } from '@/components/providers/localization-provider'
 type BrandLockupProps = {
   href?: string
   showName?: boolean
+  hideNameBelowMd?: boolean
 }
 
-export const BrandLockup = ({ href, showName = true }: BrandLockupProps) => {
+export const BrandLockup = ({ href, showName = true, hideNameBelowMd = false }: BrandLockupProps) => {
   const { t } = useLocale()
   const name = t('brand', 'MentorMatch', 'common')
   const mark = <BrandMark className="h-8 w-8 text-[var(--color-brand)]" />
+  const nameClass = hideNameBelowMd
+    ? 'sr-only text-lg font-semibold tracking-tight text-[var(--color-text)] md:not-sr-only md:inline'
+    : 'text-lg font-semibold tracking-tight text-[var(--color-text)]'
   const label = (
     <span className="inline-flex items-center gap-2">
       {mark}
-      {showName ? (
-        <span className="text-lg font-semibold tracking-tight text-[var(--color-text)]">{name}</span>
-      ) : null}
+      {showName ? <span className={nameClass}>{name}</span> : null}
     </span>
   )
 

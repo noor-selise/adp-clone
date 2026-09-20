@@ -1,7 +1,9 @@
+import { getValidAccessToken } from '@/lib/blocks/auth'
 import { getBlocksClient } from '@/lib/blocks/client'
 import { parseCollectionList, recordUserId } from '@/lib/profiles/collection'
 import { isDuplicateProfileError } from '@/lib/profiles/errors'
 import type { Locale } from './locale.ts'
+import { ignorePreferenceSyncFailure } from './preference-sync.ts'
 
 const SCHEMA = 'UserPreference'
 const LIST_FIELD = 'getUserPreferences'
@@ -34,25 +36,30 @@ const findForUser = async (userId: string): Promise<UserPreferenceRecord | undef
   return all.find((record) => recordUserId(record) === userId)
 }
 
-export const fetchAccountLocale = async (userId: string): Promise<Locale | undefined> => {
-  const record = await findForUser(userId)
-  return record?.preferredLocale
-}
+export const fetchAccountLocale = async (userId: string): Promise<Locale | undefined> =>
+  ignorePreferenceSyncFailure(async () => {
+    if (!(await getValidAccessToken())) return undefined
+    const record = await findForUser(userId)
+    return record?.preferredLocale
+  })
 
 export const upsertAccountLocale = async (userId: string, locale: Locale): Promise<void> => {
-  const existing = await findForUser(userId)
-  const itemId = existing?.itemId ?? existing?.ItemId
-  if (itemId) {
-    await collection().update(itemId, { preferredLocale: locale })
-    return
-  }
+  await ignorePreferenceSyncFailure(async () => {
+    if (!(await getValidAccessToken())) return
+    const existing = await findForUser(userId)
+    const itemId = existing?.itemId ?? existing?.ItemId
+    if (itemId) {
+      await collection().update(itemId, { preferredLocale: locale })
+      return
+    }
 
-  try {
-    await collection().create({ userId, preferredLocale: locale })
-  } catch (error) {
-    if (!isDuplicateProfileError(error)) throw error
-    const created = await findForUser(userId)
-    const createdId = created?.itemId ?? created?.ItemId
-    if (createdId) await collection().update(createdId, { preferredLocale: locale })
-  }
+    try {
+      await collection().create({ userId, preferredLocale: locale })
+    } catch (error) {
+      if (!isDuplicateProfileError(error)) throw error
+      const created = await findForUser(userId)
+      const createdId = created?.itemId ?? created?.ItemId
+      if (createdId) await collection().update(createdId, { preferredLocale: locale })
+    }
+  })
 }

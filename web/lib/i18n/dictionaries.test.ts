@@ -26,4 +26,23 @@ describe('bundledDictionary', () => {
     )
     assert.ok(bundledDictionary('ar-SA', 'home')['hero.subtitle'])
   })
+
+  it('ships every module for English, Bangla, and Arabic', () => {
+    // covers: AC-1
+    const locales = ['en-US', 'bn-BD', 'ar-SA'] as const
+    const modules = ['common', 'auth', 'onboarding', 'dashboard', 'profile', 'home'] as const
+    for (const locale of locales) {
+      for (const moduleName of modules) {
+        const dict = bundledDictionary(locale, moduleName)
+        assert.ok(Object.keys(dict).length > 0, `${locale} ${moduleName} is empty`)
+      }
+    }
+  })
+
+  it('never returns a raw key for a missing home subtitle in a supported locale', () => {
+    // covers: AC-8
+    const subtitle = bundledDictionary('en-US', 'home')['hero.subtitle']
+    assert.ok(subtitle)
+    assert.notEqual(subtitle, 'hero.subtitle')
+  })
 })

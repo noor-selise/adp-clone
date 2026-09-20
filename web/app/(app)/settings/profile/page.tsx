@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
+import { useEffect, useState, type SyntheticEvent } from 'react'
 import Link from 'next/link'
 import {
   AppShell,
@@ -12,10 +12,10 @@ import {
   ProfileField,
   ProfileInput,
   ProfileTextarea,
-  profileAlertClassName,
   profileSectionClassName,
 } from '@/components/profile/profile-field'
 import { ProfilePhotoField } from '@/components/profile/profile-photo-field'
+import { FlashBanner } from '@/components/ui/flash-banner'
 import { ProfileSettingsSkeleton } from '@/components/loading/profile-settings-skeleton'
 import { useAuth } from '@/components/providers/auth-provider'
 import { useLocale } from '@/components/providers/localization-provider'
@@ -89,7 +89,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
     setMenteeItemId(profileItemId(initialProfiles.mentee))
   }, [initialProfiles])
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!userId) return
 
@@ -162,8 +162,16 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
         </p>
       </div>
 
-      {error ? <div className={profileAlertClassName.error}>{error}</div> : null}
-      {message ? <div className={profileAlertClassName.success}>{message}</div> : null}
+      {error ? (
+        <FlashBanner key={error} kind="error">
+          {error}
+        </FlashBanner>
+      ) : null}
+      {message ? (
+        <FlashBanner key={message} kind="success">
+          {message}
+        </FlashBanner>
+      ) : null}
 
       {initialProfiles.hasMentorProfile ? (
         <section className={profileSectionClassName}>
@@ -301,6 +309,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
 
 const ProfileSettingsPageContent = () => {
   const { claims } = useAuth()
+  const { t } = useLocale()
   const [profiles, setProfiles] = useState<UserProfiles | undefined>()
   const [roles, setRoles] = useState<string[]>([])
   const [loadError, setLoadError] = useState<string | undefined>()
@@ -316,18 +325,21 @@ const ProfileSettingsPageContent = () => {
     })
   }, [claims])
 
-  if (loadError) {
-    return (
-      <AppShell>
-        <div className={profileAlertClassName.error}>{loadError}</div>
-      </AppShell>
-    )
-  }
-
   if (!profiles) {
     return (
       <AppShell>
-        <ProfileSettingsSkeleton />
+        {loadError ? (
+          <div className="space-y-4">
+            <FlashBanner key={loadError} kind="error">
+              {loadError}
+            </FlashBanner>
+            <p className="text-sm text-[var(--color-text-muted)]">
+              {t('loadFailed', 'Could not load your profile. Refresh the page.', 'profile')}
+            </p>
+          </div>
+        ) : (
+          <ProfileSettingsSkeleton />
+        )}
       </AppShell>
     )
   }

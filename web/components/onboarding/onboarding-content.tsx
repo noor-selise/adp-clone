@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type SyntheticEvent } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/providers/auth-provider'
 import { resolveSessionUser } from '@/lib/blocks/session-user'
@@ -18,7 +18,6 @@ import {
 import {
   ProfileField,
   ProfileInput,
-  profileAlertClassName,
 } from '@/components/profile/profile-field'
 import {
   clearRegisterTrack,
@@ -33,6 +32,7 @@ import { LanguageMenu } from '@/components/language/language-menu'
 import { Container } from '@/components/layout/container'
 import { MobileNavDrawer } from '@/components/layout/mobile-nav-drawer'
 import { BrandLockup } from '@/components/brand/brand-lockup'
+import { FlashBanner } from '@/components/ui/flash-banner'
 
 const MenuIcon = () => (
   <svg
@@ -121,7 +121,7 @@ export const OnboardingContent = () => {
     setMode(track)
   }
 
-  const handleMentorSubmit = async (event: FormEvent) => {
+  const handleMentorSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!sessionUserId) return
 
@@ -152,7 +152,7 @@ export const OnboardingContent = () => {
     }
   }
 
-  const handleMenteeSubmit = async (event: FormEvent) => {
+  const handleMenteeSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!sessionUserId) return
 
@@ -208,14 +208,14 @@ export const OnboardingContent = () => {
         <Container variant="page" className="flex items-center justify-between py-4">
           <BrandLockup showName={false} />
           <div className="flex items-center gap-2">
+            <LanguageMenu />
             <button
               type="button"
               onClick={handleSignOut}
-              className="hidden min-h-11 items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm hover:bg-[var(--color-bg-inset)] md:flex"
+              className="hidden min-h-11 items-center rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm hover:bg-[var(--color-bg-inset)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] md:flex"
             >
               {t('nav.signOut', 'Sign out', 'common')}
             </button>
-            <LanguageMenu />
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
@@ -246,7 +246,9 @@ export const OnboardingContent = () => {
 
       <Container variant="form" className="py-12">
         {error ? (
-          <div className={`mb-6 ${profileAlertClassName.error}`}>{error}</div>
+          <FlashBanner key={error} kind="error" className="mb-6">
+            {error}
+          </FlashBanner>
         ) : null}
 
         {mode === 'picker' ? (

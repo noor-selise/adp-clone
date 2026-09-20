@@ -73,7 +73,13 @@
       "theme.light": "فاتح",
       "theme.dark": "داكن",
       "theme.system": "النظام",
-      "theme.label": "المظهر"
+      "theme.label": "المظهر",
+      "notifications.unreadLabel": "الإشعارات، {count} غير مقروءة",
+      "notifications.markAllRead": "تحديد الكل كمقروء",
+      "notifications.empty": "لا توجد إشعارات بعد",
+      "notifications.retry": "إعادة المحاولة",
+      "notifications.loadError": "تعذر تحميل الإشعارات",
+      "notifications.stale": "قد تكون الإشعارات غير محدثة"
     },
     "dashboard": {
       "title": "لوحة التحكم",
@@ -270,7 +276,13 @@
       "theme.light": "লাইট",
       "theme.dark": "ডার্ক",
       "theme.system": "সিস্টেম",
-      "theme.label": "থিম"
+      "theme.label": "থিম",
+      "notifications.unreadLabel": "বিজ্ঞপ্তি, {count} অপঠিত",
+      "notifications.markAllRead": "সব পঠিত হিসেবে চিহ্নিত করুন",
+      "notifications.empty": "এখনও কোনো বিজ্ঞপ্তি নেই",
+      "notifications.retry": "আবার চেষ্টা করুন",
+      "notifications.loadError": "বিজ্ঞপ্তি লোড করা যায়নি",
+      "notifications.stale": "বিজ্ঞপ্তি হালনাগাদ নাও থাকতে পারে"
     },
     "dashboard": {
       "title": "ড্যাশবোর্ড",
@@ -467,7 +479,13 @@
       "theme.light": "Light",
       "theme.dark": "Dark",
       "theme.system": "System",
-      "theme.label": "Theme"
+      "theme.label": "Theme",
+      "notifications.unreadLabel": "Notifications, {count} unread",
+      "notifications.markAllRead": "Mark all as read",
+      "notifications.empty": "No notifications yet",
+      "notifications.retry": "Retry",
+      "notifications.loadError": "Couldn't load notifications",
+      "notifications.stale": "Notifications may be out of date"
     },
     "dashboard": {
       "title": "Dashboard",

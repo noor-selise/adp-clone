@@ -23,5 +23,13 @@
     "dark": "Dark",
     "system": "System",
     "label": "Theme"
+  },
+  "notifications": {
+    "unreadLabel": "Notifications, {count} unread",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications yet",
+    "retry": "Retry",
+    "loadError": "Couldn't load notifications",
+    "stale": "Notifications may be out of date"
   }
 }

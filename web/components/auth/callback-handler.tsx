@@ -10,6 +10,7 @@ import { readRegisterTrack } from '@/lib/onboarding/track'
 import { fetchProfilePresence } from '@/lib/profiles'
 import { useLocale } from '@/components/providers/localization-provider'
 import { Container } from '@/components/layout/container'
+import { FlashBanner } from '@/components/ui/flash-banner'
 
 export const CallbackHandler = () => {
   const { refresh } = useAuth()
@@ -56,7 +57,9 @@ export const CallbackHandler = () => {
   if (error) {
     return (
       <Container variant="form" className="space-y-4 pt-24 text-center">
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error}</div>
+        <FlashBanner key={error} kind="error">
+          {error}
+        </FlashBanner>
         <a href="/login" className="text-sm font-medium text-[var(--color-brand)] hover:underline">
           {t('callback.tryAgain', 'Try again', 'auth')}
         </a>

@@ -105,18 +105,6 @@ export const ProfilePhotoField = ({
               onChange={(e) => void handleFileChange(e)}
             />
           </label>
-          {fileId ? (
-            <button
-              type="button"
-              className="block text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
-              onClick={() => {
-                onFileIdChange(undefined)
-                setPreviewUrl(undefined)
-              }}
-            >
-              {t('photo.remove', 'Remove photo', 'profile')}
-            </button>
-          ) : null}
         </div>
       </div>
     </ProfileField>

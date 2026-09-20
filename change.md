@@ -4,6 +4,16 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Type form submit handlers as SyntheticEvent instead of the deprecated FormEvent (by noor, 2026-09-21)
+- Dismiss every flash success and failure banner after 4 seconds through FlashBanner, including login callback, profile load failure, and mentee empty states (by noor, 2026-09-21)
+- Auto-dismiss success and failure banners after 4 seconds on profile, auth, and onboarding (by noor, 2026-09-21)
+- Drop Remove photo from the mentor profile photo field (by noor, 2026-09-21)
+- Include `*.test.ts` in the Next TypeScript project so the editor can resolve `node:assert` (keep seed-matching tests out of that check) (by noor, 2026-09-21)
+- Hide the MentorMatch wordmark in mobile headers only; keep the name in the side panel (by noor, 2026-09-21)
+- Run unit tests from `web/test/index.ts` so `npm test` does not list every glob (by noor, 2026-09-21)
+- Drop Playwright e2e and lock features 15, 16, and 19 with node:test unit coverage beside the source (by noor, 2026-09-21)
+- Swallow Data Gateway failures when reading or writing account locale so a Failed to fetch cannot show the Next overlay (by noor, 2026-09-21)
+- Put Sign out last on the signed in desktop header (after language and theme); keep Open menu last on small screens and Sign out last in the drawer (by noor, 2026-09-21)
 - Exclude `*.test.ts` from Next typecheck so Blocks Release `next build` does not resolve repo-root seed scripts (by noor, 2026-09-20)
 - Add the Corner brand mark to headers, public auth chrome, and the mobile drawer beside Close (by noor, 2026-09-20)
 

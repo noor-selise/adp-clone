@@ -16,10 +16,8 @@ import {
   canMentorViewMenteeProfile,
 } from '@/lib/mentorship/assignments'
 import { fetchMenteeProfile, type MenteeProfileRecord } from '@/lib/profiles'
-import {
-  profileAlertClassName,
-  profileSectionClassName,
-} from '@/components/profile/profile-field'
+import { profileSectionClassName } from '@/components/profile/profile-field'
+import { FlashBanner } from '@/components/ui/flash-banner'
 import { MenteeProfileSkeleton } from '@/components/loading/mentee-profile-skeleton'
 import { useLocale } from '@/components/providers/localization-provider'
 
@@ -80,13 +78,15 @@ const MenteeProfileViewContent = () => {
         {state.status === 'loading' ? <MenteeProfileSkeleton /> : null}
 
         {state.status === 'forbidden' ? (
-          <div className={profileAlertClassName.error}>
+          <FlashBanner key="forbidden" kind="error">
             {t('mentee.forbidden', 'You can only view profiles of mentees assigned to you.', 'dashboard')}
-          </div>
+          </FlashBanner>
         ) : null}
 
         {state.status === 'missing' ? (
-          <div className={profileAlertClassName.error}>{t('mentee.missing', 'Mentee profile not found.', 'dashboard')}</div>
+          <FlashBanner key="missing" kind="error">
+            {t('mentee.missing', 'Mentee profile not found.', 'dashboard')}
+          </FlashBanner>
         ) : null}
 
         {state.status === 'ready' ? (

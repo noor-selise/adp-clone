@@ -2,8 +2,8 @@
   "tool": "node:test",
   "gate": null,
   "additionalTools": ["@testing-library/react", "@testing-library/user-event", "jsdom"],
-  "e2eTool": "playwright",
-  "testDir": "beside the source",
+  "e2eTool": null,
+  "testDir": "test/index.ts plus beside the source",
   "filePattern": "*.test.ts",
   "packageManager": "npm"
 }

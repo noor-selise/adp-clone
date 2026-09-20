@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/providers/auth-provider'
 import { useLocale } from '@/components/providers/localization-provider'
 import { isLoginConfigured } from '@/lib/blocks/config'
+import { FlashBanner } from '@/components/ui/flash-banner'
 
 export const LoginForm = () => {
   const { login } = useAuth()
@@ -40,7 +41,9 @@ export const LoginForm = () => {
   return (
     <div className="space-y-4">
       {error ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</div>
+        <FlashBanner key={error} kind="error">
+          {error}
+        </FlashBanner>
       ) : null}
       <button
         type="button"
