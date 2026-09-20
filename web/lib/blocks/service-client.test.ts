@@ -19,17 +19,33 @@ test('getServiceBlocksClient throws when called from a browser like environment'
   assert.throws(() => getServiceBlocksClient(), /not available in the browser/)
 })
 
-test('getServiceBlocksClient returns the same cached client across calls', () => {
-  const first = getServiceBlocksClient()
-  const second = getServiceBlocksClient()
+test(
+  'getServiceBlocksClient returns the same cached client across calls',
+  {
+    skip:
+      !process.env.BLOCKS_SERVICE_CLIENT_ID ||
+      !process.env.BLOCKS_SERVICE_CLIENT_SECRET,
+  },
+  () => {
+    const first = getServiceBlocksClient()
+    const second = getServiceBlocksClient()
 
-  assert.equal(first, second)
-})
+    assert.equal(first, second)
+  },
+)
 
-test('resetServiceBlocksClientForTest forces a fresh client on the next call', () => {
-  const before = getServiceBlocksClient()
-  resetServiceBlocksClientForTest()
-  const after = getServiceBlocksClient()
+test(
+  'resetServiceBlocksClientForTest forces a fresh client on the next call',
+  {
+    skip:
+      !process.env.BLOCKS_SERVICE_CLIENT_ID ||
+      !process.env.BLOCKS_SERVICE_CLIENT_SECRET,
+  },
+  () => {
+    const before = getServiceBlocksClient()
+    resetServiceBlocksClientForTest()
+    const after = getServiceBlocksClient()
 
-  assert.notEqual(before, after)
-})
+    assert.notEqual(before, after)
+  },
+)
