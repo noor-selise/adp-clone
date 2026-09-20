@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-process.loadEnvFile?.('.env.local')
+try {
+  process.loadEnvFile?.('.env.local')
+} catch {
+  // CI has no local env file
+}
 
 import {
   getServiceBlocksClient,

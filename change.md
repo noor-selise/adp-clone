@@ -4,6 +4,7 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Swallow a missing `.env.local` in CI tests after installing web packages for the Release scanner (by noor, 2026-09-21)
 - Install web dependencies before root npm test so Release scanner can resolve @seliseblocks/client (by noor, 2026-09-21)
 - End the signed in session when a refresh grant is rejected, so RequireAuth can send the person back to login (by noor, 2026-09-21)
 - Type form submit handlers as SyntheticEvent instead of the deprecated FormEvent (by noor, 2026-09-21)

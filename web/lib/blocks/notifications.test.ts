@@ -2,7 +2,11 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createBlocksClient } from '@seliseblocks/client'
 
-process.loadEnvFile?.('.env.local')
+try {
+  process.loadEnvFile?.('.env.local')
+} catch {
+  // CI has no local env file
+}
 
 import { blocksConfig } from './config.ts'
 import {
