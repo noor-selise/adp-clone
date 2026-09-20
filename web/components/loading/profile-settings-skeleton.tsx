@@ -8,7 +8,7 @@ export const ProfileSettingsSkeleton = () => (
       <Skeleton className="h-4 w-32" />
     </div>
 
-    <section className="space-y-4 rounded-xl border border-[var(--color-border)] bg-white p-6">
+    <section className="space-y-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-6">
       <Skeleton className="h-5 w-36" />
       <div className="flex items-center gap-4">
         <Skeleton className="h-20 w-20 rounded-full" />

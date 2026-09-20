@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
 const MenteeCardSkeleton = () => (
-  <div className="rounded-xl border border-[var(--color-border)] bg-white p-5">
+  <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
     <div className="flex items-start gap-3">
       <Skeleton className="h-11 w-11 shrink-0 rounded-full" />
       <div className="min-w-0 flex-1 space-y-2">
@@ -27,7 +27,7 @@ export const DashboardSkeleton = () => (
     </div>
 
     <div className="grid gap-4 md:grid-cols-3">
-      <div className="rounded-xl border border-[var(--color-border)] bg-white p-5 md:col-span-1">
+      <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 md:col-span-1">
         <div className="flex items-start gap-4">
           <Skeleton className="h-14 w-14 shrink-0 rounded-full" />
           <div className="min-w-0 flex-1 space-y-2">

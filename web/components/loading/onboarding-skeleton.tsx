@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 export const OnboardingSkeleton = () => (
   <div className="min-h-screen bg-[var(--color-bg-subtle)]" aria-busy="true" aria-live="polite">
     <span className="sr-only">Loading onboarding</span>
-    <header className="border-b border-[var(--color-border)] bg-white">
+    <header className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
         <Skeleton className="h-6 w-32" />
         <Skeleton className="h-9 w-24" />

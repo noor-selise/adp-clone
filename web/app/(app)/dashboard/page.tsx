@@ -44,17 +44,21 @@ const DashboardContent = () => {
       if (!session) return
       setRoles(session.roles)
 
-      const [presence, loaded] = await Promise.all([
-        fetchProfilePresence(session.userId),
-        loadUserProfiles(session.userId),
-      ])
-      const gated = applyRoleToProfilePresence(presence, session.roles)
-      setProfiles(gated)
-      setMentorProfile(loaded.mentor)
+      try {
+        const [presence, loaded] = await Promise.all([
+          fetchProfilePresence(session.userId),
+          loadUserProfiles(session.userId),
+        ])
+        const gated = applyRoleToProfilePresence(presence, session.roles)
+        setProfiles(gated)
+        setMentorProfile(loaded.mentor)
 
-      if (hasMentorRole(session.roles)) {
-        setAssignedMentees(await fetchAssignedMenteeProfiles(session.userId))
-      } else {
+        if (hasMentorRole(session.roles)) {
+          setAssignedMentees(await fetchAssignedMenteeProfiles(session.userId))
+        } else {
+          setAssignedMentees([])
+        }
+      } catch {
         setAssignedMentees([])
       }
       setContentReady(true)
@@ -82,7 +86,7 @@ const DashboardContent = () => {
           {showMentor && mentorProfile ? (
             <MentorProfileCard profile={mentorProfile} />
           ) : showMentor ? (
-            <div className="rounded-xl border border-[var(--color-border)] bg-white p-5">
+            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
               <h2 className="font-semibold">Mentor</h2>
               <p className="mt-2 text-sm text-[var(--color-text-muted)]">
                 Update your mentor profile for the directory.
@@ -97,7 +101,7 @@ const DashboardContent = () => {
           ) : null}
 
           {showMentee ? (
-            <div className="rounded-xl border border-[var(--color-border)] bg-white p-5">
+            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
               <h2 className="font-semibold">Mentee</h2>
               <p className="mt-2 text-sm text-[var(--color-text-muted)]">
                 Your mentee profile is ready. Finding mentors is next.
@@ -112,7 +116,7 @@ const DashboardContent = () => {
           ) : null}
 
           {showAdmin ? (
-            <div className="rounded-xl border border-[var(--color-border)] bg-white p-5">
+            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
               <h2 className="font-semibold">Admin</h2>
               <p className="mt-2 text-sm text-[var(--color-text-muted)]">
                 Manage users in the Blocks portal. App moderation comes in a later phase.

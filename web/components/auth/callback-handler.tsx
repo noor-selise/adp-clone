@@ -19,27 +19,35 @@ export const CallbackHandler = () => {
     if (ran.current) return
     ran.current = true
 
-    completeLogin(window.location.href).then(async (result) => {
-      if (!result.ok) {
-        setError(result.message)
-        return
-      }
+    completeLogin(window.location.href)
+      .then(async (result) => {
+        if (!result.ok) {
+          setError(result.message)
+          return
+        }
 
-      await refresh()
-      const session = await resolveSessionUser()
-      if (!session) {
-        router.replace(result.returnTo)
-        return
-      }
+        await refresh()
+        const session = await resolveSessionUser()
+        if (!session) {
+          router.replace(result.returnTo)
+          return
+        }
 
-      const profiles = await fetchProfilePresence(session.userId)
-      router.replace(
-        resolvePostAuthPath(profiles, session.roles, {
-          storedTrack: readRegisterTrack(),
-          returnTo: result.returnTo,
-        })
-      )
-    })
+        try {
+          const profiles = await fetchProfilePresence(session.userId)
+          router.replace(
+            resolvePostAuthPath(profiles, session.roles, {
+              storedTrack: readRegisterTrack(),
+              returnTo: result.returnTo,
+            })
+          )
+        } catch {
+          router.replace(result.returnTo)
+        }
+      })
+      .catch((caught) => {
+        setError(caught instanceof Error ? caught.message : 'Sign-in could not finish.')
+      })
   }, [refresh, router])
 
   if (error) {

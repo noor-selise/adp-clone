@@ -4,6 +4,15 @@ All changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Move the theme control after Sign out and use stroke sun, moon, and display icons per mode (by noor, 2026-09-20)
+- Include `*.test.ts` in the Next TypeScript project so the editor can resolve `node:assert` and `node:test` (by noor, 2026-09-20)
+
+- Group the theme control with account chrome and use coral sun, moon, and display icons so it reads as the theme picker (by noor, 2026-09-20)
+- Add Playwright guest theme checks and extra session token plus theme runtime tests (by noor, 2026-09-20)
+- Persist the Blocks refresh token in sessionStorage so Data Gateway calls can refresh after reload instead of throwing an unhandled 401 (by noor, 2026-09-20)
+
+- Ship a Light, Dark, and System header switcher with first paint script and token backed chrome (by noor, 2026-09-20)
+
 - Bind local Next.js HTTPS to 127.0.0.1 and restore /etc/hosts mapping so `npm run dev` no longer fails with EADDRNOTAVAIL on the public app IP (by noor, 2026-09-20)
 
 - Deployed MentorMatch to Blocks Release **dev** (build Succeeded); app at https://dpkhbr.slsblx.com (by noor, 2026-09-17)

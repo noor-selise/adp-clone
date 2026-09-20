@@ -64,7 +64,7 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
   if (!href) {
     return (
       <article
-        className="rounded-xl border border-[var(--color-border)] bg-white p-5"
+        className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5"
         aria-label={`Mentee profile for ${profile.displayName ?? 'mentee'}`}
       >
         {body}
@@ -75,7 +75,7 @@ export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
   return (
     <Link
       href={href}
-      className="block rounded-xl border border-[var(--color-border)] bg-white p-5 transition hover:border-[var(--color-brand)] hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2"
+      className="block rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 transition hover:border-[var(--color-brand)] hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)] focus-visible:ring-offset-2"
       aria-label={`View mentee profile for ${profile.displayName ?? 'mentee'}`}
     >
       {body}

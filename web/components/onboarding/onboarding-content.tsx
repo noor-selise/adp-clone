@@ -70,23 +70,28 @@ export const OnboardingContent = () => {
       setSessionUserId(session.userId)
       setSessionRoles(session.roles)
 
-      void fetchProfilePresence(session.userId).then((profiles) => {
-        const track = resolveOnboardingTrack(
-          session.roles,
-          profiles,
-          readRegisterTrack(),
-          queryTrack
-        )
+      void fetchProfilePresence(session.userId)
+        .then((profiles) => {
+          const track = resolveOnboardingTrack(
+            session.roles,
+            profiles,
+            readRegisterTrack(),
+            queryTrack
+          )
 
-        if (!track) {
-          router.replace('/dashboard')
-          return
-        }
+          if (!track) {
+            router.replace('/dashboard')
+            return
+          }
 
-        setMode(track)
-        setDisplayName(defaultDisplayName(claims))
-        setLoading(false)
-      })
+          setMode(track)
+          setDisplayName(defaultDisplayName(claims))
+          setLoading(false)
+        })
+        .catch((caught) => {
+          setError(readBlocksError(caught))
+          setLoading(false)
+        })
     })
   }, [status, claims, queryTrack, router])
 
@@ -162,7 +167,7 @@ export const OnboardingContent = () => {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-subtle)]">
-      <header className="border-b border-[var(--color-border)] bg-white">
+      <header className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <span className="text-lg font-semibold">MentorMatch</span>
           <button
@@ -192,7 +197,7 @@ export const OnboardingContent = () => {
               <button
                 type="button"
                 onClick={() => handlePickTrack('mentee')}
-                className="rounded-xl border border-[var(--color-border)] bg-white p-6 text-left transition hover:border-[var(--color-brand)] hover:shadow-sm"
+                className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-6 text-left transition hover:border-[var(--color-brand)] hover:shadow-sm"
               >
                 <p className="text-sm font-medium uppercase tracking-wide text-[var(--color-brand)]">
                   Get guidance
@@ -205,7 +210,7 @@ export const OnboardingContent = () => {
               <button
                 type="button"
                 onClick={() => handlePickTrack('mentor')}
-                className="rounded-xl border border-[var(--color-border)] bg-white p-6 text-left transition hover:border-[var(--color-brand)] hover:shadow-sm"
+                className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-6 text-left transition hover:border-[var(--color-brand)] hover:shadow-sm"
               >
                 <p className="text-sm font-medium uppercase tracking-wide text-[var(--color-brand)]">
                   Give back

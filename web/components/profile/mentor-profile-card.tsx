@@ -44,7 +44,7 @@ export const MentorProfileCard = ({ profile }: MentorProfileCardProps) => {
   const skills = (profile.skills ?? []).slice(0, 4)
 
   return (
-    <div className="rounded-xl border border-[var(--color-border)] bg-white p-5">
+    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5">
       <div className="flex items-start gap-4">
         <div
           className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--color-bg-inset)] text-sm font-semibold text-[var(--color-text-muted)]"

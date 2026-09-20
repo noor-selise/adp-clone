@@ -30,7 +30,7 @@ export const ProfileTextarea = ({ className, ...props }: ProfileTextareaProps) =
 )
 
 export const profileSectionClassName =
-  'space-y-4 rounded-xl border border-[var(--color-border)] bg-white p-6'
+  'space-y-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-6'
 
 export const profileAlertClassName = {
   error: 'rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800',

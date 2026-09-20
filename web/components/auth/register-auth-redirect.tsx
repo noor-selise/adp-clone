@@ -18,14 +18,18 @@ export const RegisterAuthRedirect = () => {
     void resolveSessionUser(claims).then((session) => {
       if (!session) return
 
-      void fetchProfilePresence(session.userId).then((profiles) => {
-        router.replace(
-          resolvePostAuthPath(profiles, session.roles, {
-            storedTrack: readRegisterTrack(),
-            returnTo: '/dashboard',
-          })
-        )
-      })
+      void fetchProfilePresence(session.userId)
+        .then((profiles) => {
+          router.replace(
+            resolvePostAuthPath(profiles, session.roles, {
+              storedTrack: readRegisterTrack(),
+              returnTo: '/dashboard',
+            })
+          )
+        })
+        .catch(() => {
+          router.replace('/dashboard')
+        })
     })
   }, [status, claims, router])
 

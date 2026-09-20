@@ -5,7 +5,7 @@ import { LoginForm } from '@/components/auth/login-form'
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg-subtle)] px-6">
-      <div className="w-full max-w-md rounded-2xl border border-[var(--color-border)] bg-white p-8 shadow-sm">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-8 shadow-sm">
         <h1 className="mb-2 text-2xl font-semibold">Welcome back</h1>
         <p className="mb-8 text-sm text-[var(--color-text-muted)]">
           Sign in with your MentorMatch account via Blocks OIDC.

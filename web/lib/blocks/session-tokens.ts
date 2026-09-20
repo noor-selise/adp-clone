@@ -1,5 +1,5 @@
 import type { BlocksClient } from '@seliseblocks/client'
-import { isJwtExpired } from './jwt'
+import { isJwtExpired } from './jwt.ts'
 
 const TOKEN_KEY = 'blocks-app:access-token'
 const REFRESH_TOKEN_KEY = 'blocks-app:refresh-token'
@@ -39,8 +39,10 @@ export const getRefreshToken = (): string | undefined => {
 
 export const persistTokens = (accessToken: string, refreshToken?: string): void => {
   cachedAccessToken = accessToken
-  if (typeof window !== 'undefined') sessionStorage.setItem(TOKEN_KEY, accessToken)
   if (refreshToken) cachedRefreshToken = refreshToken
+  if (typeof window === 'undefined') return
+  sessionStorage.setItem(TOKEN_KEY, accessToken)
+  if (refreshToken) sessionStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
 }
 
 export const clearLocalTokens = (): void => {

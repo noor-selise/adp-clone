@@ -29,7 +29,7 @@ export const LoginForm = () => {
     return (
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         Login is not configured. Register{' '}
-        <code className="rounded bg-white px-1">{typeof window !== 'undefined' ? `${window.location.origin}/login/callback` : '/login/callback'}</code>{' '}
+        <code className="rounded bg-[var(--color-bg-inset)] px-1">{typeof window !== 'undefined' ? `${window.location.origin}/login/callback` : '/login/callback'}</code>{' '}
         as an OIDC redirect URI.
       </div>
     )

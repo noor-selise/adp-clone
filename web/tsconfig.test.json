@@ -5,6 +5,6 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["lib/**/*.test.ts"],
+  "include": ["lib/**/*.test.ts", "scripts/**/*.test.mjs"],
   "exclude": ["node_modules"]
 }

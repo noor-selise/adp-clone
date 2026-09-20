@@ -217,7 +217,7 @@ const TrackToggle = ({ track }: { track: RegisterTrack }) => (
       href={registerPath('mentee')}
       className={`flex-1 rounded-md px-3 py-2 text-center font-medium ${
         track === 'mentee'
-          ? 'bg-white text-[var(--color-text)] shadow-sm'
+          ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
           : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
       }`}
     >
@@ -227,7 +227,7 @@ const TrackToggle = ({ track }: { track: RegisterTrack }) => (
       href={registerPath('mentor')}
       className={`flex-1 rounded-md px-3 py-2 text-center font-medium ${
         track === 'mentor'
-          ? 'bg-white text-[var(--color-text)] shadow-sm'
+          ? 'bg-[var(--color-bg)] text-[var(--color-text)] shadow-sm'
           : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
       }`}
     >
