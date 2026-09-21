@@ -20,7 +20,6 @@ import { ProfileSettingsSkeleton } from '@/components/loading/profile-settings-s
 import { useAuth } from '@/components/providers/auth-provider'
 import { useLocale } from '@/components/providers/localization-provider'
 import { resolveSessionUser } from '@/lib/blocks/session-user'
-import { getUserRoles } from '@/lib/blocks/auth'
 import {
   applyRoleToUserProfiles,
   loadUserProfiles,
@@ -29,12 +28,15 @@ import {
   saveMenteeProfile,
   saveMentorProfile,
   splitList,
+  normalizeStringList,
   validateMenteeProfile,
   validateMentorProfile,
   type MenteeProfileRecord,
   type MentorProfileRecord,
   type UserProfiles,
 } from '@/lib/profiles'
+import { interestBadgeLabels, SKILL_CATALOG } from '@/lib/profiles/skill-catalog'
+import { hasMenteeRole, hasMentorRole } from '@/lib/onboarding/gate'
 
 const emptyMentor = (): MentorProfileRecord => ({
   displayName: '',
@@ -48,15 +50,21 @@ const emptyMentor = (): MentorProfileRecord => ({
 })
 
 const emptyMentee = (): MenteeProfileRecord => ({
+  photoFileId: undefined,
   goals: [],
   interests: [],
   timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 })
 
-const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProfiles }) => {
+const ProfileSettingsContent = ({
+  initialProfiles,
+  roles,
+}: {
+  initialProfiles: UserProfiles
+  roles: string[]
+}) => {
   const { claims } = useAuth()
   const { t } = useLocale()
-  const roles = getUserRoles(claims)
   const [userId, setUserId] = useState('')
 
   const [mentor, setMentor] = useState<MentorProfileRecord>(
@@ -109,7 +117,12 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
     }
 
     if (initialProfiles.hasMenteeProfile) {
-      const menteeValidation = validateMenteeProfile(mentee)
+      const nextMentee = {
+        ...mentee,
+        goals: normalizeStringList(mentee.goals ?? []),
+        interests: normalizeStringList(mentee.interests ?? []),
+      }
+      const menteeValidation = validateMenteeProfile(nextMentee)
       if (!menteeValidation.ok) {
         setError(
           menteeValidation.message === 'Add at least one goal.'
@@ -125,8 +138,16 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
       if (initialProfiles.hasMentorProfile) {
         await saveMentorProfile(userId, mentor, mentorItemId)
       }
-      if (initialProfiles.hasMenteeProfile) {
-        await saveMenteeProfile(userId, mentee, menteeItemId)
+      if (initialProfiles.hasMenteeProfile && menteeItemId) {
+        await saveMenteeProfile(
+          userId,
+          {
+            ...mentee,
+            goals: normalizeStringList(mentee.goals ?? []),
+            interests: normalizeStringList(mentee.interests ?? []),
+          },
+          menteeItemId
+        )
       }
       setMessage(t('saved', 'Profile saved.', 'profile'))
     } catch (caught) {
@@ -134,6 +155,15 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
     } finally {
       setSaving(false)
     }
+  }
+
+  const handleInterestToggle = (label: string) => {
+    setMentee((prev) => {
+      const selected = new Set(normalizeStringList(prev.interests ?? []))
+      if (selected.has(label)) selected.delete(label)
+      else selected.add(label)
+      return { ...prev, interests: [...selected] }
+    })
   }
 
   const handlePhotoChange = async (photoFileId: string | undefined) => {
@@ -151,6 +181,29 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
       setError(readBlocksError(caught))
     }
   }
+
+  const handleMenteePhotoChange = async (photoFileId: string | undefined) => {
+    const nextMentee = { ...mentee, photoFileId }
+    setMentee(nextMentee)
+    setMessage(undefined)
+    setError(undefined)
+
+    if (!userId || !menteeItemId) return
+
+    try {
+      await saveMenteeProfile(userId, nextMentee, menteeItemId)
+      setMessage(photoFileId ? t('photoUpdated', 'Photo updated.', 'profile') : t('photoRemoved', 'Photo removed.', 'profile'))
+    } catch (caught) {
+      setError(readBlocksError(caught))
+    }
+  }
+
+  const showMentorForm = initialProfiles.hasMentorProfile
+  const showMentorEmpty = hasMentorRole(roles) && !initialProfiles.hasMentorProfile
+  const showMenteeForm = initialProfiles.hasMenteeProfile
+  const showMenteeEmpty = hasMenteeRole(roles) && !initialProfiles.hasMenteeProfile
+  const interestLabels = interestBadgeLabels(SKILL_CATALOG, mentee.interests ?? [])
+  const selectedInterests = new Set(normalizeStringList(mentee.interests ?? []))
 
   return (
     <Container variant="content">
@@ -173,7 +226,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
         </FlashBanner>
       ) : null}
 
-      {initialProfiles.hasMentorProfile ? (
+      {showMentorForm ? (
         <section className={profileSectionClassName}>
           <h2 className="font-semibold">{t('mentor.title', 'Mentor profile', 'profile')}</h2>
           <ProfilePhotoField
@@ -237,7 +290,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
             />
           </ProfileField>
         </section>
-      ) : (
+      ) : showMentorEmpty ? (
         <section className={profileSectionClassName}>
           <h2 className="font-semibold">{t('mentor.title', 'Mentor profile', 'profile')}</h2>
           <p className="text-sm text-[var(--color-text-muted)]">
@@ -248,11 +301,18 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
             <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
           </Link>
         </section>
-      )}
+      ) : null}
 
-      {initialProfiles.hasMenteeProfile ? (
+      {showMenteeForm ? (
         <section className={profileSectionClassName}>
           <h2 className="font-semibold">{t('mentee.title', 'Mentee profile', 'profile')}</h2>
+          <ProfilePhotoField
+            fileId={mentee.photoFileId}
+            displayName={mentee.displayName}
+            tags="profile,mentee"
+            onFileIdChange={(photoFileId) => void handleMenteePhotoChange(photoFileId)}
+            onError={setError}
+          />
           <ProfileField label={t('field.goals', 'Goals', 'profile')} hint={t('field.commaHint', 'Comma-separated', 'profile')}>
             <ProfileInput
               required
@@ -263,15 +323,28 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
               }
             />
           </ProfileField>
-          <ProfileField label={t('field.interests', 'Interests', 'profile')} hint={t('field.commaHint', 'Comma-separated', 'profile')}>
-            <ProfileInput
-              required
-              dir="auto"
-              value={(mentee.interests ?? []).join(', ')}
-              onChange={(e) =>
-                setMentee((prev) => ({ ...prev, interests: splitList(e.target.value) }))
-              }
-            />
+          <ProfileField label={t('field.interests', 'Interests', 'profile')}>
+            <div className="flex flex-wrap gap-2">
+              {interestLabels.map((label) => {
+                const pressed = selectedInterests.has(label)
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    aria-pressed={pressed}
+                    dir="auto"
+                    onClick={() => handleInterestToggle(label)}
+                    className={
+                      pressed
+                        ? 'rounded-full bg-[var(--color-brand)] px-2.5 py-1 text-xs font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]'
+                        : 'rounded-full bg-[var(--color-bg-inset)] px-2.5 py-1 text-xs text-[var(--color-text-muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]'
+                    }
+                  >
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
           </ProfileField>
           <ProfileField label={t('field.timezone', 'Timezone', 'profile')}>
             <ProfileInput
@@ -280,7 +353,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
             />
           </ProfileField>
         </section>
-      ) : initialProfiles.hasMentorProfile ? null : (
+      ) : showMenteeEmpty ? (
         <section className={profileSectionClassName}>
           <h2 className="font-semibold">{t('mentee.title', 'Mentee profile', 'profile')}</h2>
           <p className="text-sm text-[var(--color-text-muted)]">
@@ -291,7 +364,7 @@ const ProfileSettingsContent = ({ initialProfiles }: { initialProfiles: UserProf
             <span aria-hidden className="inline-block rtl:-scale-x-100"> →</span>
           </Link>
         </section>
-      )}
+      ) : null}
 
       {initialProfiles.hasMentorProfile || initialProfiles.hasMenteeProfile ? (
         <button
@@ -346,7 +419,7 @@ const ProfileSettingsPageContent = () => {
 
   return (
     <AppShell profiles={profiles} roles={roles}>
-      <ProfileSettingsContent initialProfiles={profiles} />
+      <ProfileSettingsContent initialProfiles={profiles} roles={roles} />
     </AppShell>
   )
 }

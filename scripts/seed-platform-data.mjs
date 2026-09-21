@@ -14,6 +14,36 @@ const { blocksRequest } = await import(
 
 const PROJECT_ID = 'D67e7edaf9e1d432288361305fcc74c47'
 const TIMEZONE = 'Asia/Dhaka'
+const skillCatalog = JSON.parse(
+  readFileSync(join(__dirname, '../web/lib/profiles/skill-catalog.json'), 'utf8')
+)
+
+const userIdOf = (user) => user?.itemId ?? user?.ItemId
+const rolesOf = (user) => {
+  const roles = user?.roles ?? user?.Roles ?? []
+  return Array.isArray(roles) ? roles.map(String) : []
+}
+
+const grantRoleIfMissing = (user, role) => {
+  const userId = userIdOf(user)
+  const roles = rolesOf(user)
+  if (!userId) {
+    throw new Error(`cannot grant ${role}: missing user id`)
+  }
+  if (roles.includes(role)) {
+    console.log(`skip role ${role} for ${user.email}: already present`)
+    return
+  }
+  const nextRoles = [...roles, role].join(',')
+  JSON.parse(
+    execSync(
+      `blocks iam users access grant ${userId} --roles ${nextRoles} --yes --json`,
+      { encoding: 'utf8' }
+    )
+  )
+  user.roles = [...roles, role]
+  console.log(`granted ${role} to ${user.email}`)
+}
 
 const gateway = async (operationName, query, variables) =>
   blocksRequest('/data/v4/gateway', {
@@ -28,11 +58,13 @@ const listUsers = () => {
   return response.data ?? []
 }
 
-const ensureUser = (usersByEmail, person, role) => {
+const ensureUser = (usersByEmail, userIdsByEmail, person, role) => {
   const existing = usersByEmail[person.email]
   if (existing) {
-    console.log(`skip user ${person.email}: already exists`)
-    return existing
+    grantRoleIfMissing(existing, role)
+    const userId = userIdOf(existing)
+    userIdsByEmail[person.email] = userId
+    return userId
   }
 
   const response = JSON.parse(
@@ -50,6 +82,12 @@ const ensureUser = (usersByEmail, person, role) => {
     )
   )
   const itemId = response.data?.itemId ?? response.itemId
+  usersByEmail[person.email] = {
+    email: person.email,
+    itemId,
+    roles: [role],
+  }
+  userIdsByEmail[person.email] = itemId
   console.log(`created user ${person.email}: ${itemId}`)
   return itemId
 }
@@ -138,10 +176,17 @@ const upsertMentorProfile = async (mentor, profilesByUserId) => {
 }
 
 const upsertMenteeProfile = async (mentee, profilesByUserId) => {
+  const interests = (mentee.interests ?? []).filter((interest) => skillCatalog.includes(interest))
+  if (!interests.length) {
+    throw new Error(
+      `seed interests for ${mentee.email} are empty after catalog filter`
+    )
+  }
+
   const payload = {
     displayName: mentee.displayName,
     goals: mentee.goals,
-    interests: mentee.interests,
+    interests,
     timezone: TIMEZONE,
   }
 
@@ -163,17 +208,20 @@ const assignmentKey = (mentorUserId, menteeUserId) => `${mentorUserId}:${menteeU
 
 const main = async () => {
   const users = listUsers()
-  const usersByEmail = Object.fromEntries(users.map((user) => [user.email, user.itemId]))
+  const usersByEmail = Object.fromEntries(
+    users.map((user) => [user.email ?? user.Email, user])
+  )
+  const userIdsByEmail = Object.fromEntries(
+    users.map((user) => [user.email, userIdOf(user)])
+  )
 
   const mentors = manifest.mentors.map((mentor) => {
-    const userId = ensureUser(usersByEmail, mentor, 'mentor')
-    usersByEmail[mentor.email] = userId
+    const userId = ensureUser(usersByEmail, userIdsByEmail, mentor, 'mentor')
     return { ...mentor, userId }
   })
 
   const mentees = manifest.mentees.map((mentee) => {
-    const userId = ensureUser(usersByEmail, mentee, 'mentee')
-    usersByEmail[mentee.email] = userId
+    const userId = ensureUser(usersByEmail, userIdsByEmail, mentee, 'mentee')
     return { ...mentee, userId }
   })
 
@@ -215,7 +263,7 @@ const main = async () => {
   )
   const desiredKeys = new Set(
     matchedPairs.map((pair) =>
-      assignmentKey(usersByEmail[pair.mentorEmail], usersByEmail[pair.menteeEmail])
+      assignmentKey(userIdsByEmail[pair.mentorEmail], userIdsByEmail[pair.menteeEmail])
     )
   )
 
@@ -246,8 +294,8 @@ const main = async () => {
 
   let created = 0
   for (const pair of matchedPairs) {
-    const mentorUserId = usersByEmail[pair.mentorEmail]
-    const menteeUserId = usersByEmail[pair.menteeEmail]
+    const mentorUserId = userIdsByEmail[pair.mentorEmail]
+    const menteeUserId = userIdsByEmail[pair.menteeEmail]
     const key = assignmentKey(mentorUserId, menteeUserId)
     if (existingKeys.has(key)) continue
     await insertRecord('insertMentorshipAssignment', 'MentorshipAssignment', {

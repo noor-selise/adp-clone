@@ -16,6 +16,7 @@ import {
   canMentorViewMenteeProfile,
 } from '@/lib/mentorship/assignments'
 import { fetchMenteeProfile, type MenteeProfileRecord } from '@/lib/profiles'
+import { getProfilePhotoUrl } from '@/lib/profiles/photo'
 import { profileSectionClassName } from '@/components/profile/profile-field'
 import { FlashBanner } from '@/components/ui/flash-banner'
 import { MenteeProfileSkeleton } from '@/components/loading/mentee-profile-skeleton'
@@ -33,6 +34,8 @@ const MenteeProfileViewContent = () => {
   const params = useParams<{ userId: string }>()
   const menteeUserId = typeof params.userId === 'string' ? params.userId : ''
   const [state, setState] = useState<LoadState>({ status: 'loading' })
+  const [photoUrl, setPhotoUrl] = useState<string | undefined>()
+  const photoFileId = state.status === 'ready' ? state.profile.photoFileId : undefined
 
   useEffect(() => {
     if (!menteeUserId) {
@@ -61,6 +64,26 @@ const MenteeProfileViewContent = () => {
       setState({ status: 'ready', profile })
     })
   }, [claims, menteeUserId])
+
+  useEffect(() => {
+    if (!photoFileId) {
+      setPhotoUrl(undefined)
+      return
+    }
+
+    let cancelled = false
+    void getProfilePhotoUrl(photoFileId)
+      .then((url) => {
+        if (!cancelled) setPhotoUrl(url)
+      })
+      .catch(() => {
+        if (!cancelled) setPhotoUrl(undefined)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [photoFileId])
 
   return (
     <AppShell>
@@ -93,10 +116,20 @@ const MenteeProfileViewContent = () => {
           <section className={profileSectionClassName}>
             <div className="flex items-start gap-4">
               <div
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-bg-inset)] text-lg font-semibold text-[var(--color-text-muted)]"
-                aria-hidden
+                className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[var(--color-bg-inset)] text-lg font-semibold text-[var(--color-text-muted)]"
+                aria-hidden={Boolean(photoUrl)}
               >
-                {(state.profile.displayName ?? 'M').slice(0, 1).toUpperCase()}
+                {photoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={photoUrl} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  (state.profile.displayName ?? 'M')
+                    .split(' ')
+                    .map((part) => part[0])
+                    .join('')
+                    .slice(0, 2)
+                    .toUpperCase() || 'M'
+                )}
               </div>
               <div className="min-w-0">
                 <h1 className="text-2xl font-semibold" dir="auto">

@@ -27,7 +27,10 @@ export const validateProfilePhotoFile = (file: File): string | undefined => {
   return undefined
 }
 
-export const uploadProfilePhoto = async (file: File): Promise<string> => {
+export const uploadProfilePhoto = async (
+  file: File,
+  tags = 'profile,mentor'
+): Promise<string> => {
   const validationError = validateProfilePhotoFile(file)
   if (validationError) throw new Error(validationError)
 
@@ -36,7 +39,7 @@ export const uploadProfilePhoto = async (file: File): Promise<string> => {
     name: file.name,
     configurationName: 'Default',
     accessModifier: 'Private',
-    tags: 'profile,mentor',
+    tags,
   })) as PresignResponse
 
   if (!presign.isSuccess || !presign.uploadUrl || !presign.fileId) {

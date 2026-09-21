@@ -8,6 +8,24 @@ export const splitList = (value: string): string[] =>
     .map((item) => item.trim())
     .filter(Boolean)
 
+export const normalizeStringList = (values: string[]): string[] => {
+  const seen = new Set<string>()
+  const next: string[] = []
+  for (const raw of values) {
+    const value = raw.trim()
+    if (!value || seen.has(value)) continue
+    seen.add(value)
+    next.push(value)
+  }
+  return next
+}
+
+export const interestBadgeLabels = (catalogLabels: string[], selected: string[]): string[] => {
+  const normalized = normalizeStringList(selected)
+  const extras = normalized.filter((label) => !catalogLabels.includes(label))
+  return [...catalogLabels, ...extras]
+}
+
 export const defaultTimezone = (): string =>
   Intl.DateTimeFormat().resolvedOptions().timeZone
 

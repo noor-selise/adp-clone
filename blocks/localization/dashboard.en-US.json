@@ -12,6 +12,8 @@
     "emptyBio": "Your mentor profile is live. Add a bio so mentees know how you can help.",
     "completeness": "Profile completeness",
     "stillToAdd": "Still to add",
+    "assignedViewOnly": "Assigned mentor · view only",
+    "cardLabel": "Mentor profile for",
     "missing": {
       "photo": "Photo",
       "displayName": "Display name",
@@ -47,6 +49,41 @@
   "assigned": {
     "title": "Your mentees",
     "subtitle": "Mentees currently assigned to you. Profiles are read-only here. Mentees edit their own profile in settings."
+  },
+  "assignedMentors": {
+    "title": "Your mentors",
+    "subtitle": "Mentors you are currently matched with.",
+    "empty": "You don't have any active mentors yet.",
+    "failed": "Couldn't load your mentors right now."
+  },
+  "directory": {
+    "title": "Browse mentors",
+    "subtitle": "Search and filter every mentor on MentorMatch. Cards are view only.",
+    "search": "Search by name",
+    "skills": "Skills",
+    "languages": "Languages",
+    "timezone": "Timezone",
+    "anyTimezone": "Any timezone",
+    "sort": "Sort",
+    "sortName": "Name A to Z",
+    "sortSkillMatch": "Skill match",
+    "empty": "No mentors match these filters.",
+    "failed": "Couldn't load mentors.",
+    "forbidden": "The mentor directory is only available to mentees.",
+    "browse": "Browse all mentors",
+    "loading": "Loading mentors",
+    "showing": "Showing",
+    "of": "of",
+    "page": "Page",
+    "previous": "Previous",
+    "next": "Next",
+    "clear": "Clear search and filters",
+    "cardLabel": "Mentor in the directory",
+    "backToMentors": "Back to mentors",
+    "profileMissing": "Mentor profile not found.",
+    "profileFailed": "Couldn't load this mentor.",
+    "verifiedBadge": "Verified",
+    "profileLoading": "Loading mentor profile"
   },
   "editProfile": "Edit profile",
   "backToDashboard": "Back to dashboard"

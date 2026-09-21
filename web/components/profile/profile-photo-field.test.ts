@@ -11,4 +11,9 @@ describe('ProfilePhotoField', () => {
     assert.match(source, /photo\.change/)
     assert.match(source, /photo\.upload/)
   })
+
+  it('passes optional storage tags into uploadProfilePhoto', () => {
+    assert.match(source, /tags\?: string/)
+    assert.match(source, /uploadProfilePhoto\(file, tags\)/)
+  })
 })

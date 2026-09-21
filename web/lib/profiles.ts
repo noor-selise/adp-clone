@@ -22,6 +22,7 @@ export type MentorProfileRecord = RawProfileRecord & {
   photoFileId?: string
   title?: string
   company?: string
+  companyVerificationStatus?: string
   bio?: string
   skills?: string[]
   languages?: string[]
@@ -32,6 +33,7 @@ export type MenteeProfileRecord = RawProfileRecord & {
   userId?: string
   UserId?: string
   displayName?: string
+  photoFileId?: string
   goals?: string[]
   interests?: string[]
   timezone?: string
@@ -141,7 +143,7 @@ export const loadUserProfiles = async (userId: string): Promise<UserProfiles> =>
       (options) => menteeCollection().list(options),
       MENTEE_LIST_FIELD,
       userId,
-      ['displayName', 'goals', 'interests', 'timezone']
+      ['displayName', 'photoFileId', 'goals', 'interests', 'timezone']
     ),
   ])
 
@@ -165,9 +167,59 @@ export const applyRoleToUserProfiles = (
   }
 }
 
+const MENTOR_DETAIL_FIELDS = [
+  'displayName',
+  'photoFileId',
+  'title',
+  'company',
+  'companyVerificationStatus',
+  'bio',
+  'skills',
+]
+
 export const fetchMentorProfile = async (userId: string): Promise<MentorProfileRecord | undefined> => {
-  const profiles = await loadUserProfiles(userId)
-  return profiles.mentor
+  const profile = await findProfileForUser<MentorProfileRecord>(
+    (options) => mentorCollection().list(options),
+    MENTOR_LIST_FIELD,
+    userId,
+    MENTOR_DETAIL_FIELDS
+  )
+  return profile ? normalizeRecord(profile) : undefined
+}
+
+const MENTOR_SUMMARY_FIELDS = ['userId', 'displayName', 'title', 'company', 'bio', 'skills']
+const MENTOR_DIRECTORY_FIELDS = [...MENTOR_SUMMARY_FIELDS, 'languages', 'timezone']
+
+/** One batched MentorProfile list call for the directory, capped at 200 rows. */
+export const listAllMentorProfiles = async (): Promise<MentorProfileRecord[]> => {
+  const items = parseCollectionList<MentorProfileRecord>(
+    await mentorCollection().list({ pageNo: 1, pageSize: 200, fields: MENTOR_DIRECTORY_FIELDS }),
+    MENTOR_LIST_FIELD
+  )
+  return items.map(normalizeRecord)
+}
+
+/** One batched MentorProfile list call, matched in memory; never touches MenteeProfile. */
+export const fetchMentorProfilesByUserIds = async (
+  mentorUserIds: string[]
+): Promise<MentorProfileRecord[]> => {
+  if (!mentorUserIds.length) return []
+
+  const wanted = new Set(mentorUserIds)
+  const items = parseCollectionList<MentorProfileRecord>(
+    await mentorCollection().list({ pageNo: 1, pageSize: 200, fields: MENTOR_SUMMARY_FIELDS }),
+    MENTOR_LIST_FIELD
+  )
+
+  return items
+    .filter((record) => {
+      const userId = recordUserId(record)
+      return userId ? wanted.has(userId) : false
+    })
+    .map(normalizeRecord)
+    .sort((a, b) =>
+      (a.displayName ?? '').localeCompare(b.displayName ?? '', undefined, { sensitivity: 'base' })
+    )
 }
 
 export const fetchMenteeProfile = async (userId: string): Promise<MenteeProfileRecord | undefined> => {
@@ -241,6 +293,7 @@ export const updateMenteeProfile = async (
   profile: MenteeProfileUpdate
 ): Promise<void> => {
   await menteeCollection().update(itemId, {
+    photoFileId: profile.photoFileId || '',
     goals: profile.goals,
     interests: profile.interests,
     timezone: profile.timezone,
@@ -283,5 +336,5 @@ export const saveMenteeProfile = async (
   })
 }
 
-export { splitList, defaultTimezone, validateMentorProfile, validateMenteeProfile, mentorProfileCompleteness } from '@/lib/profiles/validation'
+export { splitList, normalizeStringList, defaultTimezone, validateMentorProfile, validateMenteeProfile, mentorProfileCompleteness } from '@/lib/profiles/validation'
 export { readBlocksError } from '@/lib/profiles/errors'

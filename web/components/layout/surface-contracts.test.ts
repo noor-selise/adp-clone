@@ -24,7 +24,10 @@ describe('i18n and layout surface contracts', () => {
     // covers: AC-2
     assert.match(read('app/(public)/page.tsx'), /<LanguageMenu/)
     assert.match(read('components/layout/app-shell.tsx'), /<LanguageMenu/)
-    assert.match(read('components/onboarding/onboarding-content.tsx'), /<LanguageMenu/)
+    assert.match(
+      read('components/onboarding/onboarding-content.tsx'),
+      /<LanguageMenu/,
+    )
   })
 
   it('uses the form Container on auth surfaces', () => {
@@ -51,14 +54,33 @@ describe('i18n and layout surface contracts', () => {
     const grid = /grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3/
     assert.match(read('app/(app)/dashboard/page.tsx'), grid)
     assert.match(read('components/loading/dashboard-skeleton.tsx'), grid)
+    assert.match(read('app/(app)/mentors/page.tsx'), grid)
+    assert.match(read('app/(app)/mentors/page.tsx'), /variant="wide"/)
+    assert.match(read('components/loading/mentor-directory-skeleton.tsx'), grid)
+    assert.match(
+      read('components/loading/dashboard-skeleton.tsx'),
+      /showMenteeSection/,
+    )
   })
 
   it('uses the content Container on settings, mentee profile, and their skeletons', () => {
     // covers: Feature 16 Container content
-    assert.match(read('app/(app)/settings/profile/page.tsx'), /variant="content"/)
-    assert.match(read('app/(app)/mentees/[userId]/page.tsx'), /variant="content"/)
-    assert.match(read('components/loading/profile-settings-skeleton.tsx'), /variant="content"/)
-    assert.match(read('components/loading/mentee-profile-skeleton.tsx'), /variant="content"/)
+    assert.match(
+      read('app/(app)/settings/profile/page.tsx'),
+      /variant="content"/,
+    )
+    assert.match(
+      read('app/(app)/mentees/[userId]/page.tsx'),
+      /variant="content"/,
+    )
+    assert.match(
+      read('components/loading/profile-settings-skeleton.tsx'),
+      /variant="content"/,
+    )
+    assert.match(
+      read('components/loading/mentee-profile-skeleton.tsx'),
+      /variant="content"/,
+    )
   })
 
   it('keeps onboarding skeleton on page then form Containers', () => {
@@ -70,7 +92,10 @@ describe('i18n and layout surface contracts', () => {
   it('formats dashboard counts and mentor completeness with formatNumber', () => {
     // covers: AC-9
     assert.match(read('app/(app)/dashboard/page.tsx'), /formatNumber\(/)
-    assert.match(read('components/profile/mentor-profile-card.tsx'), /formatNumber\(/)
+    assert.match(
+      read('components/profile/mentor-profile-card.tsx'),
+      /formatNumber\(/,
+    )
   })
 
   it('pairs first and last name on register at sm', () => {

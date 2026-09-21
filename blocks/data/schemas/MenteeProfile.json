@@ -1,12 +1,73 @@
 {
-  "schemaName": "MenteeProfile",
   "collectionName": "MenteeProfiles",
-  "schemaType": 1,
   "fields": [
-    { "name": "userId", "type": "String", "isRequired": true, "description": "IAM user id owning this profile" },
-    { "name": "displayName", "type": "String", "isRequired": false, "description": "Public display name" },
-    { "name": "goals", "type": "String", "isArray": true, "isRequired": false, "description": "Career goals" },
-    { "name": "interests", "type": "String", "isArray": true, "isRequired": false, "description": "Interest areas" },
-    { "name": "timezone", "type": "String", "isRequired": false, "description": "IANA timezone" }
-  ]
+    {
+      "name": "userId",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IAM user id owning this profile",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "displayName",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Public display name",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "photoFileId",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Storage file id for profile photo",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "goals",
+      "type": "String",
+      "isArray": true,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Career goals",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "interests",
+      "type": "String",
+      "isArray": true,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Interest areas",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "timezone",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IANA timezone",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    }
+  ],
+  "schemaName": "MenteeProfile",
+  "schemaType": 1
 }

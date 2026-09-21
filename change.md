@@ -2,8 +2,14 @@
 
 All changes to this project will be documented in this file.
 
-## [Unreleased]
-
+- Let skill catalog tests import helpers from `validation.ts` instead of `skill-catalog.ts`, so the editor can typecheck them (by noor, 2026-09-21)
+- Let mentees upload a profile photo on settings; persist `photoFileId` on MenteeProfile and show it on assigned mentee cards (by noor, 2026-09-21)
+- Hide the Mentor profile card from mentee only settings, pick interests as badges, and grant a missing mentee role on re seed (by noor, 2026-09-21)
+- Capture spec 0010 for a mentee only mentor profile page at `/mentors/[userId]` (by noor, 2026-09-21)
+- Pulse mentee dashboard and `/mentors` with the same card-grid skeleton mentors already get, instead of a mentor-shaped dashboard or a Loading mentors line (by noor, 2026-09-21)
+- Tie directory card click through to scope row 3 (public mentor profile), instead of treating it as a directory bug (by noor, 2026-09-21)
+- Keep first paint copy on the bundled dictionary until after hydrate, so AuthGateSkeleton does not trip a Next.js hydration warning (by noor, 2026-09-21)
+- Add a signed in mentee directory at `/mentors` with in memory search, filters, sort, and paging (by noor, 2026-09-21)
 - Swallow a missing `.env.local` in CI tests after installing web packages for the Release scanner (by noor, 2026-09-21)
 - Install web dependencies before root npm test so Release scanner can resolve @seliseblocks/client (by noor, 2026-09-21)
 - End the signed in session when a refresh grant is rejected, so RequireAuth can send the person back to login (by noor, 2026-09-21)

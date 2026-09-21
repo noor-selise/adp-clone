@@ -17,6 +17,12 @@ describe('LocalizationProvider contracts', () => {
     assert.match(source, /catch \{\s*return bundledFallback/)
   })
 
+  it('does not branch t() on typeof window, which hydrates server copy against live SDK copy', () => {
+    assert.doesNotMatch(source, /if \(typeof window === 'undefined'\) return bundledFallback/)
+    assert.match(source, /liveLookup/)
+    assert.match(source, /if \(!liveLookup\) return bundledFallback/)
+  })
+
   it('ignores a stale account fetch after a later switch', () => {
     // covers: AC-3
     assert.match(source, /switchCounter/)

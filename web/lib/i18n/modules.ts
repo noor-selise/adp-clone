@@ -9,6 +9,7 @@ const ROUTE_MODULES: [string, ModuleName][] = [
   ['/become-a-mentor', 'onboarding'],
   ['/become-a-mentee', 'onboarding'],
   ['/dashboard', 'dashboard'],
+  ['/mentors', 'dashboard'],
   ['/mentees', 'dashboard'],
   ['/settings/profile', 'profile'],
 ]

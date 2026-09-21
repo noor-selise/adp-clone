@@ -1,9 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { MenteeProfileRecord } from '@/lib/profiles'
 import { profileItemId } from '@/lib/profiles'
 import { recordUserId } from '@/lib/profiles/collection'
+import { getProfilePhotoUrl } from '@/lib/profiles/photo'
 import { useLocale } from '@/components/providers/localization-provider'
 
 type MenteeReadonlyCardProps = {
@@ -12,20 +14,54 @@ type MenteeReadonlyCardProps = {
 
 export const MenteeReadonlyCard = ({ profile }: MenteeReadonlyCardProps) => {
   const { t } = useLocale()
+  const [photoUrl, setPhotoUrl] = useState<string | undefined>()
   const key = profileItemId(profile) ?? profile.userId ?? profile.displayName ?? 'mentee'
   const menteeUserId = recordUserId(profile)
   const goals = profile.goals ?? []
   const interests = profile.interests ?? []
   const href = menteeUserId ? `/mentees/${menteeUserId}` : undefined
 
+  useEffect(() => {
+    if (!profile.photoFileId) {
+      setPhotoUrl(undefined)
+      return
+    }
+
+    let cancelled = false
+    void getProfilePhotoUrl(profile.photoFileId)
+      .then((url) => {
+        if (!cancelled) setPhotoUrl(url)
+      })
+      .catch(() => {
+        if (!cancelled) setPhotoUrl(undefined)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [profile.photoFileId])
+
+  const initials =
+    (profile.displayName ?? 'M')
+      .split(' ')
+      .map((part) => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'M'
+
   const body = (
     <>
       <div className="flex items-start gap-3">
         <div
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-bg-inset)] text-sm font-semibold text-[var(--color-text-muted)]"
-          aria-hidden
+          className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[var(--color-bg-inset)] text-sm font-semibold text-[var(--color-text-muted)]"
+          aria-hidden={Boolean(photoUrl)}
         >
-          {(profile.displayName ?? 'M').slice(0, 1).toUpperCase()}
+          {photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={photoUrl} alt="" className="h-full w-full object-cover" />
+          ) : (
+            initials
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="truncate font-semibold" dir="auto">

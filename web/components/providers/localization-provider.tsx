@@ -42,10 +42,12 @@ export const LocalizationProvider = ({
   const pathname = usePathname() ?? '/'
   const pageModule = moduleForPathname(pathname)
   const [locale, setLocaleState] = useState<Locale>(initialLocale)
+  const [liveLookup, setLiveLookup] = useState(false)
   const [, forceRerender] = useReducer((count: number) => count + 1, 0)
   const switchCounter = useRef(0)
 
   useLayoutEffect(() => {
+    setLiveLookup(true)
     const stored = readLocalePreference().locale
     setLocaleState((current) => (current === stored ? current : stored))
   }, [])
@@ -110,14 +112,14 @@ export const LocalizationProvider = ({
   const t = useCallback(
     (key: string, fallback: string, moduleName: ModuleName) => {
       const bundledFallback = bundledDictionary(locale, moduleName)[key] ?? fallback
-      if (typeof window === 'undefined') return bundledFallback
+      if (!liveLookup) return bundledFallback
       try {
         return getBlocksClient().localization.t(key, bundledFallback, { language: locale, moduleName })
       } catch {
         return bundledFallback
       }
     },
-    [locale]
+    [locale, liveLookup]
   )
 
   const value = useMemo<LocaleContextValue>(

@@ -1,17 +1,117 @@
 {
-  "schemaName": "MentorProfile",
   "collectionName": "MentorProfiles",
-  "schemaType": 1,
   "fields": [
-    { "name": "userId", "type": "String", "isRequired": true, "description": "IAM user id owning this profile" },
-    { "name": "displayName", "type": "String", "isRequired": true, "description": "Public display name" },
-    { "name": "photoFileId", "type": "String", "isRequired": false, "description": "Storage file id for profile photo" },
-    { "name": "title", "type": "String", "isRequired": false, "description": "Job title" },
-    { "name": "company", "type": "String", "isRequired": false, "description": "Company name" },
-    { "name": "bio", "type": "String", "isRequired": false, "description": "Short bio" },
-    { "name": "skills", "type": "String", "isArray": true, "isRequired": false, "description": "Skill tags" },
-    { "name": "languages", "type": "String", "isArray": true, "isRequired": false, "description": "Spoken languages" },
-    { "name": "timezone", "type": "String", "isRequired": false, "description": "IANA timezone" },
-    { "name": "companyVerificationStatus", "type": "String", "isRequired": false, "description": "unverified | pending | verified" }
-  ]
+    {
+      "name": "userId",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IAM user id owning this profile",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "displayName",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Public display name",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "photoFileId",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Storage file id for profile photo",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Job title",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "company",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Company name",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "bio",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Short bio",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "skills",
+      "type": "String",
+      "isArray": true,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Skill tags",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "languages",
+      "type": "String",
+      "isArray": true,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "Spoken languages",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "timezone",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IANA timezone",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "companyVerificationStatus",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "unverified | pending | verified",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    }
+  ],
+  "schemaName": "MentorProfile",
+  "schemaType": 1
 }

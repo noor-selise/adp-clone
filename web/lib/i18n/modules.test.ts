@@ -13,6 +13,7 @@ describe('moduleForPathname', () => {
     assert.equal(moduleForPathname('/become-a-mentor'), 'onboarding')
     assert.equal(moduleForPathname('/become-a-mentee'), 'onboarding')
     assert.equal(moduleForPathname('/dashboard'), 'dashboard')
+    assert.equal(moduleForPathname('/mentors'), 'dashboard')
     assert.equal(moduleForPathname('/mentees/abc'), 'dashboard')
     assert.equal(moduleForPathname('/settings/profile'), 'profile')
     assert.equal(moduleForPathname('/'), 'home')

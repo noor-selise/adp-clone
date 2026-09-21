@@ -1,9 +1,29 @@
 {
-  "schemaName": "UserPreference",
   "collectionName": "UserPreferences",
-  "schemaType": 1,
   "fields": [
-    { "name": "userId", "type": "String", "isRequired": true, "description": "IAM user id owning this preference row" },
-    { "name": "preferredLocale", "type": "String", "isRequired": true, "description": "One of en-US, bn-BD, ar-SA" }
-  ]
+    {
+      "name": "userId",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IAM user id owning this preference row",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    },
+    {
+      "name": "preferredLocale",
+      "type": "String",
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "One of en-US, bn-BD, ar-SA",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
+    }
+  ],
+  "schemaName": "UserPreference",
+  "schemaType": 1
 }

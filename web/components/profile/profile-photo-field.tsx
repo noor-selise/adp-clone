@@ -9,6 +9,7 @@ import { useLocale } from '@/components/providers/localization-provider'
 type ProfilePhotoFieldProps = {
   fileId?: string
   displayName?: string
+  tags?: string
   onFileIdChange: (fileId: string | undefined) => void
   onError?: (message: string | undefined) => void
 }
@@ -16,6 +17,7 @@ type ProfilePhotoFieldProps = {
 export const ProfilePhotoField = ({
   fileId,
   displayName,
+  tags,
   onFileIdChange,
   onError,
 }: ProfilePhotoFieldProps) => {
@@ -57,7 +59,7 @@ export const ProfilePhotoField = ({
     setUploading(true)
     onError?.(undefined)
     try {
-      const nextFileId = await uploadProfilePhoto(file)
+      const nextFileId = await uploadProfilePhoto(file, tags)
       onFileIdChange(nextFileId)
       const url = await getProfilePhotoUrl(nextFileId)
       setPreviewUrl(url)

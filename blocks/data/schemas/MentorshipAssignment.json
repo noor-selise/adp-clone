@@ -1,25 +1,40 @@
 {
-  "schemaName": "MentorshipAssignment",
   "collectionName": "MentorshipAssignments",
-  "schemaType": 1,
   "fields": [
     {
       "name": "mentorUserId",
       "type": "String",
-      "isRequired": true,
-      "description": "IAM user id of the mentor"
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IAM user id of the mentor",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
     },
     {
       "name": "menteeUserId",
       "type": "String",
-      "isRequired": true,
-      "description": "IAM user id of the mentee"
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "IAM user id of the mentee",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
     },
     {
       "name": "status",
       "type": "String",
-      "isRequired": false,
-      "description": "active | paused | ended"
+      "isArray": false,
+      "isPIIData": false,
+      "isUniqueData": false,
+      "description": "active | paused | ended",
+      "requiredOn": "None",
+      "fields": [],
+      "validationRule": null
     }
-  ]
+  ],
+  "schemaName": "MentorshipAssignment",
+  "schemaType": 1
 }

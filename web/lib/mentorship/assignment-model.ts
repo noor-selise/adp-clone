@@ -29,9 +29,27 @@ export const filterAssignmentsForMentor = (
     (record) => recordMentorUserId(record) === mentorUserId && isActiveAssignment(record)
   )
 
+export const filterAssignmentsForMentee = (
+  items: MentorshipAssignmentRecord[],
+  menteeUserId: string
+): MentorshipAssignmentRecord[] =>
+  items.filter(
+    (record) =>
+      recordMenteeUserId(record) === menteeUserId &&
+      recordMentorUserId(record) !== menteeUserId &&
+      isActiveAssignment(record)
+  )
+
 export const assignedMenteeUserIds = (assignments: MentorshipAssignmentRecord[]): string[] => {
   const ids = assignments
     .map((record) => recordMenteeUserId(record))
+    .filter((id): id is string => Boolean(id))
+  return [...new Set(ids)]
+}
+
+export const assignedMentorUserIds = (assignments: MentorshipAssignmentRecord[]): string[] => {
+  const ids = assignments
+    .map((record) => recordMentorUserId(record))
     .filter((id): id is string => Boolean(id))
   return [...new Set(ids)]
 }
