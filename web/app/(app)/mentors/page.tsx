@@ -12,6 +12,7 @@ import { Container } from '@/components/layout/container'
 import { MentorDirectoryCard } from '@/components/profile/mentor-directory-card'
 import { MentorDirectorySkeleton } from '@/components/loading/mentor-directory-skeleton'
 import { useAuth } from '@/components/providers/auth-provider'
+import { ClearFiltersButton } from '@/components/ui/clear-filters-button'
 import { FlashBanner } from '@/components/ui/flash-banner'
 import { useLocale } from '@/components/providers/localization-provider'
 import { resolveSessionUser } from '@/lib/blocks/session-user'
@@ -158,6 +159,10 @@ const MentorsDirectoryContent = () => {
     router.replace(pathname, { scroll: false })
   }
 
+  const hasFilters = Boolean(
+    urlSearch.trim() || skills.length || languages.length || timezone || sort !== 'name'
+  )
+
   const shellProfiles =
     load.status === 'ready'
       ? load.profiles
@@ -295,33 +300,28 @@ const MentorsDirectoryContent = () => {
                 </div>
               </fieldset>
 
-              <label className="block max-w-sm text-sm font-medium">
-                {t('directory.timezone', 'Timezone', 'dashboard')}
-                <select
-                  value={timezone}
-                  onChange={(event) =>
-                    resetPageAndSet('timezone', event.target.value || null)
-                  }
-                  className="mt-2 w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-base font-normal"
-                >
-                  <option value="">
-                    {t('directory.anyTimezone', 'Any timezone', 'dashboard')}
-                  </option>
-                  {timezoneOptions.map((zone) => (
-                    <option key={zone} value={zone}>
-                      {zone}
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <label className="block max-w-sm flex-1 text-sm font-medium">
+                  {t('directory.timezone', 'Timezone', 'dashboard')}
+                  <select
+                    value={timezone}
+                    onChange={(event) =>
+                      resetPageAndSet('timezone', event.target.value || null)
+                    }
+                    className="mt-2 w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-base font-normal"
+                  >
+                    <option value="">
+                      {t('directory.anyTimezone', 'Any timezone', 'dashboard')}
                     </option>
-                  ))}
-                </select>
-              </label>
-
-              <button
-                type="button"
-                onClick={handleClear}
-                className="text-sm font-medium text-[var(--color-brand)] hover:underline"
-              >
-                {t('directory.clear', 'Clear search and filters', 'dashboard')}
-              </button>
+                    {timezoneOptions.map((zone) => (
+                      <option key={zone} value={zone}>
+                        {zone}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {hasFilters ? <ClearFiltersButton onClick={handleClear} /> : null}
+              </div>
             </form>
 
             {result.totalCount === 0 ? (

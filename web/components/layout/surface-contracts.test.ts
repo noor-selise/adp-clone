@@ -57,6 +57,10 @@ describe('i18n and layout surface contracts', () => {
     assert.match(read('app/(app)/mentors/page.tsx'), grid)
     assert.match(read('app/(app)/mentors/page.tsx'), /variant="wide"/)
     assert.match(read('components/loading/mentor-directory-skeleton.tsx'), grid)
+    assert.match(read('app/(app)/admin/people/page.tsx'), /variant="wide"/)
+    assert.match(read('app/(app)/admin/people/page.tsx'), /<PeopleAdminTable/)
+    assert.match(read('components/admin/people-admin-table.tsx'), /<table/)
+    assert.match(read('components/loading/people-list-skeleton.tsx'), /overflow-hidden rounded-xl border/)
     assert.match(
       read('components/loading/dashboard-skeleton.tsx'),
       /showMenteeSection/,

@@ -1,4 +1,5 @@
 {
+  "clearFilters": "খোঁজ ও ফিল্টার মুছুন",
   "loading": "লোড হচ্ছে…",
   "sessionLoading": "আপনার সেশন প্রস্তুত করা হচ্ছে…",
   "signedIn": "সাইন ইন করা আছে",
@@ -9,6 +10,7 @@
   "nav": {
     "dashboard": "ড্যাশবোর্ড",
     "profile": "প্রোফাইল",
+    "people": "ব্যক্তি",
     "becomeMentor": "মেন্টর হোন",
     "bookAsMentee": "মেন্টি হিসেবে বুক করুন",
     "signOut": "সাইন আউট",

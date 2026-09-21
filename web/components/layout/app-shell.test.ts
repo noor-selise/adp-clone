@@ -20,6 +20,18 @@ describe('AppShell signed in header chrome', () => {
     assert.ok(openMenu > signOut)
   })
 
+  it('links People to /admin/people only when hasAdminRole is true', () => {
+    assert.match(source, /hasAdminRole\(navRoles\)/)
+    assert.match(source, /href="\/admin\/people"/)
+    assert.match(source, /nav\.people/)
+  })
+
+  it('avoids syncing nav roles from a fresh empty array every render', () => {
+    assert.match(source, /EMPTY_ROLES/)
+    assert.match(source, /rolesMatch/)
+    assert.match(source, /rolesKey/)
+  })
+
   it('places Dashboard and Profile before the email cluster', () => {
     // covers: Feature 19 desktop nav then email then language
     const dashboard = source.indexOf("t('nav.dashboard'")

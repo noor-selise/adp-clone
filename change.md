@@ -1,7 +1,22 @@
-# Changelog
+- Replace clear-filter text links with a shared icon button on People and mentor directory filters (by noor, 2026-09-21)
 
-All changes to this project will be documented in this file.
+- Match AppDialog close animation timing and easing to the open transition (by noor, 2026-09-21)
 
+- Center AppDialog modals with fade and scale animation on open and close (by noor, 2026-09-21)
+
+- Stop AppShell nav role sync from looping when pages omit a stable roles prop (by noor, 2026-09-21)
+
+- Redesign admin People with Blocks-style tables, icon actions, add-only mentor admin, and gateway create-not-update rules (by noor, 2026-09-21)
+
+- Parse IAM org-scoped roles on the admin People list so seeded mentors and mentees appear in the table (by noor, 2026-09-21)
+
+- Show the admin People roster as searchable, filterable tables with pagination, and open Add mentor in a dialog (by noor, 2026-09-21)
+
+- Load the admin people roster through the service client when the signed in list is empty, and skip notifier calls that would 401 without a user access token (by noor, 2026-09-21)
+
+- Ship `/admin/people` so an admin can list, filter, add a mentor, and edit that mentor profile (by noor, 2026-09-21)
+
+- Capture spec 0012 for an admin People screen that lists, filters, adds a mentor, and edits that mentor profile (by noor, 2026-09-21)
 - Let skill catalog tests import helpers from `validation.ts` instead of `skill-catalog.ts`, so the editor can typecheck them (by noor, 2026-09-21)
 - Let mentees upload a profile photo on settings; persist `photoFileId` on MenteeProfile and show it on assigned mentee cards (by noor, 2026-09-21)
 - Hide the Mentor profile card from mentee only settings, pick interests as badges, and grant a missing mentee role on re seed (by noor, 2026-09-21)

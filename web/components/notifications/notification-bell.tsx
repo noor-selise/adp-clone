@@ -56,7 +56,7 @@ export const NotificationBell = () => {
       setStale(false)
       setLoadError(false)
       setInbox(next)
-    } catch (error) {
+    } catch {
       if (requestId !== requestIdRef.current) return
       if (!hasLoadedRef.current) {
         setLoadError(true)
@@ -64,7 +64,6 @@ export const NotificationBell = () => {
       }
       failureCountRef.current += 1
       if (failureCountRef.current >= STALE_AFTER_FAILURES) setStale(true)
-      console.error('[notification-bell] background refresh failed', error)
     }
   }, [])
 
@@ -120,9 +119,8 @@ export const NotificationBell = () => {
       failureCountRef.current = 0
       setStale(false)
       setInbox(next)
-    } catch (error) {
+    } catch {
       if (requestId !== requestIdRef.current) return
-      console.error('[notification-bell] mark read failed', error)
     }
   }
 

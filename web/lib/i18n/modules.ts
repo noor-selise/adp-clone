@@ -1,4 +1,4 @@
-export const MODULES = ['common', 'auth', 'onboarding', 'dashboard', 'profile', 'home'] as const
+export const MODULES = ['common', 'auth', 'onboarding', 'dashboard', 'profile', 'home', 'admin'] as const
 export type ModuleName = (typeof MODULES)[number]
 
 const ROUTE_MODULES: [string, ModuleName][] = [
@@ -12,6 +12,7 @@ const ROUTE_MODULES: [string, ModuleName][] = [
   ['/mentors', 'dashboard'],
   ['/mentees', 'dashboard'],
   ['/settings/profile', 'profile'],
+  ['/admin/people', 'admin'],
 ]
 
 export const moduleForPathname = (pathname: string): ModuleName => {

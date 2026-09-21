@@ -16,6 +16,7 @@ describe('moduleForPathname', () => {
     assert.equal(moduleForPathname('/mentors'), 'dashboard')
     assert.equal(moduleForPathname('/mentees/abc'), 'dashboard')
     assert.equal(moduleForPathname('/settings/profile'), 'profile')
+    assert.equal(moduleForPathname('/admin/people'), 'admin')
     assert.equal(moduleForPathname('/'), 'home')
   })
 })

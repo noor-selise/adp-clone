@@ -287,6 +287,32 @@
       "isAllowPolicy": true
     },
     {
+      "schemaName": "MentorProfile",
+      "policyName": "mentor-profile-create-admin",
+      "policyDescription": "An admin can create a mentor profile when adding a mentor from People; mentors complete their own profile on Settings",
+      "policyType": 0,
+      "operation": 1,
+      "fieldNames": [],
+      "ruleGroup": {
+        "logicalOperator": 0,
+        "rules": [
+          {
+            "leftSource": 0,
+            "leftOperand": "Roles",
+            "operator": 6,
+            "rightSource": 2,
+            "rightOperand": "",
+            "rightOperands": [],
+            "staticValue": "admin",
+            "description": null
+          }
+        ],
+        "nestedGroups": []
+      },
+      "priority": 0,
+      "isAllowPolicy": true
+    },
+    {
       "schemaName": "MentorshipAssignment",
       "policyName": "assignment-read-as-mentor",
       "policyDescription": "A signed in user can read an assignment record where they are the mentor or the mentee, or any of them if they are an admin. Combined into one policy on purpose: the platform only grants a role based full read when it lives in the same policy as the row scoped checks, not when split across separate policies.",

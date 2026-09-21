@@ -30,7 +30,7 @@ describe('bundledDictionary', () => {
   it('ships every module for English, Bangla, and Arabic', () => {
     // covers: AC-1
     const locales = ['en-US', 'bn-BD', 'ar-SA'] as const
-    const modules = ['common', 'auth', 'onboarding', 'dashboard', 'profile', 'home'] as const
+    const modules = ['common', 'auth', 'onboarding', 'dashboard', 'profile', 'home', 'admin'] as const
     for (const locale of locales) {
       for (const moduleName of modules) {
         const dict = bundledDictionary(locale, moduleName)

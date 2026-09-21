@@ -1,4 +1,6 @@
+import { BlocksApiError } from '@seliseblocks/client'
 import { getBlocksClient } from './client'
+import { getValidAccessToken } from './auth'
 
 export type InboxNotification = {
   id: string
@@ -53,10 +55,22 @@ const normalizeNotification = (raw: RawNotification): InboxNotification => {
 // (getBlocksClient(), never the service credential from web/lib/blocks/notifications.ts), so
 // there is no user id to pass or trust here (spec 0006 AC-11).
 export const fetchInbox = async (): Promise<InboxState> => {
-  const response = await getBlocksClient().notifier.getNotifications({ pageSize: PAGE_SIZE })
-  return {
-    notifications: (response.notifications ?? []).map(normalizeNotification),
-    unreadCount: response.unReadNotificationsCount ?? 0,
+  const token = await getValidAccessToken()
+  if (!token) {
+    return { notifications: [], unreadCount: 0 }
+  }
+
+  try {
+    const response = await getBlocksClient().notifier.getNotifications({ pageSize: PAGE_SIZE })
+    return {
+      notifications: (response.notifications ?? []).map(normalizeNotification),
+      unreadCount: response.unReadNotificationsCount ?? 0,
+    }
+  } catch (error) {
+    if (error instanceof BlocksApiError && error.status === 401) {
+      return { notifications: [], unreadCount: 0 }
+    }
+    throw error
   }
 }
 

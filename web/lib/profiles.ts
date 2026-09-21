@@ -188,13 +188,24 @@ export const fetchMentorProfile = async (userId: string): Promise<MentorProfileR
 }
 
 const MENTOR_SUMMARY_FIELDS = ['userId', 'displayName', 'title', 'company', 'bio', 'skills']
-const MENTOR_DIRECTORY_FIELDS = [...MENTOR_SUMMARY_FIELDS, 'languages', 'timezone']
+const MENTOR_DIRECTORY_FIELDS = [...MENTOR_SUMMARY_FIELDS, 'languages', 'timezone', 'photoFileId']
 
 /** One batched MentorProfile list call for the directory, capped at 200 rows. */
 export const listAllMentorProfiles = async (): Promise<MentorProfileRecord[]> => {
   const items = parseCollectionList<MentorProfileRecord>(
     await mentorCollection().list({ pageNo: 1, pageSize: 200, fields: MENTOR_DIRECTORY_FIELDS }),
     MENTOR_LIST_FIELD
+  )
+  return items.map(normalizeRecord)
+}
+
+const MENTEE_DIRECTORY_FIELDS = ['userId', 'displayName', 'photoFileId', 'goals', 'interests', 'timezone']
+
+/** One batched MenteeProfile list call, capped at 200 rows. */
+export const listAllMenteeProfiles = async (): Promise<MenteeProfileRecord[]> => {
+  const items = parseCollectionList<MenteeProfileRecord>(
+    await menteeCollection().list({ pageNo: 1, pageSize: 200, fields: MENTEE_DIRECTORY_FIELDS }),
+    MENTEE_LIST_FIELD
   )
   return items.map(normalizeRecord)
 }

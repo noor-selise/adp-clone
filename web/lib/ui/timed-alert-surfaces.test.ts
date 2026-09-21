@@ -17,6 +17,7 @@ describe('timed alerts are wired on flash banners', () => {
       'components/auth/callback-handler.tsx',
       'components/onboarding/onboarding-content.tsx',
       'app/(app)/mentees/[userId]/page.tsx',
+      'app/(app)/admin/people/page.tsx',
     ]
 
     for (const file of files) {

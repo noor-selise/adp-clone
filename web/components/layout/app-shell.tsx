@@ -1,12 +1,16 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/providers/auth-provider'
 import { resolveSessionUser } from '@/lib/blocks/session-user'
 import { fetchProfilePresence } from '@/lib/profiles'
-import { needsOnboarding, resolvePostAuthPath, applyRoleToProfilePresence } from '@/lib/onboarding/gate'
+import {
+  hasAdminRole,
+  needsOnboarding,
+  resolvePostAuthPath,
+} from '@/lib/onboarding/gate'
 import { readRegisterTrack } from '@/lib/onboarding/track'
 import { AuthGateSkeleton } from '@/components/loading/auth-gate-skeleton'
 import { ThemeMenu } from '@/components/theme/theme-menu'
@@ -16,6 +20,11 @@ import { useLocale } from '@/components/providers/localization-provider'
 import { Container } from '@/components/layout/container'
 import { MobileNavDrawer } from '@/components/layout/mobile-nav-drawer'
 import { BrandLockup } from '@/components/brand/brand-lockup'
+
+const EMPTY_ROLES: string[] = []
+
+const rolesMatch = (left: string[], right: string[]) =>
+  left.length === right.length && left.every((role, index) => role === right[index])
 
 const MenuIcon = () => (
   <svg
@@ -96,11 +105,24 @@ type AppShellProps = {
   roles?: string[]
 }
 
-export const AppShell = ({ children, profiles, roles = [] }: AppShellProps) => {
+export const AppShell = ({ children, profiles, roles = EMPTY_ROLES }: AppShellProps) => {
   const { claims, logout } = useAuth()
   const { t } = useLocale()
   const email = typeof claims?.email === 'string' ? claims.email : t('signedIn', 'Signed in', 'common')
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [navRoles, setNavRoles] = useState<string[]>(roles)
+  const rolesKey = useMemo(() => roles.join('\0'), [roles])
+
+  useEffect(() => {
+    setNavRoles((prev) => (rolesMatch(prev, roles) ? prev : [...roles]))
+  }, [rolesKey])
+
+  useEffect(() => {
+    void resolveSessionUser(claims).then((session) => {
+      if (!session?.roles.length) return
+      setNavRoles((prev) => (rolesMatch(prev, session.roles) ? prev : session.roles))
+    })
+  }, [claims])
 
   const handleSignOut = () => void logout().then(() => window.location.assign('/'))
 
@@ -118,7 +140,15 @@ export const AppShell = ({ children, profiles, roles = [] }: AppShellProps) => {
       >
         {t('nav.profile', 'Profile', 'common')}
       </Link>
-      {profiles && roles.includes('mentor') && !profiles.hasMentorProfile ? (
+      {hasAdminRole(navRoles) ? (
+        <Link
+          href="/admin/people"
+          className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+        >
+          {t('nav.people', 'People', 'common')}
+        </Link>
+      ) : null}
+      {profiles && navRoles.includes('mentor') && !profiles.hasMentorProfile ? (
         <Link
           href="/onboarding?as=mentor"
           className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
@@ -126,7 +156,7 @@ export const AppShell = ({ children, profiles, roles = [] }: AppShellProps) => {
           {t('nav.becomeMentor', 'Become a mentor', 'common')}
         </Link>
       ) : null}
-      {profiles && roles.includes('mentee') && !profiles.hasMenteeProfile ? (
+      {profiles && navRoles.includes('mentee') && !profiles.hasMenteeProfile ? (
         <Link
           href="/onboarding?as=mentee"
           className="flex min-h-11 items-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]"

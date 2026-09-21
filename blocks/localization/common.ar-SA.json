@@ -1,4 +1,5 @@
 {
+  "clearFilters": "مسح البحث وعوامل التصفية",
   "loading": "جارٍ التحميل…",
   "sessionLoading": "جارٍ تجهيز جلستك…",
   "signedIn": "مسجّل الدخول",
@@ -9,6 +10,7 @@
   "nav": {
     "dashboard": "لوحة التحكم",
     "profile": "الملف الشخصي",
+    "people": "الأشخاص",
     "becomeMentor": "كن مرشداً",
     "bookAsMentee": "احجز كمستفيد",
     "signOut": "تسجيل الخروج",

@@ -54,6 +54,7 @@ export const resolveOnboardingTrack = (
 
 export const hasMentorRole = (roles: string[]): boolean => roles.includes('mentor')
 export const hasMenteeRole = (roles: string[]): boolean => roles.includes('mentee')
+export const hasAdminRole = (roles: string[]): boolean => roles.includes('admin')
 
 /** Hide profile sections the IAM role cannot use, even if stray records exist in Data. */
 export const applyRoleToProfilePresence = (

@@ -1,4 +1,5 @@
 {
+  "clearFilters": "Clear search and filters",
   "loading": "Loading…",
   "sessionLoading": "Getting your session ready…",
   "signedIn": "Signed in",
@@ -9,6 +10,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "profile": "Profile",
+    "people": "People",
     "becomeMentor": "Become a mentor",
     "bookAsMentee": "Book as a mentee",
     "signOut": "Sign out",
