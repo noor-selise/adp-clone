@@ -39,9 +39,13 @@ export const AppDialog = ({ open, title, closeLabel, onClose, children }: AppDia
 
   useEffect(() => {
     if (!visible || closing) return
+    panelRef.current?.querySelector<HTMLElement>('button, input, select, textarea')?.focus()
+  }, [visible, closing])
+
+  useEffect(() => {
+    if (!visible || closing) return
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    panelRef.current?.querySelector<HTMLElement>('button, input, select, textarea')?.focus()
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {

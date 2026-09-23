@@ -17,6 +17,34 @@ describe('admin people IAM list fallback', () => {
   })
 })
 
+describe('createMentorAccount surfaces the service credential fallback as a real error', () => {
+  const createMentorAccountSource = iam.slice(iam.indexOf('export const createMentorAccount'))
+
+  it('falls back to createIamMentor when the user token create does not return a person', () => {
+    assert.match(createMentorAccountSource, /const outcome = await createIamMentor\(input\)/)
+  })
+
+  it('throws with the outcome message instead of returning silently when the fallback fails', () => {
+    assert.match(createMentorAccountSource, /if \(!outcome\.ok\) throw new Error\(outcome\.message\)/)
+  })
+
+  it('resolves with the fallback userId and email on success', () => {
+    assert.match(createMentorAccountSource, /return \{ userId: outcome\.userId, email: outcome\.email \}/)
+  })
+})
+
+describe('grantMentorRoleSafe surfaces the service credential fallback as a real error', () => {
+  const grantMentorRoleSafeSource = iam.slice(iam.indexOf('export const grantMentorRoleSafe'))
+
+  it('falls back to grantMentorRole when the user token grant does not succeed', () => {
+    assert.match(grantMentorRoleSafeSource, /const outcome = await grantMentorRole\(userId, currentRoles\)/)
+  })
+
+  it('throws with the outcome message instead of resolving silently when the fallback fails', () => {
+    assert.match(grantMentorRoleSafeSource, /if \(!outcome\.ok\) throw new Error\(outcome\.message\)/)
+  })
+})
+
 describe('inbox fetch does not 401 without a user access token', () => {
   it('asks for a valid access token before getNotifications and swallows a 401', () => {
     assert.match(inbox, /getValidAccessToken\(\)/)

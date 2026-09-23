@@ -49,7 +49,9 @@ export const createMentorAccount = async (input: {
   } catch {
     // User token create is preferred; service credential is the fallback in AC-14.
   }
-  return createIamMentor(input)
+  const outcome = await createIamMentor(input)
+  if (!outcome.ok) throw new Error(outcome.message)
+  return { userId: outcome.userId, email: outcome.email }
 }
 
 export const grantMentorRoleSafe = async (userId: string, currentRoles: string[]): Promise<void> => {
@@ -63,5 +65,6 @@ export const grantMentorRoleSafe = async (userId: string, currentRoles: string[]
   } catch {
     // User token grant is preferred; service credential is the fallback in AC-14.
   }
-  await grantMentorRole(userId, currentRoles)
+  const outcome = await grantMentorRole(userId, currentRoles)
+  if (!outcome.ok) throw new Error(outcome.message)
 }

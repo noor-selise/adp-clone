@@ -8,7 +8,7 @@
       "isPIIData": false,
       "isUniqueData": false,
       "description": "IAM user id owning this profile",
-      "requiredOn": "None",
+      "requiredOn": "Insert",
       "fields": [],
       "validationRule": null
     },
@@ -19,7 +19,7 @@
       "isPIIData": false,
       "isUniqueData": false,
       "description": "Public display name",
-      "requiredOn": "None",
+      "requiredOn": "Both",
       "fields": [],
       "validationRule": null
     },
@@ -41,7 +41,7 @@
       "isPIIData": false,
       "isUniqueData": false,
       "description": "Job title",
-      "requiredOn": "None",
+      "requiredOn": "Both",
       "fields": [],
       "validationRule": null
     },

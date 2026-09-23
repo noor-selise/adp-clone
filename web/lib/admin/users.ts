@@ -21,42 +21,65 @@ export const listIamPeople = async (): Promise<IamPerson[]> => {
   return iamPeopleFromListResponse(response)
 }
 
+// A thrown error is never safe to let escape a 'use server' action: Next.js
+// converts any uncaught exception into an opaque, message free 500 for the
+// caller (redacted in production), no matter what the underlying failure
+// was. Blocks failures (a duplicate email, a permission error, ...) are
+// expected outcomes here, so they are caught and returned as data instead.
+export type IamMentorOutcome =
+  | { ok: true; userId: string; email: string }
+  | { ok: false; message: string }
+
 export const createIamMentor = async (input: {
   email: string
   displayName: string
   password: string
-}): Promise<{ userId: string; email: string }> => {
+}): Promise<IamMentorOutcome> => {
   const names = input.displayName.trim().split(/\s+/)
   const firstName = names[0] || 'Mentor'
   const lastName = names.slice(1).join(' ') || firstName
-  const created = (await getServiceBlocksClient().iam.users.create({
-    email: input.email.trim(),
-    password: input.password,
-    firstName,
-    lastName,
-    roles: ['mentor'],
-  })) as UsersListResponse & { data?: Record<string, unknown> }
+  try {
+    const created = (await getServiceBlocksClient().iam.users.create({
+      email: input.email.trim(),
+      password: input.password,
+      firstName,
+      lastName,
+      roles: ['mentor'],
+    })) as UsersListResponse & { data?: Record<string, unknown> }
 
-  if (created.isSuccess === false) {
-    throw new Error(readBlocksError(created))
-  }
+    if (created.isSuccess === false) {
+      return { ok: false, message: readBlocksError(created) }
+    }
 
-  const data = created.data
-  const person = data && !Array.isArray(data) ? iamPersonFromRecord(data) : undefined
-  const userId = person?.userId
-  if (!userId) {
-    throw new Error('Mentor account was created but no user id came back.')
+    const data = created.data
+    const person = data && !Array.isArray(data) ? iamPersonFromRecord(data) : undefined
+    const userId = person?.userId
+    if (!userId) {
+      return { ok: false, message: 'Mentor account was created but no user id came back.' }
+    }
+    return { ok: true, userId, email: input.email.trim() }
+  } catch (caught) {
+    return { ok: false, message: readBlocksError(caught) }
   }
-  return { userId, email: input.email.trim() }
 }
 
-export const grantMentorRole = async (userId: string, currentRoles: string[]): Promise<void> => {
+export type GrantMentorRoleOutcome = { ok: true } | { ok: false; message: string }
+
+export const grantMentorRole = async (
+  userId: string,
+  currentRoles: string[],
+): Promise<GrantMentorRoleOutcome> => {
   const roles = currentRoles.includes('mentor') ? currentRoles : [...currentRoles, 'mentor']
-  const response = (await getServiceBlocksClient().iam.users.updateAccess({
-    userId,
-    roles,
-  })) as UsersListResponse
-  if (response.isSuccess === false) {
-    throw new Error(readBlocksError(response))
+  try {
+    const response = (await getServiceBlocksClient().iam.users.updateAccess({
+      userId,
+      roles,
+    })) as UsersListResponse
+    if (response.isSuccess === false) {
+      return { ok: false, message: readBlocksError(response) }
+    }
+    return { ok: true }
+  } catch (caught) {
+    return { ok: false, message: readBlocksError(caught) }
   }
 }

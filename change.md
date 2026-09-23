@@ -1,3 +1,15 @@
+- Ratify spec 0013, verify.md, cloud duplicate policy cleanup, and test coverage for data gateway security (by noor, 2026-09-23)
+
+- Ship data gateway security: validation manifest, policy cleanup, schema requiredOn, dev deploy, and gateway security tests (by noor, 2026-09-23)
+
+- Replan scope: widen feature 1 to data gateway security (RLS, validation, IAM alignment) per updated blocks-data-access-control skill; reconcile admin people add plus view and mentee dashboard done (by noor, 2026-09-23)
+
+- Add mutation structure (insert/update/delete input, where selector, response shapes) and write-time RLS/CLS behavior to blocks-data-access-control skill (by noor, 2026-09-23)
+
+- Rewrite blocks-data-access-control skill to be generic (names over raw JSON enums) and add the typed where/order/paging query structure section (by noor, 2026-09-23)
+
+- Add blocks-data-access-control skill documenting Data Gateway RLS/CLS, field validation, and blocks-data endpoint permissions (by noor, 2026-09-23)
+
 - Replace clear-filter text links with a shared icon button on People and mentor directory filters (by noor, 2026-09-21)
 
 - Match AppDialog close animation timing and easing to the open transition (by noor, 2026-09-21)
